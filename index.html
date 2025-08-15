@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acesso Grátis - Bônus de Cadastro</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #1b5e20, #a5d6a7);
+        margin: 0;
+        min-height: 100vh;
+        text-align: center;
+        overflow: hidden;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    /* Moedas animadas */
+    .coin {
+        position: absolute;
+        font-size: 24px;
+        animation: fall linear infinite;
+    }
+    @keyframes fall {
+        0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    .landing-box {
+        background: #fff8e1;
+        padding: 30px 20px;
+        max-width: 400px;
+        width: 100%;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        position: relative;
+        z-index: 10;
+    }
+    .landing-box h2 {
+        font-size: 22px;
+        margin-bottom: 12px;
+        color: #0d5302;
+        line-height: 1.3;
+    }
+    .icon-row {
+        font-size: 32px;
+        margin-bottom: 15px;
+        animation: bounce 1.2s infinite alternate;
+    }
+    @keyframes bounce {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    input {
+        width: 95%;
+        padding: 16px;
+        margin: 6px 0;
+        border-radius: 15px;
+        border: 2px solid #0d5302;
+        font-size: 18px;
+    }
+    button {
+        width: 70%;
+        padding: 18px;
+        margin-top: 12px;
+        border: none;
+        border-radius: 15px;
+        background: #ff6f00;
+        color: white;
+        font-size: 22px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease-in-out;
+        animation: pulse 1.5s infinite;
+    }
+    button:disabled {
+        background: gray;
+        cursor: not-allowed;
+        animation: none;
+    }
+    @keyframes pulse {
+        0% { box-shadow: 0 0 10px #ff6f00; }
+        50% { box-shadow: 0 0 25px #ff8f00; }
+        100% { box-shadow: 0 0 10px #ff6f00; }
+    }
+    /* Adaptação para telas menores */
+    @media(max-width: 420px) {
+        .landing-box h2 {
+            font-size: 20px;
+        }
+        input, button {
+            font-size: 18px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="landing-box">
+    <div class="icon-row">🎰💰🃏</div>
+    <h2>
+        Deixe Seu Nome e Telefone<br>
+        e Tenha Acesso Grátis ao Nosso Site
+    </h2>
+    <input type="text" id="nome" placeholder="Nome">
+    <input type="tel" id="telefone" placeholder="DDD + Telefone">
+    <button type="button" id="entrar" onclick="entrarSite()" disabled>Entrar</button>
+</div>
+
+<script>
+// Cria moedas animadas caindo
+function criarMoeda() {
+    const coin = document.createElement('div');
+    coin.className = 'coin';
+    coin.style.left = Math.random() * 100 + 'vw';
+    coin.style.fontSize = (Math.random() * 20 + 20) + 'px';
+    coin.style.animationDuration = (Math.random() * 3 + 3) + 's';
+    coin.innerHTML = '💰';
+    document.body.appendChild(coin);
+
+    setTimeout(() => {
+        coin.remove();
+    }, 6000);
+}
+
+// Gera moedas a cada 300ms
+setInterval(criarMoeda, 300);
+
+const nomeInput = document.getElementById("nome");
+const telefoneInput = document.getElementById("telefone");
+const entrarBtn = document.getElementById("entrar");
+
+// Habilita o botão somente se ambos os campos forem preenchidos
+function checarCampos() {
+    entrarBtn.disabled = !(nomeInput.value.trim() && telefoneInput.value.trim());
+}
+
+nomeInput.addEventListener("input", checarCampos);
+telefoneInput.addEventListener("input", checarCampos);
+
+// Função para entrar no site e salvar no localStorage
+function entrarSite() {
+    const nome = nomeInput.value.trim();
+    const telefone = telefoneInput.value.trim();
+
+    if (!nome || !telefone) {
+        alert("Preencha todos os campos!");
+        return;
+    }
+
+    localStorage.setItem("usuarioCadastrado", "true");
+    localStorage.setItem("nome", nome);
+    localStorage.setItem("telefone", telefone);
+
+    window.location.href = "site.html";
+}
+
+// Redireciona direto se já estiver cadastrado
+if (localStorage.getItem("usuarioCadastrado") === "true") {
+    window.location.href = "site.html";
+}
+
+// Inicialmente botão desabilitado
+entrarBtn.disabled = true;
+</script>
+
+</body>
+</html>
