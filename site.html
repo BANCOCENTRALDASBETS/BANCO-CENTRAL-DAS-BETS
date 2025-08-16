@@ -1,373 +1,115 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plataformas com Bônus</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Banco Central das Bets - Plataformas com Bônus</title>
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin:0;
-    padding:10px;
-    background: linear-gradient(135deg, #1b5e20, #a5d6a7);
-    color:#0d5302;
-    min-height:100vh;
-}
-h1 {
-    text-align:center;
-    margin-bottom:20px;
-}
-.platform {
-    background:#fff8e1;
-    margin-bottom:15px;
-    padding:15px;
-    border-radius:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
-}
-.platform a {
-    display:block;
-    text-decoration:none;
-    color:#0d5302;
-    font-weight:bold;
-    font-size:16px;
-    margin-bottom:8px;
-}
-.platform input {
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid #0d5302;
-    margin-bottom:5px;
-}
-.platform button {
-    width:100%;
-    padding:12px;
-    background:#ff6f00;
-    color:white;
-    border:none;
-    border-radius:10px;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
-.platform button:disabled {
-    background:gray;
-    cursor:not-allowed;
-}
+    body {
+        font-family: Arial, sans-serif;
+        background: #f1f8e9;
+        margin: 0;
+        padding: 10px;
+    }
+
+    .container {
+        max-width: 500px;
+        margin: auto;
+    }
+
+    h1 {
+        font-size: 22px;
+        color: #1b5e20;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .link-box {
+        background: white;
+        border-radius: 12px;
+        padding: 15px;
+        margin: 12px 0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .link-box a {
+        display: block;
+        text-decoration: none;
+        color: #0d5302;
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    textarea {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 8px;
+        font-size: 14px;
+        resize: none;
+        margin-bottom: 6px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #43a047;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
 </style>
 </head>
 <body>
 
-<h1>Plataformas com Bônus</h1>
-<div id="platforms-container"></div>
+<div class="container">
+    <h1>Plataformas com Bônus no Cadastro</h1>
+
+    <div id="links-container"></div>
+</div>
 
 <script>
-// Lista completa de links das plataformas
-const platforms=[
-"https://56bx2.com/?pid=1622043487",
-"https://www.56f5.com/?pid=1944788621",
-"https://0697.0697neiqian22.win/?pid=3935845434",
-"https://9z00.com/?pid=1936443426",
-"https://79r777.vip/?pid=2196766126",
-"https://98a5.xyz/?pid=1803452060",
-"https://79m004.com/?pid=1757781391",
-"https://79b03.com/?pid=2850060734",
-"https://67a01.com/?pid=2241000318",
-"https://95bb2.com/?pid=1530670278",
-"https://56d665.com/?pid=1608629413",
-"https://ggbb8.xyz/?pid=2772727000",
-"https://66gg13.xyz/?pid=1862144817",
-"https://6bb.name/?pid=478322165",
-"https://5526019.com/?pid=775429643",
-"https://7ff887.com/?pid=270572822",
-"https://dduu8.xyz/?pid=1321002589",
-"https://5853c.xyz/?pid=341271209",
-"https://57a010.com/?pid=577793437",
-"https://78n3.cc/?pid=2744355746",
-"https://85k85k.cc/?pid=2977660061",
-"https://89p08.com/?pid=1702381854",
-"https://3976a7n.cc/?pid=640504829",
-"https://77bb27.com/?pid=2219965269",
-"https://5597046.com/?pid=820456607",
-"https://7075a2.cc/?pid=1304070624",
-"https://5161a3.cc/?pid=2916139340",
-"https://53a1.xyz/?pid=2847554641",
-"https://11q118.com/?pid=2804170821",
-"https://9096b5.cc/?pid=395755008",
-"https://554201.com/?pid=2056754853",
-"https://5526019.com/?pid=775429643",
-"https://8857w2.com/?pid=2502848820",
-"https://8385b.xyz/?pid=218084685",
-"https://7xx.vip/?pid=683932395",
-"https://zww29.com/?pid=1618655052",
-"https://55dd9.cc/?pid=2295003355",
-"https://11a14.xyz/?pid=1097969127",
-"https://28888game.com/?pid=1528981018",
-"https://oss.n9ossmjbymc.com/?pid=1441287305",
-"https://78tt5.com/?pid=2081370451",
-"https://76n776.vip/?pid=1324732780",
-"https://383181.com/?pid=2404603446",
-"https://77gg03.com/?pid=2898362340",
-"https://pt4.pro/?pid=1114158086",
-"https://95r2.com/?pid=3694607257",
-"https://pp11qh.com/?pid=3723711433",
-"https://0697.0697neiqian22.win/?pid=3935845434",
-"https://www.56f5.com/?pid=1944788621",
-"https://rhwin.pro/?pid=2079725771",
-"https://66aa21.com/?pid=3877768956",
-"https://99ss16.com/?pid=3724581502",
-"https://7vgame.pro/?pid=3977771731",
-"https://7ulk0.pro/?pid=3311915264",
-"https://k85v.com/?pid=3182175926",
-"https://ee11r.com/?pid=3506754305",
-"https://77qq02.com/?pid=3053186528",
-"https://5ggg88.vip/?pid=3687354451",
-"https://www.922bet18.com/?id=712030380",
-"https://www.facebook.com/share/16n2FC4UtL/",
-"https://5dgame.pro/?pid=3600850226",
-"https://game.nbamajiabaonba.bet/?pid=2729983007",
-"https://jjnn4.com/?pid=3540195609",
-"https://66e99y.com/?pid=1766296985"
+const links = [
+    "https://56bx2.com/?pid=1622043487",
+    "https://www.56f5.com/?pid=1944788621",
+    "https://0697.0697neiqian22.win/?pid=3935845434",
+    "https://9z00.com/?pid=1936443426",
+    "https://79r777.vip/?pid=2196766126",
+    "https://98a5.xyz/?pid=1803452060",
+    "https://79m004.com/?pid=1757781391",
+    "https://79b03.com/?pid=2850060734",
+    "https://67a01.com/?pid=2241000318",
+    "https://95bb2.com/?pid=1530670278"
 ];
 
-// Função para salvar comentário no localStorage
-function salvarComentario(url, comentario){
-    let comentarios=JSON.parse(localStorage.getItem("comentarios"))||{};
-    comentarios[url]=comentario;
-    localStorage.setItem("comentarios", JSON.stringify(comentarios));
-}
+const container = document.getElementById("links-container");
 
-const container=document.getElementById("platforms-container");
-
-platforms.forEach(url=>{
-    const div=document.createElement("div");
-    div.className="platform";
-
-    const link=document.createElement("a");
-    link.href=url;
-    link.target="_blank";
-    link.innerText=url;
-    div.appendChild(link);
-
-    const input=document.createElement("input");
-    input.placeholder="Deixe seu comentário";
-    div.appendChild(input);
-
-    const button=document.createElement("button");
-    button.innerText="Salvar comentário";
-    button.disabled=true;
-    div.appendChild(button);
-
-    input.addEventListener("input",()=>{ button.disabled=!input.value.trim(); });
-    button.addEventListener("click",()=>{
-        salvarComentario(url,input.value.trim());
-        alert("Comentário salvo!");
-        input.value="";
-        button.disabled=true;
-    });
-
-    const comentarios=JSON.parse(localStorage.getItem("comentarios"))||{};
-    if(comentarios[url]){
-        input.value=comentarios[url];
-        button.disabled=false;
-    }
-
-    container.appendChild(div);
+links.forEach((url, index) => {
+    const box = document.createElement("div");
+    box.className = "link-box";
+    box.innerHTML = `
+        <a href="${url}" target="_blank">🔗 Plataforma ${index + 1}</a>
+        <textarea id="comentario-${index}" placeholder="Deixe seu comentário..."></textarea>
+        <button onclick="salvarComentario(${index})">Enviar Comentário</button>
+    `;
+    container.appendChild(box);
 });
 
-// Bloqueia acesso se não estiver logado
-if(localStorage.getItem("usuarioCadastrado")!=="true"){
-    window.location.href="index.html";
+function salvarComentario(index) {
+    const textarea = document.getElementById("comentario-" + index);
+    const comentario = textarea.value.trim();
+    if (!comentario) {
+        alert("Digite um comentário antes de enviar.");
+        return;
+    }
+    const nome = localStorage.getItem("nome") || "Anônimo";
+    alert("Obrigado, " + nome + "! Seu comentário foi registrado: " + comentario);
+    textarea.value = "";
 }
 </script>
 
 </body>
 </html>
-=======
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plataformas com Bônus</title>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    margin:0;
-    padding:10px;
-    background: linear-gradient(135deg, #1b5e20, #a5d6a7);
-    color:#0d5302;
-    min-height:100vh;
-}
-h1 {
-    text-align:center;
-    margin-bottom:20px;
-}
-.platform {
-    background:#fff8e1;
-    margin-bottom:15px;
-    padding:15px;
-    border-radius:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
-}
-.platform a {
-    display:block;
-    text-decoration:none;
-    color:#0d5302;
-    font-weight:bold;
-    font-size:16px;
-    margin-bottom:8px;
-}
-.platform input {
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid #0d5302;
-    margin-bottom:5px;
-}
-.platform button {
-    width:100%;
-    padding:12px;
-    background:#ff6f00;
-    color:white;
-    border:none;
-    border-radius:10px;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
-.platform button:disabled {
-    background:gray;
-    cursor:not-allowed;
-}
-</style>
-</head>
-<body>
-
-<h1>Plataformas com Bônus</h1>
-<div id="platforms-container"></div>
-
-<script>
-// Lista completa de links das plataformas
-const platforms=[
-"https://56bx2.com/?pid=1622043487",
-"https://www.56f5.com/?pid=1944788621",
-"https://0697.0697neiqian22.win/?pid=3935845434",
-"https://9z00.com/?pid=1936443426",
-"https://79r777.vip/?pid=2196766126",
-"https://98a5.xyz/?pid=1803452060",
-"https://79m004.com/?pid=1757781391",
-"https://79b03.com/?pid=2850060734",
-"https://67a01.com/?pid=2241000318",
-"https://95bb2.com/?pid=1530670278",
-"https://56d665.com/?pid=1608629413",
-"https://ggbb8.xyz/?pid=2772727000",
-"https://66gg13.xyz/?pid=1862144817",
-"https://6bb.name/?pid=478322165",
-"https://5526019.com/?pid=775429643",
-"https://7ff887.com/?pid=270572822",
-"https://dduu8.xyz/?pid=1321002589",
-"https://5853c.xyz/?pid=341271209",
-"https://57a010.com/?pid=577793437",
-"https://78n3.cc/?pid=2744355746",
-"https://85k85k.cc/?pid=2977660061",
-"https://89p08.com/?pid=1702381854",
-"https://3976a7n.cc/?pid=640504829",
-"https://77bb27.com/?pid=2219965269",
-"https://5597046.com/?pid=820456607",
-"https://7075a2.cc/?pid=1304070624",
-"https://5161a3.cc/?pid=2916139340",
-"https://53a1.xyz/?pid=2847554641",
-"https://11q118.com/?pid=2804170821",
-"https://9096b5.cc/?pid=395755008",
-"https://554201.com/?pid=2056754853",
-"https://5526019.com/?pid=775429643",
-"https://8857w2.com/?pid=2502848820",
-"https://8385b.xyz/?pid=218084685",
-"https://7xx.vip/?pid=683932395",
-"https://zww29.com/?pid=1618655052",
-"https://55dd9.cc/?pid=2295003355",
-"https://11a14.xyz/?pid=1097969127",
-"https://28888game.com/?pid=1528981018",
-"https://oss.n9ossmjbymc.com/?pid=1441287305",
-"https://78tt5.com/?pid=2081370451",
-"https://76n776.vip/?pid=1324732780",
-"https://383181.com/?pid=2404603446",
-"https://77gg03.com/?pid=2898362340",
-"https://pt4.pro/?pid=1114158086",
-"https://95r2.com/?pid=3694607257",
-"https://pp11qh.com/?pid=3723711433",
-"https://0697.0697neiqian22.win/?pid=3935845434",
-"https://www.56f5.com/?pid=1944788621",
-"https://rhwin.pro/?pid=2079725771",
-"https://66aa21.com/?pid=3877768956",
-"https://99ss16.com/?pid=3724581502",
-"https://7vgame.pro/?pid=3977771731",
-"https://7ulk0.pro/?pid=3311915264",
-"https://k85v.com/?pid=3182175926",
-"https://ee11r.com/?pid=3506754305",
-"https://77qq02.com/?pid=3053186528",
-"https://5ggg88.vip/?pid=3687354451",
-"https://www.922bet18.com/?id=712030380",
-"https://www.facebook.com/share/16n2FC4UtL/",
-"https://5dgame.pro/?pid=3600850226",
-"https://game.nbamajiabaonba.bet/?pid=2729983007",
-"https://jjnn4.com/?pid=3540195609",
-"https://66e99y.com/?pid=1766296985"
-];
-
-// Função para salvar comentário no localStorage
-function salvarComentario(url, comentario){
-    let comentarios=JSON.parse(localStorage.getItem("comentarios"))||{};
-    comentarios[url]=comentario;
-    localStorage.setItem("comentarios", JSON.stringify(comentarios));
-}
-
-const container=document.getElementById("platforms-container");
-
-platforms.forEach(url=>{
-    const div=document.createElement("div");
-    div.className="platform";
-
-    const link=document.createElement("a");
-    link.href=url;
-    link.target="_blank";
-    link.innerText=url;
-    div.appendChild(link);
-
-    const input=document.createElement("input");
-    input.placeholder="Deixe seu comentário";
-    div.appendChild(input);
-
-    const button=document.createElement("button");
-    button.innerText="Salvar comentário";
-    button.disabled=true;
-    div.appendChild(button);
-
-    input.addEventListener("input",()=>{ button.disabled=!input.value.trim(); });
-    button.addEventListener("click",()=>{
-        salvarComentario(url,input.value.trim());
-        alert("Comentário salvo!");
-        input.value="";
-        button.disabled=true;
-    });
-
-    const comentarios=JSON.parse(localStorage.getItem("comentarios"))||{};
-    if(comentarios[url]){
-        input.value=comentarios[url];
-        button.disabled=false;
-    }
-
-    container.appendChild(div);
-});
-
-// Bloqueia acesso se não estiver logado
-if(localStorage.getItem("usuarioCadastrado")!=="true"){
-    window.location.href="index.html";
-}
-</script>
-
-</body>
-</html>
->>>>>>> 2f01a37939805c5d15d61990d0dc92211d9e0760
