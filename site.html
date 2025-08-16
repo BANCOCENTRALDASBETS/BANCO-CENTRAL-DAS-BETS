@@ -1,144 +1,78 @@
+<!-- site.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Banco Central das Bets - Plataformas com Bônus</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal Gamer - Área VIP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Orbitron', sans-serif;
-      background-color: #0f0f0f;
-      color: #00ffcc;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+      color: #00ffcc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .vip-box {
+      background: #1e1e1e;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #ff6f00;
+      width: 100%;
+      max-width: 360px;
       text-align: center;
+      margin-top: 40px;
+      border: 2px solid #ff6f00;
     }
 
-    .container {
-      max-width: 600px;
-      margin: auto;
+    .vip-box h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #ff6f00;
     }
 
-    h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .usuario {
-      font-size: 18px;
+    .vip-box p {
+      font-size: 16px;
       margin-bottom: 20px;
     }
 
-    .link-box {
-      background: #1a1a1a;
-      border-radius: 12px;
-      padding: 15px;
-      margin: 12px 0;
-      box-shadow: 0 4px 10px rgba(0,255,204,0.2);
-    }
-
-    .link-box a {
-      display: block;
-      text-decoration: none;
-      color: #00ffcc;
-      font-weight: bold;
+    .vip-box input {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border: 12px solid transparent;
+      border-image: url('moedas-bcb.png') 30 round;
+      background: #2c2c2c;
+      color: #fff;
       font-size: 16px;
-      margin-bottom: 10px;
     }
 
-    textarea {
+    .vip-box button {
       width: 100%;
-      border-radius: 8px;
-      border: 1px solid #00ffcc;
-      background-color: #0f0f0f;
-      color: #00ffcc;
-      padding: 8px;
-      font-size: 14px;
-      resize: none;
-      margin-bottom: 6px;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
+      padding: 16px;
+      margin-top: 20px;
       border: none;
-      border-radius: 8px;
-      background: #00ffcc;
-      color: #0f0f0f;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #00e6b8;
-    }
-
-    #sairBtn {
-      margin-top: 30px;
-      background-color: #ff4444;
+      border-radius: 12px;
+      background: #ff6f00;
       color: white;
-    }
-
-    #sairBtn:hover {
-      background-color: #cc0000;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-
-  <div class="container">
-    <h1>🎯 Plataformas com Bônus no Cadastro</h1>
-    <div class="usuario">Bem-vindo, <span id="nomeUsuario"></span>!</div>
-    <div id="links-container"></div>
-    <button id="sairBtn">Sair</button>
+  <div class="vip-box">
+    <h1>🎮 Bem-vindo, Gamer VIP!</h1>
+    <p>Você desbloqueou o acesso ao universo $BCB$.</p>
+    <input type="text" placeholder="Digite seu código secreto" />
+    <button>Validar Código</button>
   </div>
-
-  <script>
-    const nome = localStorage.getItem("nome") || "Anônimo";
-    document.getElementById("nomeUsuario").textContent = nome;
-
-    const links = [
-      "https://56bx2.com/?pid=1622043487",
-      "https://www.56f5.com/?pid=1944788621",
-      "https://0697.0697neiqian22.win/?pid=3935845434",
-      "https://9z00.com/?pid=1936443426",
-      "https://79r777.vip/?pid=2196766126",
-      "https://98a5.xyz/?pid=1803452060",
-      "https://79m004.com/?pid=1757781391",
-      "https://79b03.com/?pid=2850060734",
-      "https://67a01.com/?pid=2241000318",
-      "https://95bb2.com/?pid=1530670278"
-    ];
-
-    const container = document.getElementById("links-container");
-
-    links.forEach((url, index) => {
-      const box = document.createElement("div");
-      box.className = "link-box";
-      box.innerHTML = `
-        <a href="${url}" target="_blank">🔗 Plataforma ${index + 1}</a>
-        <textarea id="comentario-${index}" placeholder="Deixe seu comentário..."></textarea>
-        <button onclick="salvarComentario(${index})">Enviar Comentário</button>
-      `;
-      container.appendChild(box);
-    });
-
-    function salvarComentario(index) {
-      const textarea = document.getElementById("comentario-" + index);
-      const comentario = textarea.value.trim();
-      if (!comentario) {
-        alert("Digite um comentário antes de enviar.");
-        return;
-      }
-      alert("Obrigado, " + nome + "! Seu comentário foi registrado: " + comentario);
-      textarea.value = "";
-    }
-
-    document.getElementById("sairBtn").addEventListener("click", function () {
-      localStorage.clear();
-      window.location.href = "index.html";
-    });
-  </script>
-
 </body>
 </html>

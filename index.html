@@ -1,61 +1,97 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portal Gamer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
   <style>
     body {
-      background-color: #0f0f0f;
-      color: #00ffcc;
+      margin: 0;
+      padding: 0;
       font-family: 'Orbitron', sans-serif;
-      text-align: center;
-      padding: 50px;
+      background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+      color: #00ffcc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
-    input, button {
-      padding: 10px;
-      margin: 10px;
-      border: none;
-      border-radius: 5px;
+
+    .landing-box {
+      background: #1e1e1e;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #ff6f00;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+      border: 2px solid #ff6f00;
+    }
+
+    .landing-box h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #ff6f00;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border: 12px solid transparent;
+      border-image: url('moedas-bcb.png') 30 round;
+      background: #2c2c2c;
+      color: #fff;
       font-size: 16px;
     }
-    input {
-      background-color: #1a1a1a;
-      color: #00ffcc;
-      width: 250px;
+
+    input::placeholder {
+      color: #aaa;
     }
+
     button {
-      background-color: #00ffcc;
-      color: #0f0f0f;
+      width: 100%;
+      padding: 16px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 12px;
+      background: #ff6f00;
+      color: white;
+      font-size: 18px;
       cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease-in-out;
     }
+
     button:disabled {
-      background-color: #555;
+      background: #555;
       cursor: not-allowed;
     }
+
     #honeypot {
       display: none;
     }
   </style>
 </head>
 <body>
-  <h1>🎮 Bem-vindo ao Portal Gamer</h1>
-  <p>Insira seus dados para entrar:</p>
-
-  <input type="text" id="nome" placeholder="Seu nome">
-  <br>
-  <input type="text" id="telefone" placeholder="Seu telefone (ex: 11999999999)">
-  <br>
-  <input type="text" id="honeypot" name="honeypot">
-  <br>
-  <button id="entrarBtn" disabled>Entrar</button>
+  <div class="landing-box">
+    <h2>🚀 Acesso Exclusivo ao Portal Gamer</h2>
+    <input type="text" id="nome" placeholder="Seu Nome" />
+    <input type="text" id="telefone" placeholder="31-91234-5678" />
+    <input type="text" id="honeypot" name="honeypot" />
+    <button type="button" id="entrar" disabled>Entrar</button>
+  </div>
 
   <script>
     const nomeInput = document.getElementById("nome");
     const telefoneInput = document.getElementById("telefone");
-    const entrarBtn = document.getElementById("entrarBtn");
+    const entrarBtn = document.getElementById("entrar");
 
     function validarTelefone(telefone) {
-      return /^\d{10,11}$/.test(telefone);
+      const regex = /^\d{2}-9\d{4}-\d{4}$/;
+      return regex.test(telefone);
     }
 
     function checarCampos() {
@@ -67,7 +103,27 @@
     }
 
     nomeInput.addEventListener("input", checarCampos);
-    telefoneInput.addEventListener("input", checarCampos);
+
+    telefoneInput.addEventListener("input", (e) => {
+      let valor = e.target.value.replace(/\D/g, "");
+      if (valor.length > 2) {
+        valor = valor.replace(/^(\d{2})(\d)/, "$1-$2");
+      }
+      if (valor.length > 8) {
+        valor = valor.replace(/-(\d{5})(\d)/, "-$1-$2");
+      }
+      e.target.value = valor;
+
+      checarCampos();
+
+      if (!validarTelefone(e.target.value.trim())) {
+        telefoneInput.style.borderColor = "red";
+        telefoneInput.setCustomValidity("Formato inválido. Use: 31-91234-5678");
+      } else {
+        telefoneInput.style.borderColor = "#ff6f00";
+        telefoneInput.setCustomValidity("");
+      }
+    });
 
     entrarBtn.addEventListener("click", function () {
       const nome = nomeInput.value.trim();
@@ -90,6 +146,10 @@
 
       window.location.href = "site.html";
     });
+
+    if (localStorage.getItem("usuarioCadastrado") === "true") {
+      window.location.href = "site.html";
+    }
   </script>
 </body>
 </html>
