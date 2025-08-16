@@ -1,121 +1,95 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Acesso Grátis - Bônus de Cadastro</title>
-<style>
+  <meta charset="UTF-8">
+  <title>Portal Gamer</title>
+  <style>
     body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #1b5e20, #4caf50);
-        margin: 0;
-        min-height: 100vh;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 15px;
+      background-color: #0f0f0f;
+      color: #00ffcc;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      padding: 50px;
     }
-
-    .landing-box {
-        background: #fff8e1;
-        padding: 25px 20px;
-        width: 100%;
-        max-width: 360px;
-        border-radius: 18px;
-        box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
     }
-
-    .landing-box h2 {
-        font-size: 20px;
-        margin-bottom: 15px;
-        color: #0d5302;
-        line-height: 1.4;
-    }
-
     input {
-        width: 100%;
-        padding: 14px;
-        margin: 8px 0;
-        border-radius: 12px;
-        border: 2px solid #0d5302;
-        font-size: 16px;
+      background-color: #1a1a1a;
+      color: #00ffcc;
+      width: 250px;
     }
-
     button {
-        width: 100%;
-        padding: 16px;
-        margin-top: 15px;
-        border: none;
-        border-radius: 12px;
-        background: #ff6f00;
-        color: white;
-        font-size: 18px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: all 0.3s ease-in-out;
-        animation: pulse 1.5s infinite;
+      background-color: #00ffcc;
+      color: #0f0f0f;
+      cursor: pointer;
     }
-
     button:disabled {
-        background: gray;
-        cursor: not-allowed;
-        animation: none;
+      background-color: #555;
+      cursor: not-allowed;
     }
-
-    @keyframes pulse {
-        0% { box-shadow: 0 0 8px #ff6f00; }
-        50% { box-shadow: 0 0 18px #ff8f00; }
-        100% { box-shadow: 0 0 8px #ff6f00; }
+    #honeypot {
+      display: none;
     }
-</style>
+  </style>
 </head>
 <body>
+  <h1>🎮 Bem-vindo ao Portal Gamer</h1>
+  <p>Insira seus dados para entrar:</p>
 
-<div class="landing-box">
-    <h2>
-        Deixe Seu Nome e Telefone<br>
-        e Tenha Acesso Grátis ao Nosso Site
-    </h2>
-    <input type="text" id="nome" placeholder="Seu Nome">
-    <input type="tel" id="telefone" placeholder="DDD + Telefone">
-    <button type="button" id="entrar" onclick="entrarSite()" disabled>Entrar</button>
-</div>
+  <input type="text" id="nome" placeholder="Seu nome">
+  <br>
+  <input type="text" id="telefone" placeholder="Seu telefone (ex: 11999999999)">
+  <br>
+  <input type="text" id="honeypot" name="honeypot">
+  <br>
+  <button id="entrarBtn" disabled>Entrar</button>
 
-<script>
-const nomeInput = document.getElementById("nome");
-const telefoneInput = document.getElementById("telefone");
-const entrarBtn = document.getElementById("entrar");
+  <script>
+    const nomeInput = document.getElementById("nome");
+    const telefoneInput = document.getElementById("telefone");
+    const entrarBtn = document.getElementById("entrarBtn");
 
-function checarCampos() {
-    entrarBtn.disabled = !(nomeInput.value.trim() && telefoneInput.value.trim());
-}
-
-nomeInput.addEventListener("input", checarCampos);
-telefoneInput.addEventListener("input", checarCampos);
-
-function entrarSite() {
-    const nome = nomeInput.value.trim();
-    const telefone = telefoneInput.value.trim();
-
-    if (!nome || !telefone) {
-        alert("Preencha todos os campos!");
-        return;
+    function validarTelefone(telefone) {
+      return /^\d{10,11}$/.test(telefone);
     }
 
-    localStorage.setItem("usuarioCadastrado", "true");
-    localStorage.setItem("nome", nome);
-    localStorage.setItem("telefone", telefone);
+    function checarCampos() {
+      const nomeValido = nomeInput.value.trim().length > 0;
+      const telefoneValido = validarTelefone(telefoneInput.value.trim());
+      const honeypotVazio = document.getElementById("honeypot").value === "";
 
-    window.location.href = "site.html";
-}
+      entrarBtn.disabled = !(nomeValido && telefoneValido && honeypotVazio);
+    }
 
-if (localStorage.getItem("usuarioCadastrado") === "true") {
-    window.location.href = "site.html";
-}
+    nomeInput.addEventListener("input", checarCampos);
+    telefoneInput.addEventListener("input", checarCampos);
 
-entrarBtn.disabled = true;
-</script>
+    entrarBtn.addEventListener("click", function () {
+      const nome = nomeInput.value.trim();
+      const telefone = telefoneInput.value.trim();
+      const honeypot = document.getElementById("honeypot").value;
 
+      if (honeypot) {
+        alert("Ação bloqueada por segurança.");
+        return;
+      }
+
+      if (!nome || !validarTelefone(telefone)) {
+        alert("Preencha os campos corretamente!");
+        return;
+      }
+
+      localStorage.setItem("usuarioCadastrado", "true");
+      localStorage.setItem("nome", nome);
+      localStorage.setItem("telefone", telefone);
+
+      window.location.href = "site.html";
+    });
+  </script>
 </body>
 </html>
