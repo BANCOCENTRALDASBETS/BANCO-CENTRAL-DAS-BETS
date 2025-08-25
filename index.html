@@ -152,7 +152,7 @@
     </div>
   </div>
 
-  <!-- ===== Modal: Login (mesmo estilo, placeholders) ===== -->
+  <!-- ===== Modal: Login (agora com “9” obrigatório) ===== -->
   <div id="loginOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal">
       <h2 class="title">Entrar</h2>
@@ -231,6 +231,7 @@
         document.addEventListener('click', first);
       }
 
+      let pendingAction = null; // 'login' | 'reg' | null
       ageYes.addEventListener('click', ()=>{ try{ localStorage.setItem(KEY,'yes'); }catch{} ageOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if (pendingAction === 'login') openLogin(); if (pendingAction === 'reg') openReg(); pendingAction=null; });
       ageNo.addEventListener('click',  ()=>{ try{ localStorage.setItem(KEY,'no'); }catch{} showUnderage(); });
       ageExit.addEventListener('click', ()=>{ if (history.length>1) history.back(); else if (document.referrer) location.href=document.referrer; else location.href='https://www.google.com'; });
@@ -244,8 +245,6 @@
       const btnRegClose  = document.getElementById('btnRegClose');
       const loginGoReg   = document.getElementById('loginGoReg');
       const regGoLogin   = document.getElementById('regGoLogin');
-
-      let pendingAction = null; // 'login' | 'reg' | null
 
       function ensureAge(action){
         if (ageSaved === 'yes') return true;
@@ -277,29 +276,17 @@
       /* ======= Máscaras e validações ======= */
       function digits(s){ return (s||'').replace(/\D+/g,''); }
 
-      // Cadastro: força XX-9XXXX-XXXX
-      function fmtTelCad(v){
+      // CADASTRO e LOGIN agora usam a mesma máscara: força XX-9XXXX-XXXX
+      function fmtTelStrict(v){
         const d = digits(v).slice(0,11);
-        if (d.length <= 2) return d;
-        if (d.length <= 7) return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2");
-        return d.replace(/^(\d{2})(\d{5})(\d{0,4}).*$/, "$1-$2-$3");
+        if (d.length <= 2) return d;                                           // D, DD
+        if (d.length <= 7) return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2");  // DD-9XXXX
+        return d.replace(/^(\d{2})(\d{5})(\d{0,4}).*$/, "$1-$2-$3");           // DD-9XXXX-XXXX
       }
-      function validTelCad(v){ return /^(\d{2})-9\d{4}-\d{4}$/.test((v||'').trim()); }
-
-      // Login: aceita XX-9XXXX-XXXX ou XX-XXXX-XXXX
-      function fmtTelLogin(v){
-        const d = digits(v).slice(0,11);
-        if (d.length >= 11) return d.replace(/^(\d{2})(\d{5})(\d{4}).*$/, "$1-$2-$3");
-        if (d.length >= 10) return d.replace(/^(\d{2})(\d{4})(\d{4}).*$/, "$1-$2-$3");
-        if (d.length >= 7)  return d.replace(/^(\d{2})(\d{0,5})(\d{0,4}).*$/, "$1-$2-$3");
-        if (d.length >= 3)  return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2");
-        return d;
-      }
-      function validTelLogin(v){ return /^(\d{2})-(\d{5}|\d{4})-\d{4}$/.test((v||'').trim()); }
-
+      function validTelStrict(v){ return /^(\d{2})-9\d{4}-\d{4}$/.test((v||'').trim()); }
       function validPass(v){ return (v||'').length >= 6; }
 
-      /* ======= Cadastro: refs ======= */
+      /* ======= Cadastro ======= */
       const regTel = document.getElementById('regTel');
       const regPass = document.getElementById('regPass');
       const regPass2 = document.getElementById('regPass2');
@@ -315,30 +302,24 @@
       let regCaptchaOK = false;
 
       function refreshReg(){
-        // telefone
-        if (regTel.value && !validTelCad(regTel.value)){
-          ctlRegTel.classList.add('invalid');
-          helpRegTel.textContent = "Use o formato 31-9XXXX-XXXX."; helpRegTel.className="help err";
+        if (regTel.value && !validTelStrict(regTel.value)){
+          ctlRegTel.classList.add('invalid'); helpRegTel.textContent="Use o formato 31-9XXXX-XXXX."; helpRegTel.className="help err";
         } else { ctlRegTel.classList.remove('invalid'); helpRegTel.textContent=""; helpRegTel.className="help"; }
 
-        // senha mínima
         if (regPass.dataset.touched==="1" && !validPass(regPass.value)){
-          ctlRegPass.classList.add('invalid');
-          helpRegPass.textContent = "Sua senha precisa ter no mínimo 6 caracteres."; helpRegPass.className="help err";
+          ctlRegPass.classList.add('invalid'); helpRegPass.textContent="Sua senha precisa ter no mínimo 6 caracteres."; helpRegPass.className="help err";
         } else if (validPass(regPass.value)){ ctlRegPass.classList.remove('invalid'); helpRegPass.textContent=""; helpRegPass.className="help"; }
 
-        // confirmação igual
         if (regPass2.dataset.touched==="1" && regPass2.value && regPass.value !== regPass2.value){
-          ctlRegPass2.classList.add('invalid');
-          helpRegPass2.textContent = "As senhas não conferem."; helpRegPass2.className="help err";
+          ctlRegPass2.classList.add('invalid'); helpRegPass2.textContent="As senhas não conferem."; helpRegPass2.className="help err";
         } else if (regPass.value && regPass2.value && regPass.value === regPass2.value){
           ctlRegPass2.classList.remove('invalid'); helpRegPass2.textContent=""; helpRegPass2.className="help";
         } else { ctlRegPass2.classList.remove('invalid'); helpRegPass2.textContent=""; helpRegPass2.className="help"; }
 
-        btnRegistrar.disabled = !(validTelCad(regTel.value) && validPass(regPass.value) && regPass.value===regPass2.value && regCaptchaOK);
+        btnRegistrar.disabled = !(validTelStrict(regTel.value) && validPass(regPass.value) && regPass.value===regPass2.value && regCaptchaOK);
       }
 
-      regTel.addEventListener('input', e=>{ const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelCad(before); e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{} refreshReg(); });
+      regTel.addEventListener('input', e=>{ const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelStrict(before); e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{} refreshReg(); });
       regPass.addEventListener('input', refreshReg);
       regPass2.addEventListener('input', refreshReg);
       regPass.addEventListener('blur', ()=>{ regPass.dataset.touched="1"; refreshReg(); });
@@ -370,7 +351,7 @@
 
       document.getElementById('btnRegClose').addEventListener('click', ()=>{ regOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
 
-      /* ======= Login ======= */
+      /* ======= Login (com 9 obrigatório) ======= */
       const loginTel = document.getElementById('loginTel');
       const loginPass = document.getElementById('loginPass');
       const ctlLoginTel = document.getElementById('ctlLoginTel');
@@ -382,18 +363,18 @@
       let loginCaptchaOK = false;
 
       function refreshLogin(){
-        if (loginTel.value && !validTelLogin(loginTel.value)){
-          ctlLoginTel.classList.add('invalid'); helpLoginTel.textContent="Use o formato 31-9XXXX-XXXX ou 31-XXXX-XXXX."; helpLoginTel.className="help err";
+        if (loginTel.value && !validTelStrict(loginTel.value)){
+          ctlLoginTel.classList.add('invalid'); helpLoginTel.textContent="Use o formato 31-9XXXX-XXXX."; helpLoginTel.className="help err";
         } else { ctlLoginTel.classList.remove('invalid'); helpLoginTel.textContent=""; helpLoginTel.className="help"; }
 
         if (loginPass.value && !validPass(loginPass.value)){
           ctlLoginPass.classList.add('invalid'); helpLoginPass.textContent="Sua senha precisa ter pelo menos 6 caracteres."; helpLoginPass.className="help err";
         } else { ctlLoginPass.classList.remove('invalid'); helpLoginPass.textContent=""; helpLoginPass.className="help"; }
 
-        btnDoLogin.disabled = !(validTelLogin(loginTel.value) && validPass(loginPass.value) && loginCaptchaOK);
+        btnDoLogin.disabled = !(validTelStrict(loginTel.value) && validPass(loginPass.value) && loginCaptchaOK);
       }
 
-      loginTel.addEventListener('input', e=>{ const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelLogin(before); e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{} refreshLogin(); });
+      loginTel.addEventListener('input', e=>{ const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelStrict(before); e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{} refreshLogin(); });
       loginPass.addEventListener('input', refreshLogin);
 
       function mountLoginCaptcha(){
