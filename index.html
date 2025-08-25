@@ -1,357 +1,340 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
-<title>Banco Central das Bets — Entrar</title>
-<meta content="Portal de entrada — Banco Central das Bets" name="description"/>
-<!-- Canonical -->
-<link href="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/" rel="canonical"/>
-<!-- Open Graph (preview WhatsApp, Facebook, Telegram) -->
-<meta content="Banco Central das Bets" property="og:title"/>
-<meta content="Central de links, bônus e apostas — entre já!" property="og:description"/>
-<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/icone/android-chrome-1200x630-v5.jpg" property="og:image"/>
-<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/icone/android-chrome-1200x630-v5.jpg" property="og:image:secure_url"/>
-<meta content="image/jpeg" property="og:image:type"/>
-<meta content="1200" property="og:image:width"/>
-<meta content="630" property="og:image:height"/>
-<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/" property="og:url"/>
-<meta content="website" property="og:type"/>
-<meta content="Banco Central das Bets" property="og:site_name"/>
-<!-- Twitter Card -->
-<meta content="summary_large_image" name="twitter:card"/>
-<meta content="Banco Central das Bets" name="twitter:title"/>
-<meta content="Central de links, bônus e apostas — entre já!" name="twitter:description"/>
-<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/icone/android-chrome-1200x630-v5.jpg" name="twitter:image"/>
-<meta content="Logotipo do Banco Central das Bets" name="twitter:image:alt"/>
-<!-- FAVICONS (arquivos na pasta icone/) -->
-<link href="icone/favicon.ico" rel="icon"/>
-<link href="icone/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="icone/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link href="icone/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="icone/site.webmanifest" rel="manifest"/>
-<meta content="#ffffff" name="theme-color"/>
-<!-- /FAVICONS -->
-<style>
-    :root { --bg:#0b0f14; --fg:#e7eef7; --muted:#7f8da3; --acc:#54f0a5; --err:#ff8080; }
-    * { box-sizing:border-box; }
-    html,body { height:100%; }
-    body { margin:0; font:16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--fg); display:flex; align-items:center; justify-content:center }
-    .wrap { max-width:480px; margin:0 auto; padding:24px 16px; }
-    h1 { font-size:1.5rem; margin:8px 0 16px; text-align:center }
-    .card { background:#0e141b; border:1px solid #1a2029; border-radius:16px; padding:16px; box-shadow:0 6px 20px rgba(0,0,0,.25); }
-    label { display:block; font-size:.9rem; color:var(--muted); margin:8px 0 4px; }
-    input { width:100%; padding:12px; border-radius:12px; border:1px solid #1e2632; background:#0a1016; color:#e7eef7; }
-    button { width:100%; padding:12px; border:0; border-radius:12px; background:var(--acc); color:#02140b; font-weight:700; margin-top:12px; cursor:pointer; }
-    button[disabled]{ opacity:.6; cursor:not-allowed }
-    .hint { font-size:.82rem; color:var(--muted); margin-top:8px; text-align:center }
-    .brand { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:16px }
-    .brand img { width:42px; height:42px; }
-    .msg { font-size:.9rem; text-align:center; margin-top:8px }
-    .msg.err { color: var(--err); }
-    .msg.ok  { color: #9af5c7; }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Banco Central das Bets — Portal</title>
+  <meta name="description" content="Portal de entrada do Banco Central das Bets — Entrar e Cadastro com validações e captcha." />
+  <style>
+    :root{
+      --bg:#0b0f14; --bg2:#0e1420; --fg:#e7eef7; --muted:#8fa3bf;
+      --neon-green:#19e07a; --neon-green-2:#0bd46c;
+      --neon-red:#ff445a; --neon-red-2:#ff1744;
+      --neon-blue:#7ae6ff; --line:#1e2a3e; --card:#0f1624;
+    }
+    *{ box-sizing:border-box }
+    html,body{ height:100% }
+    body{
+      margin:0; color:var(--fg);
+      font:16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1000px 600px at 10% -10%, rgba(122,230,255,.14), transparent 60%),
+        radial-gradient(1000px 800px at 100% 0, rgba(25,224,122,.10), transparent 50%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      display:flex; align-items:center; justify-content:center; padding:20px;
+    }
+    .wrap{ width:min(560px, 96vw); }
+    .brand{ display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:14px; filter: drop-shadow(0 0 12px rgba(122,230,255,.2)); }
+    .brand .logo{ width:44px; height:44px; border-radius:50%; background:radial-gradient(circle at 40% 35%, #ffd76a, #ffbf36 60%, #a86c00); border:2px solid #ffe6a8; }
+    h1{ margin:0; font-size:1.3rem; }
+
+    .card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 12px 32px rgba(0,0,0,.35); text-align:center; }
+    .hint{ font-size:.85rem; color:var(--muted); text-align:center; margin-top:8px }
+
+    .row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px }
+    .btn{
+      flex:1 1 200px; padding:14px 18px; border-radius:14px; border:0; cursor:pointer;
+      font-weight:800; text-transform:uppercase; letter-spacing:.3px;
+      box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35);
+      transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
+    }
+    .btn:active{ transform: translateY(2px); box-shadow: 0 8px 0 rgba(0,0,0,.28), 0 14px 24px rgba(0,0,0,.32); }
+    .green{ background: linear-gradient(180deg, var(--neon-green), var(--neon-green-2)); color:#062617; }
+    .blue{  background: linear-gradient(180deg, #67d8ff, var(--neon-blue)); color:#062233; }
+
+    /* ========= MODAIS ========= */
+    .overlay{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.72); z-index:9999; padding:12px; }
+    .overlay[aria-hidden="false"]{ display:flex; }
+
+    .modal{ width:min(520px, 96vw); background: linear-gradient(180deg, #0c0e2b, #0b0c25); border:1px solid #2f336e; border-radius:20px; padding:20px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.6); color:#fff; }
+    .title{ margin:0 0 12px; font-size:clamp(18px, 3.5vw, 24px); font-weight:900; }
+    .note{ margin-top:10px; font-size:12px; color:#aab0ff; opacity:.9; }
+
+    .field{ text-align:left; margin:10px 0 6px; }
+    label{ display:block; font-size:.86rem; color:#cfd3ff; margin:4px 0 6px; }
+    input[type="tel"], input[type="password"]{
+      width:100%; padding:12px 12px;
+      border-radius:12px; border:1px solid #2a3550; background:#0a101b; color:#e7eef7;
+      outline:none;
+    }
+    input:focus{ border-color:#3b8cff; box-shadow: 0 0 0 3px rgba(58,140,255,.15); }
+    .msg{ font-size:.88rem; margin-top:8px; min-height:1.2em; }
+    .ok{ color:#87efb3 } .err{ color:#ff8b8b } .warn{ color:#ffd089 }
+    .actions{ display:flex; gap:10px; margin-top:12px; justify-content:center; flex-wrap:wrap }
+    .btn-sm{ padding:12px 16px; border-radius:14px; border:0; cursor:pointer; font-weight:800; text-transform:uppercase; letter-spacing:.3px; flex:1 1 180px; }
+    .red{ background: linear-gradient(180deg, var(--neon-red), var(--neon-red-2)); color:#fff; }
+
+    /* Age states */
+    .hidden{ display:none !important; }
   </style>
-<meta content="pt_BR" property="og:locale"/>
-<meta content="2025-08-24T01:04:55Z" property="og:updated_time"/>
-<meta content="index,follow,max-image-preview:large" name="robots"/>
-<meta content="dark light" name="color-scheme"/><meta content="strict-origin-when-cross-origin" http-equiv="Referrer-Policy"/></head>
+</head>
 <body>
-<div class="wrap">
-<div class="brand">
-<img alt="BCB" height="32" src="icone/favicon-32x32.png" width="32"/>
-<h1>Banco Central das Bets</h1>
-</div>
-<div class="card">
-<form id="loginForm">
-<label for="nome">Nome</label>
-<input id="nome" placeholder="Seu nome (Ex.: Enio)" required="" type="text"/>
-<label for="telefone">Telefone (WhatsApp)</label>
-<input id="telefone" placeholder="31-91234-5678" required="" type="tel"/>
-<div id="captcha" style="margin-top:12px"></div>
-<button disabled="" id="btnEntrar" type="submit">Entrar</button>
-<p class="hint">O botão será habilitado após validar Nome, Telefone e o desafio de segurança.</p>
-<div aria-live="polite" class="msg" id="msg"></div>
-</form>
-</div>
-</div>
-<!-- Config Firebase -->
-<script>
-    /* Projeto: banco-central-das-bets-f400d */
-    const firebaseConfig = {
-      apiKey: "AIzaSyAyXjRtJy-J9ROutFM3cLodx7T6yG3Mv1s",
-      authDomain: "banco-central-das-bets-f400d.firebaseapp.com",
-      databaseURL: "https://banco-central-das-bets-f400d-default-rtdb.firebaseio.com",
-      projectId: "banco-central-das-bets-f400d",
-      storageBucket: "banco-central-das-bets-f400d.appspot.com",
-      messagingSenderId: "434165673698"
-    };
-  </script>
-<!-- GeeTest captcha -->
-<script src="https://static.geetest.com/v4/gt4.js"></script>
-<!-- App (Firebase + fluxo de login) -->
-<script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-    import { getDatabase, ref, update } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <h1>Banco Central das Bets — Portal</h1>
+    </div>
+    <div class="card">
+      <div class="row">
+        <button id="openLogin" class="btn green">Entrar</button>
+        <button id="openReg"   class="btn blue">Cadastro</button>
+      </div>
+      <p class="hint">Escolha Entrar para acessar sua conta ou Cadastro para criar uma nova.</p>
+    </div>
+  </div>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db   = getDatabase(app);
+  <!-- ===== Modal: Verificação de Idade (persistente) ===== -->
+  <div id="ageOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
+    <div id="ageVerify" class="modal">
+      <h2 id="ageTitle" class="title">VOCÊ TEM MAIS DE 18 ANOS?</h2>
+      <div class="row">
+        <button id="ageYes" class="btn green">SIM</button>
+        <button id="ageNo"  class="btn red">NÃO</button>
+      </div>
+      <div class="note">Ao continuar você declara que concorda com os termos de uso.</div>
+    </div>
+    <div id="ageUnder" class="modal hidden" aria-live="assertive">
+      <h2 class="title">DESCULPE — USO EXCLUSIVO PARA MAIORES DE 18 ANOS</h2>
+      <div class="row">
+        <button id="ageExit" class="btn red">SAIR</button>
+      </div>
+    </div>
+  </div>
 
-    const $ = sel => document.querySelector(sel);
-    const nome = $('#nome');
-    const tel  = $('#telefone');
-    const btn  = $('#btnEntrar');
-    const form = $('#loginForm');
-    const msg  = $('#msg');
+  <!-- ===== Modal: Login ===== -->
+  <div id="loginOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="modal">
+      <h2 id="loginTitle" class="title">Entrar</h2>
 
-    let captchaOK = false;
+      <div class="field">
+        <label for="loginTel">Telefone</label>
+        <input id="loginTel" type="tel" placeholder="31-91234-5678" inputmode="tel" autocomplete="tel" />
+      </div>
 
-    function validNome(v){ return (v||'').trim().length >= 2; }
-    function validTel(v){ return /^(\d{2,3}[-\s]?)?\d{4,5}[-\s]?\d{4}$/.test((v||'').trim()); }
-    function refreshBtn(){
-      btn.disabled = !(validNome(nome.value) && validTel(tel.value) && captchaOK);
-    }
-    nome.addEventListener('input', refreshBtn);
-    tel .addEventListener('input', refreshBtn);
+      <div class="field">
+        <label for="loginPass">Senha</label>
+        <input id="loginPass" type="password" placeholder="Sua senha" autocomplete="current-password" />
+      </div>
 
-    const captchaId = "4cd3729ca1308bca8d8dbadd103ef596";
-    window.initGeetest4({
-      captchaId,
-      product: 'float',
-      language: 'por'
-    }, c => {
-      c.appendTo("#captcha");
-      c.onSuccess(() => { captchaOK = true; refreshBtn(); });
-      c.onError(() => {
-        captchaOK = false; refreshBtn();
-        msg.textContent = "Falha ao validar o desafio. Tente novamente.";
-        msg.className = "msg err";
-      });
-      c.onClose(() => {
-        if (!c.getValidate()) { captchaOK = false; refreshBtn(); }
-      });
-    });
+      <div id="loginCaptcha"></div>
 
-    function genSid(){
-      const r = Math.random().toString(36).slice(2,8);
-      return `${Date.now().toString(36)}-${r}`;
-    }
+      <div class="actions">
+        <button id="btnDoLogin" class="btn-sm green" disabled>Entrar</button>
+        <button id="btnLoginVoltar" class="btn-sm red">Voltar</button>
+      </div>
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      msg.textContent = ""; msg.className = "msg";
+      <div id="loginMsg" class="msg" aria-live="polite"></div>
+    </div>
+  </div>
 
-      if (!validNome(nome.value)){ msg.textContent="Digite um nome válido."; msg.className="msg err"; return; }
-      if (!validTel(tel.value)){ msg.textContent="Digite um telefone válido (ex.: 31-91234-5678)."; msg.className="msg err"; return; }
-      if (!captchaOK){ msg.textContent="Resolva o desafio de segurança."; msg.className="msg err"; return; }
+  <!-- ===== Modal: Cadastro ===== -->
+  <div id="regOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="regTitle">
+    <div class="modal">
+      <h2 id="regTitle" class="title">Cadastro</h2>
 
-      btn.disabled = true;
+      <div class="field">
+        <label for="regTel">Insira seu Telefone</label>
+        <input id="regTel" type="tel" placeholder="31-91234-5678" inputmode="tel" autocomplete="tel" />
+      </div>
 
-      try{
-        const cred = await signInAnonymously(auth);
-        const uid = cred.user.uid;
-        const sid = genSid();
+      <div class="field">
+        <label for="regPass">Crie sua Senha</label>
+        <input id="regPass" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
+      </div>
 
-        // cria nó de contexto da sessão (base para telemetria/geo)
-        const baseRef = ref(db, `usuarios/${uid}`);
-        await update(baseRef, {
-          nome: (nome.value||'').trim(),
-          telefone: (tel.value||'').trim(),
-          ultimoAcesso: Date.now(),
-          [`sessoes/${sid}/contexto`]: { createdAt: Date.now() }
-        });
+      <div class="field">
+        <label for="regPass2">Confirme sua Senha</label>
+        <input id="regPass2" type="password" placeholder="Repita a senha" autocomplete="new-password" />
+      </div>
 
-        try {
-          sessionStorage.setItem('bcb_uid', uid);
-          sessionStorage.setItem('bcb_sid', sid);
-        } catch {}
+      <div id="regCaptcha"></div>
 
-        msg.textContent = "Tudo certo! Redirecionando…";
-        msg.className = "msg ok";
-        location.href = 'site.html';
-      }catch(err){
-        console.error(err);
-        btn.disabled = false;
-        msg.textContent = "Não foi possível entrar. Verifique sua conexão e tente novamente.";
-        msg.className = "msg err";
-      }
-    });
-  
-// CSP telemetry binder after sign-in succeeds
-try {
-  window.__bcb_bind_csp_logger__ && window.__bcb_bind_csp_logger__(async function(evt){
-    try{
-      const { getDatabase, ref, push } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
-      const db = getDatabase(app);
-      const uid = (auth && auth.currentUser && auth.currentUser.uid) || (sessionStorage.getItem('bcb_uid')||null);
-      const sid = (sessionStorage.getItem('bcb_sid')||null);
-      if (!uid || !sid) return;
-      const base = `telemetria/cspViolations/${uid}/${sid}`;
-      await push(ref(db, base), evt);
-    }catch(e){ /* noop */ }
-  });
-}catch(e){ /* noop */ }
-</script>
+      <div class="actions">
+        <button id="btnRegistrar" class="btn-sm blue" disabled>Registrar</button>
+        <button id="btnRegVoltar" class="btn-sm red">Voltar</button>
+      </div>
 
-<script>
-(function(){
-  const QKEY = "__bcb_csp_queue__";
-  function queueEvent(evt){
-    try{
-      const cur = JSON.parse(localStorage.getItem(QKEY)||"[]");
-      cur.push(evt);
-      localStorage.setItem(QKEY, JSON.stringify(cur).slice(-4000));
-    }catch{}
-  }
-  function onViolation(e){
-    const evt = {
-      ts: Date.now(),
-      doc: location.pathname,
-      blocked: e.blockedURI || null,
-      violated: e.violatedDirective || null,
-      type: e.effectiveDirective || null,
-      line: e.lineNumber || null,
-      col: e.columnNumber || null,
-      src: e.sourceFile || null,
-      sample: e.sample || null,
-      dispo: (e.disposition || null)
-    };
-    if (window.__bcb_csp_log__){ window.__bcb_csp_log__(evt); } else { queueEvent(evt); }
-  }
-  window.addEventListener('securitypolicyviolation', onViolation);
-  window.__bcb_bind_csp_logger__ = function(logFn){
-    window.__bcb_csp_log__ = logFn;
-    try{
-      const cur = JSON.parse(localStorage.getItem(QKEY)||"[]");
-      if (Array.isArray(cur) && cur.length){
-        cur.forEach(evt => { try{ logFn(evt); }catch{} });
-        localStorage.removeItem(QKEY);
-      }
-    }catch{}
-  };
-})();
-</script>
+      <div id="regMsg" class="msg" aria-live="polite"></div>
+      <div class="note">Ative o captcha, preencha os campos e o botão REGISTRAR será habilitado.</div>
+    </div>
+  </div>
 
-<script>
-(function(){ 
-  const tel = document.getElementById('telefone');
-  if(!tel) return;
-  function digits(s){ return (s||'').replace(/\D+/g,''); }
-  function fmt(v){
-    const d = digits(v);
-    if (d.length >= 11){ return d.replace(/^(\d{2})(\d{5})(\d{4}).*$/, "$1-$2-$3"); }
-    if (d.length >= 10){ return d.replace(/^(\d{2})(\d{4})(\d{4}).*$/, "$1-$2-$3"); }
-    if (d.length >= 7){ return d.replace(/^(\d{2})(\d{0,5})(\d{0,4}).*$/, "$1-$2-$3"); }
-    if (d.length >= 3){ return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2"); }
-    return d;
-  }
-  tel.setAttribute('inputmode','tel');
-  tel.setAttribute('autocomplete','tel');
-  tel.setAttribute('pattern','^(\\d{2,3}[-\\s]?)?\\d{4,5}[-\\s]?\\d{4}$');
-  tel.addEventListener('input', (e)=>{
-    const pos = e.target.selectionStart;
-    const before = e.target.value;
-    const after = fmt(before);
-    e.target.value = after;
-    try {
-      const delta = after.length - before.length;
-      e.target.setSelectionRange(Math.max(0, pos + delta), Math.max(0, pos + delta));
-    } catch {}
-  });
-})();
-</script>
+  <!-- GeeTest v4 -->
+  <script src="https://static.geetest.com/v4/gt4.js"></script>
 
-  <!-- Modal 18+ (index-epic-v6) -->
   <script>
     (function(){
-      const KEY = 'bcb_age_verified_v1';
-      const modal = document.getElementById('idadeModal');
-      if (!modal) return;
-      const verify = document.getElementById('idadeVerify');
-      const under  = document.getElementById('idadeUnderage');
-      const btnSim = document.getElementById('btnIdadeSim');
-      const btnNao = document.getElementById('btnIdadeNao');
-      const btnSair= document.getElementById('btnIdadeSair');
+      // ===== Persistência da Idade =====
+      const KEY = "bcb_age_verified_v1"; // 'yes' | 'no'
+      const qs = new URLSearchParams(location.search);
+      if (qs.get("resetAge") === "1"){ try{ localStorage.removeItem(KEY);}catch{} }
 
-      // helper storage
-      function getAns(){
-        try{ return JSON.parse(localStorage.getItem(KEY)||'null'); }catch{ return null; }
+      const ageOverlay = document.getElementById('ageOverlay');
+      const ageVerify  = document.getElementById('ageVerify');
+      const ageUnder   = document.getElementById('ageUnder');
+      const ageYes = document.getElementById('ageYes');
+      const ageNo  = document.getElementById('ageNo');
+      const ageExit= document.getElementById('ageExit');
+
+      // Boot idade: mostrar apenas se não respondeu
+      let saved = null;
+      try { saved = (localStorage.getItem(KEY)||"").trim(); } catch {}
+      function openAgeVerify(){
+        ageOverlay.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
       }
-      function setAns(v){
-        try{ localStorage.setItem(KEY, JSON.stringify({ v, ts: Date.now() })); }catch{}
-      }
-      // reset via query param
-      try{
-        const usp = new URLSearchParams(location.search);
-        if (usp.get('resetAge') === '1'){ localStorage.removeItem(KEY); }
-      }catch{}
-
-      let aberto = false;
-
-      function lockScroll(on){ try{ document.body.style.overflow = on ? 'hidden' : ''; }catch{} }
-
-      function openOnFirstClick(){
-        if (!aberto){
-          modal.setAttribute('aria-hidden','false');
-          aberto = true;
-          document.removeEventListener('click', openOnFirstClick);
-          lockScroll(true);
-        }
+      function openUnderage(){
+        ageOverlay.setAttribute('aria-hidden','false');
+        ageVerify.classList.add('hidden');
+        ageUnder.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
       }
 
-      // Boot logic with persistence
-      const saved = getAns();
-      if (saved && saved.v === 'yes'){
-        // Já verificado como maior — não mostra modal e não instala listener
-        modal.setAttribute('aria-hidden','true');
-        aberto = true;
-      } else if (saved && saved.v === 'no'){
-        // Já recusou — mostra diretamente a tela underage
-        verify.style.display = 'none';
-        under.style.display  = 'block';
-        modal.setAttribute('aria-hidden','false');
-        aberto = true;
-        lockScroll(true);
-      } else {
-        // Sem registro — abre apenas no primeiro clique
-        document.addEventListener('click', openOnFirstClick);
+      if (saved === 'no'){
+        openUnderage();
+      } else if (saved !== 'yes'){
+        // Abrir no primeiro clique
+        const first = () => { openAgeVerify(); document.removeEventListener('click', first); };
+        document.addEventListener('click', first);
       }
 
-      btnSim && (btnSim.onclick = () => {
-        setAns('yes');
-        modal.setAttribute('aria-hidden','true');
-        lockScroll(false);
+      ageYes.addEventListener('click', ()=>{
+        try{ localStorage.setItem(KEY, 'yes'); }catch{}
+        ageOverlay.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
       });
-
-      btnNao && (btnNao.onclick = () => {
-        setAns('no');
-        verify.style.display = 'none';
-        under.style.display  = 'block';
+      ageNo.addEventListener('click', ()=>{
+        try{ localStorage.setItem(KEY, 'no'); }catch{}
+        openUnderage();
       });
-
-      btnSair && (btnSair.onclick = () => {
-        // volta ao site anterior com fallback
-        if (history.length > 1) { history.back(); }
-        else if (document.referrer) { location.href = document.referrer; }
+      ageExit.addEventListener('click', ()=>{
+        if (history.length > 1){ history.back(); }
+        else if (document.referrer){ location.href = document.referrer; }
         else { location.href = 'https://www.google.com'; }
       });
 
-      // Acessibilidade: ESC só tem efeito na tela de verificação
-      window.addEventListener('keydown', function(e){
-        if (e.key === 'Escape'){
-          const onVerify = verify && verify.style.display !== 'none' && modal.getAttribute('aria-hidden') === 'false';
-          if (onVerify){
-            modal.setAttribute('aria-hidden','true');
-            lockScroll(false);
-          }
-        }
+      // ===== ENTRAR/CADASTRO botões =====
+      const openLogin = document.getElementById('openLogin');
+      const openReg   = document.getElementById('openReg');
+      const loginOverlay = document.getElementById('loginOverlay');
+      const regOverlay   = document.getElementById('regOverlay');
+      openLogin.addEventListener('click', ()=>{ loginOverlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; mountLoginCaptcha(); });
+      openReg  .addEventListener('click', ()=>{ regOverlay  .setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; mountRegCaptcha();   });
+
+      // ===== Validadores e máscaras =====
+      function digits(s){ return (s||'').replace(/\\D+/g,''); }
+      function fmtTel(v){
+        const d = digits(v);
+        if (d.length >= 11){ return d.replace(/^(\\d{2})(\\d{5})(\\d{4}).*$/, "$1-$2-$3"); }
+        if (d.length >= 10){ return d.replace(/^(\\d{2})(\\d{4})(\\d{4}).*$/, "$1-$2-$3"); }
+        if (d.length >= 7){ return d.replace(/^(\\d{2})(\\d{0,5})(\\d{0,4}).*$/, "$1-$2-$3"); }
+        if (d.length >= 3){ return d.replace(/^(\\d{2})(\\d{0,5}).*$/, "$1-$2"); }
+        return d;
+      }
+      function validTel(v){ return /^(\\d{2,3}[-\\s]?)?\\d{4,5}[-\\s]?\\d{4}$/.test((v||'').trim()); }
+      function validPass(v){ return (v||'').length >= 6; }
+
+      // ===== Login modal =====
+      const loginTel   = document.getElementById('loginTel');
+      const loginPass  = document.getElementById('loginPass');
+      const btnDoLogin = document.getElementById('btnDoLogin');
+      const btnLoginVoltar = document.getElementById('btnLoginVoltar');
+      const loginMsg   = document.getElementById('loginMsg');
+      let loginCaptchaOK = false, loginCaptchaObj = null;
+
+      function refreshLogin(){
+        const ok = validTel(loginTel.value) && validPass(loginPass.value) && loginCaptchaOK;
+        btnDoLogin.disabled = !ok;
+      }
+      loginTel.addEventListener('input', (e)=>{
+        const pos = e.target.selectionStart; const before = e.target.value;
+        const after = fmtTel(before); e.target.value = after;
+        try{ const d = after.length - before.length; e.target.setSelectionRange(Math.max(0,pos+d), Math.max(0,pos+d)); }catch{}
+        refreshLogin();
+      });
+      loginPass.addEventListener('input', refreshLogin);
+
+      function mountLoginCaptcha(){
+        const el = document.getElementById('loginCaptcha');
+        el.innerHTML = "";
+        loginCaptchaOK = false; refreshLogin();
+        if (!window.initGeetest4) return;
+        window.initGeetest4({
+          captchaId: "4cd3729ca1308bca8d8dbadd103ef596",
+          product: 'float',
+          language: 'por'
+        }, c => {
+          loginCaptchaObj = c;
+          c.appendTo('#loginCaptcha');
+          c.onSuccess(()=>{ loginCaptchaOK = true; refreshLogin(); loginMsg.textContent=""; loginMsg.className="msg"; });
+          c.onError(()=>{ loginCaptchaOK = false; refreshLogin(); loginMsg.textContent="Falha ao validar o desafio."; loginMsg.className="msg err"; });
+          c.onClose(()=>{ if (!c.getValidate()){ loginCaptchaOK=false; refreshLogin(); } });
+        });
+      }
+
+      btnDoLogin.addEventListener('click', ()=>{
+        if (btnDoLogin.disabled) return;
+        loginMsg.textContent = "Validação OK. Pronto para autenticar no backend.";
+        loginMsg.className = "msg ok";
+      });
+      btnLoginVoltar.addEventListener('click', ()=>{
+        loginOverlay.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+      });
+
+      // ===== Registro modal =====
+      const regTel  = document.getElementById('regTel');
+      const regPass = document.getElementById('regPass');
+      const regPass2= document.getElementById('regPass2');
+      const btnRegistrar = document.getElementById('btnRegistrar');
+      const btnRegVoltar = document.getElementById('btnRegVoltar');
+      const regMsg  = document.getElementById('regMsg');
+      let regCaptchaOK = false, regCaptchaObj = null;
+
+      function refreshReg(){
+        const ok = validTel(regTel.value) && validPass(regPass.value) && regPass.value === regPass2.value && regCaptchaOK;
+        btnRegistrar.disabled = !ok;
+      }
+      function bindMask(el){
+        el.addEventListener('input', (e)=>{
+          const pos = e.target.selectionStart; const before = e.target.value;
+          const after = fmtTel(before); e.target.value = after;
+          try{ const d = after.length - before.length; e.target.setSelectionRange(Math.max(0,pos+d), Math.max(0,pos+d)); }catch{}
+          refreshReg();
+        });
+      }
+      bindMask(regTel);
+      regPass.addEventListener('input', refreshReg);
+      regPass2.addEventListener('input', refreshReg);
+
+      function mountRegCaptcha(){
+        const el = document.getElementById('regCaptcha');
+        el.innerHTML = "";
+        regCaptchaOK = false; refreshReg();
+        if (!window.initGeetest4) return;
+        window.initGeetest4({
+          captchaId: "4cd3729ca1308bca8d8dbadd103ef596",
+          product: 'float',
+          language: 'por'
+        }, c => {
+          regCaptchaObj = c;
+          c.appendTo('#regCaptcha');
+          c.onSuccess(()=>{ regCaptchaOK = true; refreshReg(); regMsg.textContent=""; regMsg.className="msg"; });
+          c.onError(()=>{ regCaptchaOK = false; refreshReg(); regMsg.textContent="Falha ao validar o desafio."; regMsg.className="msg err"; });
+          c.onClose(()=>{ if (!c.getValidate()){ regCaptchaOK=false; refreshReg(); } });
+        });
+      }
+
+      btnRegistrar.addEventListener('click', ()=>{
+        if (btnRegistrar.disabled) return;
+        regMsg.textContent = "Validação OK. Pronto para registrar no backend.";
+        regMsg.className = "msg ok";
+      });
+      btnRegVoltar.addEventListener('click', ()=>{
+        regOverlay.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
       });
     })();
   </script>
-
 </body>
 </html>
-
-<!-- bcb-build:2025-08-25T09:33:41Z -->
