@@ -7,12 +7,11 @@
   <meta name="description" content="Portal de entrada do Banco Central das Bets — Entrar e Cadastro com validações e captcha." />
   <style>
     :root{
-      --bg:#0b0f14; --bg2:#0e1420; --fg:#e7eef7; --muted:#9aa6be;
+      --bg:#0b0f14; --bg2:#0e1420; --fg:#e7eef7; --muted:#8fa3bf;
       --neon-green:#19e07a; --neon-green-2:#0bd46c;
       --neon-red:#ff445a; --neon-red-2:#ff1744;
-      --neon-blue:#7ae6ff;
-      --card:#141823; --line:#2a3347;
-      --accent:#ffe36a; --accent-2:#ffbf36;
+      --neon-blue:#7ae6ff; --line:#1e2a3e; --card:#121826;
+      --y:#f3f26c;
     }
     *{ box-sizing:border-box }
     html,body{ height:100% }
@@ -20,337 +19,173 @@
       margin:0; color:var(--fg);
       font:16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background:
-        radial-gradient(900px 600px at 10% -10%, rgba(122,230,255,.12), transparent 60%),
-        radial-gradient(900px 600px at 100% 0, rgba(25,224,122,.10), transparent 50%),
+        radial-gradient(1000px 600px at 10% -10%, rgba(122,230,255,.14), transparent 60%),
+        radial-gradient(1000px 800px at 100% 0, rgba(25,224,122,.10), transparent 50%),
         linear-gradient(180deg, var(--bg), var(--bg2));
       display:flex; align-items:center; justify-content:center; padding:20px;
     }
     .wrap{ width:min(560px, 96vw); }
-    .card{
-      background: var(--card);
-      border:1px solid var(--line);
-      border-radius: 18px;
-      box-shadow: 0 18px 40px rgba(0,0,0,.45);
-      overflow:hidden;
-    }
-    .card-head{
-      padding:16px 18px 10px;
-      background: linear-gradient(180deg, rgba(255,227,106,.12), transparent);
-      border-bottom:1px solid var(--line);
-    }
-    .title{
-      margin:0;
-      font-weight:900;
-      font-size:1.45rem;
-      letter-spacing:.2px;
-    }
-    .subtitle{ margin:.25rem 0 0; color:var(--muted); font-size:.95rem }
-    .subtitle a{ color:#f4f945; font-weight:800; text-decoration:none }
-    .content{ padding:18px }
-    .field{ margin:12px 0 }
-    .control{
-      display:flex; align-items:center; gap:10px;
-      background:#0f1522; border:1px solid var(--line);
-      border-radius:12px; padding:10px 12px;
-      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
-    }
-    .control:focus-within{ border-color:#3b8cff; box-shadow:0 0 0 3px rgba(59,140,255,.15); }
-    .control.invalid{ border-color: var(--neon-red); background:#2a0f16; box-shadow:0 0 0 3px rgba(255,68,90,.15); }
-    .flag{ width:22px; height:22px; border-radius:50%; background: radial-gradient(circle at 50% 50%, #059669 49%, #fff 50%); display:none } /* opcional */
+    .brand{ display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:14px; filter: drop-shadow(0 0 12px rgba(122,230,255,.2)); }
+    .brand .logo{ width:44px; height:44px; border-radius:50%; background:radial-gradient(circle at 40% 35%, #ffd76a, #ffbf36 60%, #a86c00); border:2px solid #ffe6a8; }
+    h1{ margin:0; font-size:1.3rem; }
 
-    .icon{
-      width:18px; height:18px; flex:0 0 18px;
-      opacity:.9;
-      background-repeat:no-repeat; background-position:center; background-size:18px 18px;
-      filter: drop-shadow(0 0 2px rgba(0,0,0,.4));
-    }
-    .icon-phone{ background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="%23a7b4cf" viewBox="0 0 16 16"><path d="M3.654 1.328A.678.678 0 0 1 4.287 1h1.78c.27 0 .513.164.6.412l.86 2.487a.678.678 0 0 1-.167.705L6.29 5.969a11.058 11.058 0 0 0 3.74 3.74l1.365-1.07a.678.678 0 0 1 .705-.167l2.487.86a.678.678 0 0 1 .412.6v1.78a.678.678 0 0 1-.328.58l-1.2.8a2.678 2.678 0 0 1-2.79.053 17.478 17.478 0 0 1-7.63-7.63 2.678 2.678 0 0 1 .052-2.79l.8-1.2z"/></svg>'); }
-    .icon-key{ background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="%23a7b4cf" viewBox="0 0 16 16"><path d="M3 8a5 5 0 1 1 9.584 1.647l2.262 2.262a1 1 0 0 1 .154 1.274l-.085.11-1.414 1.414a1 1 0 0 1-.707.293H11v-2H9v-2H6.647A5 5 0 0 1 3 8zm5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>'); }
+    .card{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 12px 32px rgba(0,0,0,.35); text-align:center; }
+    .hint{ font-size:.85rem; color:var(--muted); text-align:center; margin-top:8px }
 
-    .input{
-      flex:1 1 auto; background:transparent; border:0; outline:none; color:var(--fg);
-      font-size:1rem; letter-spacing:.2px;
+    .row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px }
+    .btn{
+      flex:1 1 200px; padding:14px 18px; border-radius:14px; border:0; cursor:pointer;
+      font-weight:800; text-transform:uppercase; letter-spacing:.3px;
+      box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35);
+      transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
     }
-    .input::placeholder{ color:#7f8aa4 }
-    .help{ font-size:.86rem; margin-top:6px; min-height:1.2em }
+    .btn:active{ transform: translateY(2px); box-shadow: 0 8px 0 rgba(0,0,0,.28), 0 14px 24px rgba(0,0,0,.32); }
+    .green{ background: linear-gradient(180deg, var(--neon-green), var(--neon-green-2)); color:#062617; }
+    .blue{  background: linear-gradient(180deg, #67d8ff, var(--neon-blue)); color:#062233; }
+    .red{   background: linear-gradient(180deg, var(--neon-red), var(--neon-red-2)); color:#fff; }
+
+    /* ========= MODAIS ========= */
+    .overlay{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.72); z-index:9999; padding:12px; }
+    .overlay[aria-hidden="false"]{ display:flex; }
+
+    .modal{ width:min(520px, 96vw); background: linear-gradient(180deg, #0c0e2b, #0b0c25); border:1px solid #2f336e; border-radius:20px; padding:20px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.6); color:#fff; }
+    .title{ margin:0 0 12px; font-size:clamp(18px, 3.5vw, 24px); font-weight:900; }
+    .note{ margin-top:10px; font-size:12px; color:#aab0ff; opacity:.9; }
+
+    .field{ text-align:left; margin:10px 0 6px; }
+    label{ display:block; font-size:.86rem; color:#cfd3ff; margin:4px 0 6px; }
+    input[type="tel"], input[type="password"]{
+      width:100%; padding:12px 12px;
+      border-radius:12px; border:1px solid #2a3550; background:#0a101b; color:#e7eef7;
+      outline:none;
+    }
+    /* Styled controls with icons and error state */
+    .control{ position:relative; }
+    .control.invalid input{ border-color:#ff6464; background:#240f12; }
+    .help{ font-size:.82rem; margin-top:6px; min-height:1.1em; }
     .help.err{ color:#ff8b8b }
     .help.warn{ color:#ffd089 }
     .help.ok{ color:#87efb3 }
 
-    .actions{ display:flex; gap:10px; margin-top:18px }
-    .btn{
-      flex:1; padding:12px 16px; border-radius:14px; border:0; cursor:pointer;
-      font-weight:900; text-transform:uppercase; letter-spacing:.3px;
-      box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35);
-      transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
+    /* Key icon (left) */
+    .icon-left{
+      position:absolute; left:10px; top:50%; transform:translateY(-50%);
+      width:18px; height:18px; opacity:.7;
     }
-    .btn:disabled{ opacity:.5; cursor:not-allowed; filter:grayscale(.1); }
-    .btn:active{ transform: translateY(2px); box-shadow: 0 8px 0 rgba(0,0,0,.28), 0 14px 24px rgba(0,0,0,.32); }
-    .btn-green{ background: linear-gradient(180deg, var(--neon-green), var(--neon-green-2)); color:#032a17; }
-    .btn-blue{  background: linear-gradient(180deg, #67d8ff, var(--neon-blue)); color:#062233; }
-    .btn-red{   background: linear-gradient(180deg, var(--neon-red), var(--neon-red-2)); color:#fff; }
+    .control input.has-left{ padding-left:36px; }
 
-    /* Overlays de idade + captcha */
-    .overlay{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.72); z-index:9999; padding:12px; }
-    .overlay[aria-hidden="false"]{ display:flex; }
-    .modal{ width:min(520px, 96vw); background: linear-gradient(180deg, #0c0e2b, #0b0c25); border:1px solid #2f336e; border-radius:20px; padding:20px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.6); color:#fff; }
-    .title-modal{ margin:0 0 12px; font-size:clamp(18px, 3.5vw, 24px); font-weight:900; }
-    .row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap }
+    /* DDI visual addon +55 with BR flag */
+    .input-group{ display:flex; gap:8px; align-items:center; }
+    .addon{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:10px 10px; border-radius:10px; border:1px solid #2a3550; background:#0a101b; color:#e7eef7; font-weight:700;
+    }
+    .flag-br{ width:18px; height:12px; border-radius:2px; display:inline-block; background:
+      radial-gradient(circle at 50% 50%, #3dbf3d 0 65%, transparent 66%),
+      linear-gradient(0deg, #009b3a 0 50%, #009b3a 50% 100%);
+      position:relative; overflow:hidden;
+    }
+    .flag-br::after{
+      content:""; position:absolute; inset:0;
+      background: linear-gradient(90deg, transparent 20%, #ffdf00 20% 80%, transparent 80%);
+      mix-blend-mode: screen; opacity:.9;
+    }
+
+    .actions{ display:flex; gap:10px; margin-top:12px; justify-content:center; flex-wrap:wrap }
     .btn-sm{ padding:12px 16px; border-radius:14px; border:0; cursor:pointer; font-weight:800; text-transform:uppercase; letter-spacing:.3px; flex:1 1 180px; }
+
     .hidden{ display:none !important; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <!-- Card de Cadastro (modelo) -->
-    <div class="card" id="cadCard">
-      <div class="card-head">
-        <h2 class="title">Crie uma conta</h2>
-        <div class="subtitle">já tem uma conta? <a href="#" id="linkEntrar">Entrar</a></div>
-      </div>
-      <div class="content">
-        <!-- Telefone -->
-        <div class="field">
-          <div class="control" id="ctlRegTel">
-            <span class="icon icon-phone" aria-hidden="true"></span>
-            <input id="regTel" class="input" type="tel" placeholder="Telefone" inputmode="tel" autocomplete="tel" />
+  <!-- Conteúdo principal omitido para foco no modal -->
+
+  <!-- ===== Modal: Cadastro (modelo solicitado) ===== -->
+  <div id="regOverlay" class="overlay" aria-hidden="true">
+    <div class="modal">
+      <h2 class="title">Crie uma conta</h2>
+      <div class="help" style="margin-top:-6px; color:#b9c0ff">já tem uma conta? <a href="#" style="color:var(--y); font-weight:800;">Entrar</a></div>
+
+      <div class="field">
+        <label for="regTel">Telefone</label>
+        <div class="input-group">
+          <div class="addon">
+            <span class="flag-br" aria-hidden="true"></span>
+            <span>+55</span>
           </div>
-          <div id="helpRegTel" class="help"></div>
-        </div>
-
-        <!-- Senha -->
-        <div class="field">
-          <div class="control" id="ctlRegPass">
-            <span class="icon icon-key" aria-hidden="true"></span>
-            <input id="regPass" class="input" type="password" placeholder="Senha" autocomplete="new-password" />
+          <div class="control" style="flex:1">
+            <input id="regTel" type="tel" placeholder="Telefone" inputmode="tel" autocomplete="tel" />
+            <div id="regTelHelp" class="help"></div>
           </div>
-          <div id="helpRegPass" class="help"></div>
-        </div>
-
-        <!-- Confirmar Senha -->
-        <div class="field">
-          <div class="control" id="ctlRegPass2">
-            <span class="icon icon-key" aria-hidden="true"></span>
-            <input id="regPass2" class="input" type="password" placeholder="Confirmar senha" autocomplete="new-password" />
-          </div>
-          <div id="helpRegPass2" class="help"></div>
-        </div>
-
-        <!-- Captcha -->
-        <div id="regCaptcha"></div>
-
-        <div class="actions">
-          <button id="btnRegistrar" class="btn btn-blue" disabled>Registrar</button>
         </div>
       </div>
-    </div>
 
-    <!-- Card de Entrar (abre ao clicar em Entrar) -->
-    <div class="card hidden" id="loginCard">
-      <div class="card-head">
-        <h2 class="title">Entrar</h2>
-        <div class="subtitle">ainda não tem conta? <a href="#" id="linkCriar">Criar</a></div>
+      <div class="field control">
+        <label for="regPass">Senha</label>
+        <svg class="icon-left" viewBox="0 0 24 24"><path fill="#cfd3ff" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg>
+        <input id="regPass" class="has-left" type="password" placeholder="Senha" autocomplete="new-password" />
+        <div id="regPassHelp" class="help"></div>
       </div>
-      <div class="content">
-        <!-- Telefone -->
-        <div class="field">
-          <div class="control" id="ctlLoginTel">
-            <span class="icon icon-phone" aria-hidden="true"></span>
-            <input id="loginTel" class="input" type="tel" placeholder="Telefone" inputmode="tel" autocomplete="tel" />
-          </div>
-          <div id="helpLoginTel" class="help"></div>
-        </div>
 
-        <!-- Senha -->
-        <div class="field">
-          <div class="control" id="ctlLoginPass">
-            <span class="icon icon-key" aria-hidden="true"></span>
-            <input id="loginPass" class="input" type="password" placeholder="Senha" autocomplete="current-password" />
-          </div>
-          <div id="helpLoginPass" class="help"></div>
-        </div>
-
-        <!-- Captcha -->
-        <div id="loginCaptcha"></div>
-
-        <div class="actions">
-          <button id="btnDoLogin" class="btn btn-green" disabled>Entrar</button>
-        </div>
+      <div class="field control">
+        <label for="regPass2">Confirmar senha</label>
+        <svg class="icon-left" viewBox="0 0 24 24"><path fill="#cfd3ff" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg>
+        <input id="regPass2" class="has-left" type="password" placeholder="Confirmar senha" autocomplete="new-password" />
+        <div id="regPass2Help" class="help"></div>
       </div>
+
+      <div id="regCaptcha"></div>
+
+      <div class="actions">
+        <button id="btnRegistrar" class="btn-sm blue" disabled>Registrar</button>
+        <button id="btnRegVoltar" class="btn-sm red">Voltar</button>
+      </div>
+
+      <div id="regMsg" class="help"></div>
     </div>
   </div>
-
-  <!-- Modal: Verificação de Idade com persistência -->
-  <div id="ageOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
-    <div id="ageVerify" class="modal">
-      <h2 id="ageTitle" class="title-modal">VOCÊ TEM MAIS DE 18 ANOS?</h2>
-      <div class="row">
-        <button id="ageYes" class="btn-sm btn-green">SIM</button>
-        <button id="ageNo"  class="btn-sm btn-red">NÃO</button>
-      </div>
-    </div>
-    <div id="ageUnder" class="modal hidden" aria-live="assertive">
-      <h2 class="title-modal">DESCULPE — USO EXCLUSIVO PARA MAIORES DE 18 ANOS</h2>
-      <div class="row">
-        <button id="ageExit" class="btn-sm btn-red">SAIR</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- GeeTest v4 -->
-  <script src="https://static.geetest.com/v4/gt4.js"></script>
 
   <script>
-    (function(){
-      // ===== Persistência de idade =====
-      const KEY = "bcb_age_verified_v1";
-      const qs = new URLSearchParams(location.search);
-      if (qs.get("resetAge") === "1"){ try{ localStorage.removeItem(KEY);}catch{} }
-      const ageOverlay = document.getElementById('ageOverlay');
-      const ageVerify  = document.getElementById('ageVerify');
-      const ageUnder   = document.getElementById('ageUnder');
-      const ageYes = document.getElementById('ageYes');
-      const ageNo  = document.getElementById('ageNo');
-      const ageExit= document.getElementById('ageExit');
+    // JS de máscara + mensagens personalizadas
+    function digits(s){ return (s||'').replace(/\D+/g,''); }
+    function fmtTel(v){
+      const d = digits(v).slice(0,11);
+      if (d.length >= 11){ return d.replace(/^(\d{2})(\d{5})(\d{4}).*$/, "$1-$2-$3"); }
+      if (d.length >= 10){ return d.replace(/^(\d{2})(\d{4})(\d{4}).*$/, "$1-$2-$3"); }
+      return d;
+    }
+    function validTel(v){ return /^(\d{2})-(\d{5}|\d{4})-\d{4}$/.test((v||'').trim()); }
+    function validPass(v){ return (v||'').length >= 6; }
 
-      let saved = null;
-      try { saved = (localStorage.getItem(KEY)||"").trim(); } catch {}
-      function openAgeVerify(){ ageOverlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
-      function openUnderage(){ ageOverlay.setAttribute('aria-hidden','false'); ageVerify.classList.add('hidden'); ageUnder.classList.remove('hidden'); document.body.style.overflow='hidden'; }
+    const regTel=document.getElementById('regTel');
+    const regPass=document.getElementById('regPass');
+    const regPass2=document.getElementById('regPass2');
+    const regTelHelp=document.getElementById('regTelHelp');
+    const regPassHelp=document.getElementById('regPassHelp');
+    const regPass2Help=document.getElementById('regPass2Help');
+    const btnRegistrar=document.getElementById('btnRegistrar');
 
-      if (saved === 'no') openUnderage();
-      else if (saved !== 'yes'){ const first = () => { openAgeVerify(); document.removeEventListener('click', first); }; document.addEventListener('click', first); }
-      ageYes.addEventListener('click', ()=>{ try{ localStorage.setItem(KEY, 'yes'); }catch{} ageOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
-      ageNo.addEventListener('click',  ()=>{ try{ localStorage.setItem(KEY, 'no'); }catch{} openUnderage(); });
-      ageExit.addEventListener('click', ()=>{ if (history.length>1) history.back(); else if (document.referrer) location.href=document.referrer; else location.href='https://www.google.com'; });
+    function refreshReg(){
+      if (regTel.value && !validTel(regTel.value)){
+        regTel.parentElement.classList.add('invalid');
+        regTelHelp.textContent="Use o formato 31-91234-5678."; regTelHelp.className="help err";
+      } else { regTel.parentElement.classList.remove('invalid'); regTelHelp.textContent=""; }
 
-      // ===== Navegação entre cards =====
-      const cadCard = document.getElementById('cadCard');
-      const loginCard = document.getElementById('loginCard');
-      document.getElementById('linkEntrar').addEventListener('click', (e)=>{ e.preventDefault(); cadCard.classList.add('hidden'); loginCard.classList.remove('hidden'); mountLoginCaptcha(); });
-      document.getElementById('linkCriar').addEventListener('click', (e)=>{ e.preventDefault(); loginCard.classList.add('hidden'); cadCard.classList.remove('hidden'); mountRegCaptcha(); });
+      if (regPass.value && !validPass(regPass.value)){
+        regPass.parentElement.classList.add('invalid');
+        regPassHelp.textContent="Sua senha precisa ter no mínimo 6 caracteres."; regPassHelp.className="help err";
+      } else { regPass.parentElement.classList.remove('invalid'); regPassHelp.textContent=""; }
 
-      // ===== Helpers de telefone =====
-      function digits(s){ return (s||'').replace(/\\D+/g,''); }
-      function fmtTel(v){
-        const d = digits(v).slice(0,11);
-        if (d.length >= 11){ return d.replace(/^(\\d{2})(\\d{5})(\\d{4}).*$/, "$1-$2-$3"); }
-        if (d.length >= 10){ return d.replace(/^(\\d{2})(\\d{4})(\\d{4}).*$/, "$1-$2-$3"); }
-        if (d.length >= 7){ return d.replace(/^(\\d{2})(\\d{0,5})(\\d{0,4}).*$/, "$1-$2-$3"); }
-        if (d.length >= 3){ return d.replace(/^(\\d{2})(\\d{0,5}).*$/, "$1-$2"); }
-        return d;
-      }
-      function validTel(v){ return /^(\\d{2})-(\\d{5}|\\d{4})-\\d{4}$/.test((v||'').trim()); }
-      function validPass(v){ return (v||'').length >= 6; }
+      if (regPass2.value && regPass.value!==regPass2.value){
+        regPass2.parentElement.classList.add('invalid');
+        regPass2Help.textContent="As senhas não conferem."; regPass2Help.className="help err";
+      } else { regPass2.parentElement.classList.remove('invalid'); regPass2Help.textContent=""; }
 
-      // ===== Cadastro =====
-      const regTel = document.getElementById('regTel');
-      const regPass = document.getElementById('regPass');
-      const regPass2 = document.getElementById('regPass2');
-      const ctlRegTel = document.getElementById('ctlRegTel');
-      const ctlRegPass = document.getElementById('ctlRegPass');
-      const ctlRegPass2 = document.getElementById('ctlRegPass2');
-      const helpRegTel = document.getElementById('helpRegTel');
-      const helpRegPass = document.getElementById('helpRegPass');
-      const helpRegPass2 = document.getElementById('helpRegPass2');
-      const btnRegistrar = document.getElementById('btnRegistrar');
-      let regCaptchaOK = false;
-
-      function refreshReg(){
-        // Telefone
-        if (regTel.value && !validTel(regTel.value)){ ctlRegTel.classList.add('invalid'); helpRegTel.textContent = "Use o formato 31-91234-5678."; helpRegTel.className="help err"; }
-        else { ctlRegTel.classList.remove('invalid'); helpRegTel.textContent = ""; helpRegTel.className="help"; }
-
-        // Regras de senha
-        if (document.activeElement === regPass2 || regPass2.value){ // usuário já foi para confirmação
-          if (!validPass(regPass.value)){ ctlRegPass.classList.add('invalid'); helpRegPass.textContent = "Sua senha precisa ter no mínimo 6 caracteres."; helpRegPass.className="help err"; }
-          else { ctlRegPass.classList.remove('invalid'); helpRegPass.textContent = ""; helpRegPass.className="help"; }
-        }
-
-        if (regPass2.value){
-          if (regPass.value !== regPass2.value){ ctlRegPass2.classList.add('invalid'); helpRegPass2.textContent = "As senhas não conferem."; helpRegPass2.className="help err"; }
-          else { ctlRegPass2.classList.remove('invalid'); helpRegPass2.textContent = ""; helpRegPass2.className="help ok"; }
-        } else {
-          ctlRegPass2.classList.remove('invalid'); helpRegPass2.textContent = ""; helpRegPass2.className="help";
-        }
-
-        const ok = validTel(regTel.value) && validPass(regPass.value) && regPass.value === regPass2.value && regCaptchaOK;
-        btnRegistrar.disabled = !ok;
-      }
-      function bindMask(el, ctl){ el.addEventListener('input', (e)=>{ const pos=e.target.selectionStart; const before=e.target.value; const after=fmtTel(before); e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d), Math.max(0,pos+d)); }catch{}; refreshReg(); }); }
-      bindMask(regTel, ctlRegTel);
-      regPass.addEventListener('input', refreshReg);
-      regPass2.addEventListener('input', refreshReg);
-      regPass.addEventListener('blur', refreshReg);
-      regPass2.addEventListener('focus', refreshReg); // ao ir para confirmação, valida a senha mínima
-
-      function mountRegCaptcha(){
-        const el = document.getElementById('regCaptcha');
-        el.innerHTML = "";
-        regCaptchaOK = false; refreshReg();
-        if (!window.initGeetest4) return;
-        window.initGeetest4({
-          captchaId: "4cd3729ca1308bca8d8dbadd103ef596",
-          product: 'float',
-          language: 'por'
-        }, c => {
-          c.appendTo('#regCaptcha');
-          c.onSuccess(()=>{ regCaptchaOK = true; refreshReg(); });
-          c.onError(()=>{ regCaptchaOK = false; refreshReg(); helpRegPass2.textContent="Falha ao validar o desafio."; helpRegPass2.className="help err"; });
-          c.onClose(()=>{ if (!c.getValidate()){ regCaptchaOK=false; refreshReg(); } });
-        });
-      }
-      // montar captcha inicial para cadastro
-      mountRegCaptcha();
-
-      btnRegistrar.addEventListener('click', ()=>{
-        if (btnRegistrar.disabled) return;
-        helpRegPass2.textContent = "Cadastro validado! Pronto para enviar ao backend.";
-        helpRegPass2.className = "help ok";
-      });
-
-      // ===== Entrar =====
-      const loginTel = document.getElementById('loginTel');
-      const loginPass = document.getElementById('loginPass');
-      const ctlLoginTel = document.getElementById('ctlLoginTel');
-      const ctlLoginPass = document.getElementById('ctlLoginPass');
-      const helpLoginTel = document.getElementById('helpLoginTel');
-      const helpLoginPass = document.getElementById('helpLoginPass');
-      const btnDoLogin = document.getElementById('btnDoLogin');
-      let loginCaptchaOK = false;
-
-      function refreshLogin(){
-        if (loginTel.value && !validTel(loginTel.value)){ ctlLoginTel.classList.add('invalid'); helpLoginTel.textContent = "Use o formato 31-91234-5678."; helpLoginTel.className="help err"; }
-        else { ctlLoginTel.classList.remove('invalid'); helpLoginTel.textContent = ""; helpLoginTel.className="help"; }
-
-        if (loginPass.value && !validPass(loginPass.value)){ ctlLoginPass.classList.add('invalid'); helpLoginPass.textContent = "Sua senha precisa ter pelo menos 6 caracteres."; helpLoginPass.className="help err"; }
-        else { ctlLoginPass.classList.remove('invalid'); helpLoginPass.textContent = ""; helpLoginPass.className="help"; }
-
-        btnDoLogin.disabled = !(validTel(loginTel.value) && validPass(loginPass.value) && loginCaptchaOK);
-      }
-      bindMask(loginTel, ctlLoginTel);
-      loginPass.addEventListener('input', refreshLogin);
-
-      function mountLoginCaptcha(){
-        const el = document.getElementById('loginCaptcha');
-        el.innerHTML = "";
-        loginCaptchaOK = false; refreshLogin();
-        if (!window.initGeetest4) return;
-        window.initGeetest4({
-          captchaId: "4cd3729ca1308bca8d8dbadd103ef596",
-          product: 'float',
-          language: 'por'
-        }, c => {
-          c.appendTo('#loginCaptcha');
-          c.onSuccess(()=>{ loginCaptchaOK = true; refreshLogin(); });
-          c.onError(()=>{ loginCaptchaOK = false; refreshLogin(); helpLoginPass.textContent="Falha ao validar o desafio."; helpLoginPass.className="help err"; });
-          c.onClose(()=>{ if (!c.getValidate()){ loginCaptchaOK=false; refreshLogin(); } });
-        });
-      }
-      // monta captcha de login somente quando abrir o card
-      window.mountLoginCaptcha = mountLoginCaptcha;
-
-    })();
+      btnRegistrar.disabled=!(validTel(regTel.value)&&validPass(regPass.value)&&regPass.value===regPass2.value);
+    }
+    regTel.addEventListener('input',e=>{e.target.value=fmtTel(e.target.value); refreshReg();});
+    regPass.addEventListener('input',refreshReg);
+    regPass2.addEventListener('input',refreshReg);
   </script>
 </body>
 </html>
