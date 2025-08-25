@@ -98,13 +98,72 @@
   </style>
 </head>
 <body>
-  <!-- Conteúdo principal omitido para foco no modal -->
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <h1>Banco Central das Bets — Portal</h1>
+    </div>
+    <div class="card">
+      <div class="row">
+        <button id="openLogin" class="btn green">Entrar</button>
+        <button id="openReg"   class="btn blue">Cadastro</button>
+      </div>
+      <p class="hint">Escolha Entrar para acessar sua conta ou Cadastro para criar uma nova.</p>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Verificação de Idade (persistente) ===== -->
+  <div id="ageOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
+    <div id="ageVerify" class="modal">
+      <h2 id="ageTitle" class="title">VOCÊ TEM MAIS DE 18 ANOS?</h2>
+      <div class="row">
+        <button id="ageYes" class="btn green">SIM</button>
+        <button id="ageNo"  class="btn red">NÃO</button>
+      </div>
+      <div class="note">Ao continuar você declara que concorda com os termos de uso.</div>
+    </div>
+    <div id="ageUnder" class="modal hidden" aria-live="assertive">
+      <h2 class="title">DESCULPE — USO EXCLUSIVO PARA MAIORES DE 18 ANOS</h2>
+      <div class="row">
+        <button id="ageExit" class="btn red">SAIR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Entrar ===== -->
+  <div id="loginOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="modal">
+      <h2 id="loginTitle" class="title">Entrar</h2>
+
+      <div class="field control">
+        <label for="loginTel">Telefone</label>
+        <input id="loginTel" type="tel" placeholder="31-91234-5678" inputmode="tel" autocomplete="tel" />
+        <div id="loginTelHelp" class="help"></div>
+      </div>
+
+      <div class="field control">
+        <label for="loginPass">Senha</label>
+        <svg class="icon-left" viewBox="0 0 24 24"><path fill="#cfd3ff" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg>
+        <input id="loginPass" class="has-left" type="password" placeholder="Sua senha" autocomplete="current-password" />
+        <div id="loginPassHelp" class="help"></div>
+      </div>
+
+      <div id="loginCaptcha"></div>
+
+      <div class="actions">
+        <button id="btnDoLogin" class="btn-sm green" disabled>Entrar</button>
+        <button id="btnLoginVoltar" class="btn-sm red">Voltar</button>
+      </div>
+
+      <div id="loginMsg" class="help"></div>
+    </div>
+  </div>
 
   <!-- ===== Modal: Cadastro (modelo solicitado) ===== -->
-  <div id="regOverlay" class="overlay" aria-hidden="true">
+  <div id="regOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="regTitle">
     <div class="modal">
-      <h2 class="title">Crie uma conta</h2>
-      <div class="help" style="margin-top:-6px; color:#b9c0ff">já tem uma conta? <a href="#" style="color:var(--y); font-weight:800;">Entrar</a></div>
+      <h2 id="regTitle" class="title">Crie uma conta</h2>
+      <div class="help" style="margin-top:-6px; color:#b9c0ff">já tem uma conta? <a id="regGoLogin" href="#" style="color:var(--y); font-weight:800;">Entrar</a></div>
 
       <div class="field">
         <label for="regTel">Telefone</label>
@@ -145,47 +204,265 @@
     </div>
   </div>
 
+  <!-- GeeTest v4 -->
+  <script src="https://static.geetest.com/v4/gt4.js"></script>
+
   <script>
-    // JS de máscara + mensagens personalizadas
-    function digits(s){ return (s||'').replace(/\D+/g,''); }
-    function fmtTel(v){
-      const d = digits(v).slice(0,11);
-      if (d.length >= 11){ return d.replace(/^(\d{2})(\d{5})(\d{4}).*$/, "$1-$2-$3"); }
-      if (d.length >= 10){ return d.replace(/^(\d{2})(\d{4})(\d{4}).*$/, "$1-$2-$3"); }
-      return d;
-    }
-    function validTel(v){ return /^(\d{2})-(\d{5}|\d{4})-\d{4}$/.test((v||'').trim()); }
-    function validPass(v){ return (v||'').length >= 6; }
+    (function(){
+      // ===== Persistência da Idade + fluxo com ação pendente =====
+      const KEY = "bcb_age_verified_v1"; // 'yes' | 'no'
+      const qs = new URLSearchParams(location.search);
+      if (qs.get("resetAge") === "1"){ try{ localStorage.removeItem(KEY);}catch{} }
 
-    const regTel=document.getElementById('regTel');
-    const regPass=document.getElementById('regPass');
-    const regPass2=document.getElementById('regPass2');
-    const regTelHelp=document.getElementById('regTelHelp');
-    const regPassHelp=document.getElementById('regPassHelp');
-    const regPass2Help=document.getElementById('regPass2Help');
-    const btnRegistrar=document.getElementById('btnRegistrar');
+      const ageOverlay = document.getElementById('ageOverlay');
+      const ageVerify  = document.getElementById('ageVerify');
+      const ageUnder   = document.getElementById('ageUnder');
+      const ageYes = document.getElementById('ageYes');
+      const ageNo  = document.getElementById('ageNo');
+      const ageExit= document.getElementById('ageExit');
 
-    function refreshReg(){
-      if (regTel.value && !validTel(regTel.value)){
-        regTel.parentElement.classList.add('invalid');
-        regTelHelp.textContent="Use o formato 31-91234-5678."; regTelHelp.className="help err";
-      } else { regTel.parentElement.classList.remove('invalid'); regTelHelp.textContent=""; }
+      let saved = null;
+      try { saved = (localStorage.getItem(KEY)||"").trim(); } catch {}
+      let pendingAction = null; // 'login' | 'reg' | null
 
-      if (regPass.value && !validPass(regPass.value)){
-        regPass.parentElement.classList.add('invalid');
-        regPassHelp.textContent="Sua senha precisa ter no mínimo 6 caracteres."; regPassHelp.className="help err";
-      } else { regPass.parentElement.classList.remove('invalid'); regPassHelp.textContent=""; }
+      function openAgeVerify(){
+        ageOverlay.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+      }
+      function openUnderage(){
+        ageOverlay.setAttribute('aria-hidden','false');
+        ageVerify.classList.add('hidden');
+        ageUnder.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+      function ensureAgeOrQueue(action){
+        if (saved === 'yes') return true;
+        pendingAction = action || null;
+        openAgeVerify();
+        return false;
+      }
 
-      if (regPass2.value && regPass.value!==regPass2.value){
-        regPass2.parentElement.classList.add('invalid');
-        regPass2Help.textContent="As senhas não conferem."; regPass2Help.className="help err";
-      } else { regPass2.parentElement.classList.remove('invalid'); regPass2Help.textContent=""; }
+      if (saved === 'no'){
+        openUnderage();
+      } else if (saved !== 'yes'){
+        const first = () => { openAgeVerify(); document.removeEventListener('click', first); };
+        document.addEventListener('click', first);
+      }
 
-      btnRegistrar.disabled=!(validTel(regTel.value)&&validPass(regPass.value)&&regPass.value===regPass2.value);
-    }
-    regTel.addEventListener('input',e=>{e.target.value=fmtTel(e.target.value); refreshReg();});
-    regPass.addEventListener('input',refreshReg);
-    regPass2.addEventListener('input',refreshReg);
+      ageYes.addEventListener('click', ()=>{
+        try{ localStorage.setItem(KEY, 'yes'); }catch{}
+        saved = 'yes';
+        ageOverlay.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+        if (pendingAction === 'login') openLoginModal();
+        if (pendingAction === 'reg') openRegModal();
+        pendingAction = null;
+      });
+      ageNo.addEventListener('click', ()=>{
+        try{ localStorage.setItem(KEY, 'no'); }catch{}
+        saved = 'no';
+        openUnderage();
+      });
+      ageExit.addEventListener('click', ()=>{
+        if (history.length > 1){ history.back(); }
+        else if (document.referrer){ location.href = document.referrer; }
+        else { location.href = 'https://www.google.com'; }
+      });
+
+      // ===== Helpers de telefone + validação =====
+      function digits(s){ return (s||'').replace(/\\D+/g,''); }
+      // Máscara dd-9dddd-dddd ou dd-dddd-dddd (auto)
+      function fmtTel(v){
+        const d = digits(v).slice(0,11);
+        if (d.length >= 11){ return d.replace(/^(\\d{2})(\\d{5})(\\d{4}).*$/, "$1-$2-$3"); }
+        if (d.length >= 10){ return d.replace(/^(\\d{2})(\\d{4})(\\d{4}).*$/, "$1-$2-$3"); }
+        if (d.length >= 7){ return d.replace(/^(\\d{2})(\\d{0,5})(\\d{0,4}).*$/, "$1-$2-$3"); }
+        if (d.length >= 3){ return d.replace(/^(\\d{2})(\\d{0,5}).*$/, "$1-$2"); }
+        return d;
+      }
+      function validTel(v){ return /^(\\d{2})-(\\d{5}|\\d{4})-\\d{4}$/.test((v||'').trim()); }
+      function validPass(v){ return (v||'').length >= 6; }
+
+      // ===== Login modal =====
+      const loginOverlay = document.getElementById('loginOverlay');
+      const regOverlay   = document.getElementById('regOverlay');
+      const openLoginBtn = document.getElementById('openLogin');
+      const openRegBtn   = document.getElementById('openReg');
+
+      openLoginBtn.addEventListener('click', ()=>{
+        if (ensureAgeOrQueue('login')) openLoginModal();
+      });
+      openRegBtn.addEventListener('click', ()=>{
+        if (ensureAgeOrQueue('reg')) openRegModal();
+      });
+
+      function openLoginModal(){
+        loginOverlay.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';
+        mountLoginCaptcha();
+      }
+      function openRegModal(){
+        regOverlay.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';
+        mountRegCaptcha();
+      }
+
+      const loginTel = document.getElementById('loginTel');
+      const loginPass = document.getElementById('loginPass');
+      const btnDoLogin = document.getElementById('btnDoLogin');
+      const btnLoginVoltar = document.getElementById('btnLoginVoltar');
+      const loginTelHelp = document.getElementById('loginTelHelp');
+      const loginPassHelp = document.getElementById('loginPassHelp');
+      const loginMsg = document.getElementById('loginMsg');
+      let loginCaptchaOK = false;
+
+      function setInvalid(ctrl, helpEl, msg){
+        ctrl.classList.add('invalid');
+        helpEl.textContent = msg; helpEl.className = 'help err';
+      }
+      function clearInvalid(ctrl, helpEl){
+        ctrl.classList.remove('invalid');
+        helpEl.textContent = ''; helpEl.className = 'help';
+      }
+
+      function refreshLogin(){
+        // Telefone
+        if (loginTel.value && !validTel(loginTel.value)){
+          setInvalid(loginTel.parentElement, loginTelHelp, "Use o formato 31-91234-5678.");
+        } else {
+          clearInvalid(loginTel.parentElement, loginTelHelp);
+        }
+        // Senha min 6
+        if (loginPass.value && !validPass(loginPass.value)){
+          setInvalid(loginPass.parentElement, loginPassHelp, "Sua senha precisa ter pelo menos 6 caracteres.");
+        } else if (validPass(loginPass.value)){
+          clearInvalid(loginPass.parentElement, loginPassHelp);
+        }
+        const ok = validTel(loginTel.value) && validPass(loginPass.value) && loginCaptchaOK;
+        btnDoLogin.disabled = !ok;
+      }
+      loginTel.addEventListener('input', (e)=>{
+        const pos = e.target.selectionStart; const before = e.target.value;
+        const after = fmtTel(before); e.target.value = after;
+        try{ const d = after.length - before.length; e.target.setSelectionRange(Math.max(0,pos+d), Math.max(0,pos+d)); }catch{}
+        refreshLogin();
+      });
+      loginPass.addEventListener('input', refreshLogin);
+      loginPass.addEventListener('blur', refreshLogin);
+
+      function mountLoginCaptcha(){
+        const el = document.getElementById('loginCaptcha');
+        el.innerHTML = "";
+        loginCaptchaOK = false; refreshLogin();
+        if (!window.initGeetest4) return;
+        window.initGeetest4({
+          captchaId: "4cd3729ca1308bca8d8dbadd103ef596",
+          product: 'float',
+          language: 'por'
+        }, c => {
+          c.appendTo('#loginCaptcha');
+          c.onSuccess(()=>{ loginCaptchaOK = true; refreshLogin(); });
+          c.onError(()=>{ loginCaptchaOK = false; refreshLogin(); loginMsg.textContent="Falha ao validar o desafio."; loginMsg.className="help err"; });
+          c.onClose(()=>{ if (!c.getValidate()){ loginCaptchaOK=false; refreshLogin(); } });
+        });
+      }
+
+      document.getElementById('btnDoLogin').addEventListener('click', ()=>{
+        if (btnDoLogin.disabled) return;
+        loginMsg.textContent = "Tudo certo! Pronto para autenticar no backend.";
+        loginMsg.className = "help ok";
+      });
+      btnLoginVoltar.addEventListener('click', ()=>{
+        loginOverlay.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+      });
+
+      // ===== Registro modal =====
+      const regTel  = document.getElementById('regTel');
+      const regPass = document.getElementById('regPass');
+      const regPass2= document.getElementById('regPass2');
+      const regTelHelp = document.getElementById('regTelHelp');
+      const regPassHelp = document.getElementById('regPassHelp');
+      const regPass2Help = document.getElementById('regPass2Help');
+      const btnRegistrar = document.getElementById('btnRegistrar');
+      const btnRegVoltar = document.getElementById('btnRegVoltar');
+      const regMsg  = document.getElementById('regMsg');
+      const regGoLogin = document.getElementById('regGoLogin');
+      let regCaptchaOK = false;
+
+      function refreshReg(){
+        // Telefone
+        if (regTel.value && !validTel(regTel.value)){
+          setInvalid(regTel.parentElement, regTelHelp, "Use o formato 31-91234-5678.");
+        } else {
+          clearInvalid(regTel.parentElement, regTelHelp);
+        }
+        // Senha mínima ao sair para confirmar
+        if (regPass.dataset.touched === "1" && !validPass(regPass.value)){
+          setInvalid(regPass.parentElement, regPassHelp, "Sua senha precisa ter no mínimo 6 caracteres.");
+        } else if (validPass(regPass.value)){
+          clearInvalid(regPass.parentElement, regPassHelp);
+        }
+        // Confirmação igual
+        if (regPass2.dataset.touched === "1" && regPass2.value && regPass.value !== regPass2.value){
+          setInvalid(regPass2.parentElement, regPass2Help, "As senhas não conferem.");
+        } else if (regPass.value && regPass2.value && regPass.value === regPass2.value){
+          clearInvalid(regPass2.parentElement, regPass2Help);
+        } else if (!regPass2.value){
+          regPass2Help.textContent = ""; regPass2Help.className = "help";
+          regPass2.parentElement.classList.remove('invalid');
+        }
+        const ok = validTel(regTel.value) && validPass(regPass.value) && regPass.value === regPass2.value && regCaptchaOK;
+        btnRegistrar.disabled = !ok;
+      }
+
+      function bindMask(el){
+        el.addEventListener('input', (e)=>{
+          const pos = e.target.selectionStart; const before = e.target.value;
+          const after = fmtTel(before); e.target.value = after;
+          try{ const d = after.length - before.length; e.target.setSelectionRange(Math.max(0,pos+d), Math.max(0,pos+d)); }catch{}
+          refreshReg();
+        });
+      }
+      bindMask(regTel);
+      regPass.addEventListener('input', refreshReg);
+      regPass2.addEventListener('input', refreshReg);
+      regPass.addEventListener('blur', ()=>{ regPass.dataset.touched = "1"; refreshReg(); });
+      regPass2.addEventListener('focus', ()=>{ regPass.dataset.touched = "1"; refreshReg(); });
+      regPass2.addEventListener('blur', ()=>{ regPass2.dataset.touched = "1"; refreshReg(); });
+
+      function mountRegCaptcha(){
+        const el = document.getElementById('regCaptcha');
+        el.innerHTML = "";
+        regCaptchaOK = false; refreshReg();
+        if (!window.initGeetest4) return;
+        window.initGeetest4({
+          captchaId: "4cd3729ca1308bca8d8dbadd103ef596",
+          product: 'float',
+          language: 'por'
+        }, c => {
+          c.appendTo('#regCaptcha');
+          c.onSuccess(()=>{ regCaptchaOK = true; refreshReg(); });
+          c.onError(()=>{ regCaptchaOK = false; refreshReg(); regMsg.textContent="Falha ao validar o desafio."; regMsg.className="help err"; });
+          c.onClose(()=>{ if (!c.getValidate()){ regCaptchaOK=false; refreshReg(); } });
+        });
+      }
+
+      document.getElementById('btnRegistrar').addEventListener('click', ()=>{
+        if (btnRegistrar.disabled) return;
+        regMsg.textContent = "Dados validados! Pronto para registrar no backend.";
+        regMsg.className = "help ok";
+      });
+      btnRegVoltar.addEventListener('click', ()=>{
+        regOverlay.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+      });
+      regGoLogin.addEventListener('click', (e)=>{
+        e.preventDefault();
+        regOverlay.setAttribute('aria-hidden','true');
+        openLoginModal();
+      });
+    })();
   </script>
 </body>
 </html>
