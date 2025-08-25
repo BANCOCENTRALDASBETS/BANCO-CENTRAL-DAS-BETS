@@ -55,68 +55,7 @@
 <meta content="pt_BR" property="og:locale"/>
 <meta content="2025-08-24T01:04:55Z" property="og:updated_time"/>
 <meta content="index,follow,max-image-preview:large" name="robots"/>
-<meta content="dark light" name="color-scheme"/><meta content="strict-origin-when-cross-origin" http-equiv="Referrer-Policy"/>
-  <!-- Modal 18+ (index-epic-v6) -->
-  <style>
-    :root{
-      --neon-green:#19e07a;
-      --neon-green-2:#0bd46c;
-      --neon-red:#ff445a;
-      --neon-red-2:#ff1744;
-    }
-    /* Overlay */
-    #idadeModal{
-      position: fixed; inset: 0; display: none;
-      align-items: center; justify-content: center;
-      background: rgba(0,0,0,.72);
-      z-index: 99999; padding: 10px;
-    }
-    #idadeModal[aria-hidden="false"]{ display: flex; }
-
-    /* Caixa menor */
-    .idade-modal__box{
-      width: min(480px, 94vw);
-      background: linear-gradient(180deg, #0c0e2b, #0b0c25);
-      border: 1px solid #2f336e;
-      border-radius: 20px;
-      padding: 20px; text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,.6);
-      color: #fff;
-    }
-    .idade-modal__title{
-      margin:0 0 12px; font-size: clamp(18px, 3.5vw, 24px);
-      font-weight: 900;
-    }
-    .idade-modal__row{
-      display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top: 6px;
-    }
-    .idade-modal__btn{
-      flex: 1 1 160px;
-      padding: 12px 16px;
-      border-radius: 14px;
-      border: 0;
-      font-weight: 800;
-      font-size: clamp(13px, 2vw, 16px);
-      cursor: pointer;
-      transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
-      box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35);
-      text-transform: uppercase; letter-spacing:.3px;
-    }
-    .idade-modal__btn:active{ transform: translateY(2px); box-shadow: 0 8px 0 rgba(0,0,0,.28), 0 14px 24px rgba(0,0,0,.32); }
-    .idade-modal__btn--green{
-      background: linear-gradient(180deg, var(--neon-green), var(--neon-green-2));
-      color: #022a18;
-    }
-    .idade-modal__btn--red{
-      background: linear-gradient(180deg, var(--neon-red), var(--neon-red-2));
-      color: #fff;
-    }
-    .idade-modal__note{ margin-top: 10px; font-size: 12px; color: #aab0ff; opacity:.9; }
-    /* Estado "menor" (mensagem) fica oculto até clicar em NÃO */
-    #idadeUnderage{ display: none; }
-  </style>
-
-</head>
+<meta content="dark light" name="color-scheme"/><meta content="strict-origin-when-cross-origin" http-equiv="Referrer-Policy"/></head>
 <body>
 <div class="wrap">
 <div class="brand">
@@ -325,29 +264,9 @@ try {
 </script>
 
   <!-- Modal 18+ (index-epic-v6) -->
-  <div id="idadeModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="idadeTitle">
-    <!-- Estado de verificação -->
-    <div class="idade-modal__box" id="idadeVerify" onclick="event.stopPropagation()">
-      <h2 id="idadeTitle" class="idade-modal__title">VOCÊ TEM MAIS DE 18 ANOS?</h2>
-      <div class="idade-modal__row">
-        <button id="btnIdadeSim" class="idade-modal__btn idade-modal__btn--green">SIM</button>
-        <button id="btnIdadeNao" class="idade-modal__btn idade-modal__btn--red">NÃO</button>
-      </div>
-      <div class="idade-modal__note">Ao continuar você declara que concorda com os termos de uso.</div>
-    </div>
-    <!-- Estado "menor de idade" -->
-    <div class="idade-modal__box" id="idadeUnderage" onclick="event.stopPropagation()" aria-live="assertive">
-      <h2 class="idade-modal__title">DESCULPE — USO EXCLUSIVO PARA MAIORES DE 18 ANOS</h2>
-      <div class="idade-modal__row">
-        <button id="btnIdadeSair" class="idade-modal__btn idade-modal__btn--red">SAIR</button>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Modal 18+ (index-epic-v6) -->
   <script>
     (function(){
+      const KEY = 'bcb_age_verified_v1';
       const modal = document.getElementById('idadeModal');
       if (!modal) return;
       const verify = document.getElementById('idadeVerify');
@@ -355,24 +274,59 @@ try {
       const btnSim = document.getElementById('btnIdadeSim');
       const btnNao = document.getElementById('btnIdadeNao');
       const btnSair= document.getElementById('btnIdadeSair');
+
+      // helper storage
+      function getAns(){
+        try{ return JSON.parse(localStorage.getItem(KEY)||'null'); }catch{ return null; }
+      }
+      function setAns(v){
+        try{ localStorage.setItem(KEY, JSON.stringify({ v, ts: Date.now() })); }catch{}
+      }
+      // reset via query param
+      try{
+        const usp = new URLSearchParams(location.search);
+        if (usp.get('resetAge') === '1'){ localStorage.removeItem(KEY); }
+      }catch{}
+
       let aberto = false;
+
+      function lockScroll(on){ try{ document.body.style.overflow = on ? 'hidden' : ''; }catch{} }
 
       function openOnFirstClick(){
         if (!aberto){
           modal.setAttribute('aria-hidden','false');
           aberto = true;
           document.removeEventListener('click', openOnFirstClick);
-          try { document.body.style.overflow = 'hidden'; } catch {}
+          lockScroll(true);
         }
       }
-      document.addEventListener('click', openOnFirstClick);
+
+      // Boot logic with persistence
+      const saved = getAns();
+      if (saved && saved.v === 'yes'){
+        // Já verificado como maior — não mostra modal e não instala listener
+        modal.setAttribute('aria-hidden','true');
+        aberto = true;
+      } else if (saved && saved.v === 'no'){
+        // Já recusou — mostra diretamente a tela underage
+        verify.style.display = 'none';
+        under.style.display  = 'block';
+        modal.setAttribute('aria-hidden','false');
+        aberto = true;
+        lockScroll(true);
+      } else {
+        // Sem registro — abre apenas no primeiro clique
+        document.addEventListener('click', openOnFirstClick);
+      }
 
       btnSim && (btnSim.onclick = () => {
+        setAns('yes');
         modal.setAttribute('aria-hidden','true');
-        try { document.body.style.overflow = ''; } catch {}
+        lockScroll(false);
       });
 
       btnNao && (btnNao.onclick = () => {
+        setAns('no');
         verify.style.display = 'none';
         under.style.display  = 'block';
       });
@@ -383,10 +337,21 @@ try {
         else if (document.referrer) { location.href = document.referrer; }
         else { location.href = 'https://www.google.com'; }
       });
+
+      // Acessibilidade: ESC só tem efeito na tela de verificação
+      window.addEventListener('keydown', function(e){
+        if (e.key === 'Escape'){
+          const onVerify = verify && verify.style.display !== 'none' && modal.getAttribute('aria-hidden') === 'false';
+          if (onVerify){
+            modal.setAttribute('aria-hidden','true');
+            lockScroll(false);
+          }
+        }
+      });
     })();
   </script>
 
 </body>
 </html>
 
-<!-- bcb-build:2025-08-25T09:23:59Z -->
+<!-- bcb-build:2025-08-25T09:33:41Z -->
