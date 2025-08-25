@@ -1,0 +1,77 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "usuarios": {
+      ".read": "auth != null && auth.token.admin === true",
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.token.admin === true)",
+        ".write": "auth != null && (auth.uid === $uid || auth.token.admin === true)",
+
+        "perfil": {
+          ".validate": "newData.hasChildren(['nome'])",
+          "nome": { ".validate": "newData.isString() && newData.val().length <= 80" },
+          "telefone": { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 40)" }
+        },
+
+        "dispositivo": {
+          "$sid": {
+            ".read": "auth != null && (auth.uid === $uid || auth.token.admin === true)",
+            ".write": "auth != null && (auth.uid === $uid || auth.token.admin === true)",
+            "eventos": {
+              "$eid": {
+                ".validate": "newData.hasChildren(['ts','ev']) && newData.child('ts').isNumber() && newData.child('ev').isString() && (!newData.child('txt').exists() || (newData.child('txt').isString() && newData.child('txt').val().length <= 500))"
+              }
+            }
+          }
+        },
+
+        "likes": {
+          "$lid": { ".validate": "newData.val() === true" }
+        }
+      }
+    },
+
+    "sac": {
+      "tickets": {
+        ".read": "auth != null && auth.token.admin === true",
+        "$ticketId": {
+          ".write": "auth != null && auth.token.admin === true",
+          "titulo": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 140" },
+          "descricao": { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 2000)" },
+          "status": { ".validate": "newData.isString() && (newData.val() === 'aberto' || newData.val() === 'em_andamento' || newData.val() === 'fechado')" },
+          "createdAt": { ".validate": "newData.isNumber()" },
+          "createdBy": { ".validate": "!newData.exists() || newData.isString()" }
+        }
+      }
+    },
+
+    "links": {
+      "$lid": {
+        ".read": true,
+        "c": {
+          ".read": true,
+          ".write": "auth != null",
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000"
+        }
+      }
+    },
+
+    "comentarios": {
+      "$yyyymm": {
+        ".read": true,
+        ".indexOn": ["ts"],
+        "$cid": {
+          ".write": "auth != null && newData.child('uid').val() === auth.uid && newData.child('ts').isNumber() && newData.child('txt').isString() && newData.child('txt').val().length <= 280",
+          ".validate": "newData.hasChildren(['uid','ts','txt'])"
+        }
+      }
+    },
+
+    "admin_demo": {
+      ".read": true,
+      ".write": false
+    }
+  }
+}

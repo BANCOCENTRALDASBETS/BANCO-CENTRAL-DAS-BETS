@@ -1,0 +1,41 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+
+    // 📂 Arquivos públicos (somente leitura para todos; escrita só admin)
+    match /public/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 📂 Área privada por usuário: /users/{uid}/...
+    match /users/{uid}/{allPaths=**} {
+      // Leitura: dono do arquivo ou admin
+      allow read: if isAdmin() || (isSignedIn() && request.auth.uid == uid);
+
+      // Escrita: dono ou admin; limitamos tamanho para até 10MB
+      allow write: if isAdmin() ||
+                   (isSignedIn() &&
+                    request.auth.uid == uid &&
+                    request.resource.size < 10 * 1024 * 1024);
+    }
+
+    // 📂 Área exclusiva para administradores
+    match /admin/{allPaths=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // 🚫 Padrão: negar tudo fora dos caminhos acima
+    match /{path=**} {
+      allow read, write: if false;
+    }
+  }
+}

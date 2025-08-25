@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<title>Banco Central das Bets — Área</title>
+<!-- Canonical -->
+<link href="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/site.html" rel="canonical"/>
+<!-- Open Graph -->
+<meta content="Banco Central das Bets — Área" property="og:title"/>
+<meta content="Área de links, votos e colaboração" property="og:description"/>
+<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/icone/android-chrome-1200x630-v5.jpg" property="og:image"/>
+<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/icone/android-chrome-1200x630-v5.jpg" property="og:image:secure_url"/>
+<meta content="image/jpeg" property="og:image:type"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/site.html" property="og:url"/>
+<meta content="website" property="og:type"/>
+<meta content="Banco Central das Bets" property="og:site_name"/>
+<!-- Twitter Card -->
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Banco Central das Bets — Área" name="twitter:title"/>
+<meta content="Área de links, votos e colaboração" name="twitter:description"/>
+<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/icone/android-chrome-1200x630-v5.jpg" name="twitter:image"/>
+<meta content="Logotipo do Banco Central das Bets" name="twitter:image:alt"/>
+<!-- FAVICONS -->
+<link href="icone/favicon.ico" rel="icon"/>
+<link href="icone/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="icone/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="icone/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="icone/site.webmanifest" rel="manifest"/>
+<meta content="#ffffff" name="theme-color"/>
+<style>
+    :root {
+      --bg:#070a0f; --bg2:#0b1220; --fg:#eaf2ff; --muted:#92a8c8;
+      --card:#0f1724; --line:#1b273a; --acc:#54f0a5; --acc2:#7ae6ff;
+      --like:#49f39c; --dis:#ff6f6f; --btn:#162133; --overlay: rgba(4,10,18,.86);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--fg);
+      font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(84,240,165,.14), transparent 60%),
+        radial-gradient(1200px 800px at 100% 0, rgba(122,230,255,.12), transparent 50%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+    }
+    .wrap{max-width:1024px;margin:0 auto;padding:20px 14px 40px}
+    .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .brand{display:flex;align-items:center;gap:10px}
+    h1{font-size:1.2rem;margin:0}
+    .uid{font:12px/1.2 ui-monospace,Consolas,monospace;background:#0c1320;border:1px solid var(--line);padding:6px 10px;border-radius:999px;color:#9fd3ff;opacity:.95}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;box-shadow:0 10px 28px rgba(0,0,0,.35);backdrop-filter:blur(6px)}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+    .btn{border:0;border-radius:12px;padding:10px 14px;background:var(--btn);color:var(--fg);cursor:pointer;transition:transform .1s ease, box-shadow .12s ease}
+    .btn:hover{transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.25)}
+    .btn.primary{background:linear-gradient(135deg, var(--acc), var(--acc2)); color:#061a12; font-weight:800; letter-spacing:.3px}
+    .btn.ghost{background:#0e1726;border:1px solid var(--line)}
+    .muted{color:var(--muted);font-size:.9rem}
+    textarea{width:100%;background:#0a1016;border:1px solid var(--line);border-radius:12px;color:var(--fg);padding:10px}
+    .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
+    .ok{color:#87efb3}.err{color:#ff8b8b}.warn{color:#ffb86b}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media (min-width: 760px){ .grid{grid-template-columns:1fr 1fr} }
+    .vote{display:flex;gap:8px}
+    .pulse{position:relative; overflow:hidden; border:1px solid #1d344e; background:#132036}
+    .pulse::after{content:""; position:absolute; inset:0; border-radius:12px; opacity:0; transition:opacity .18s ease, box-shadow .12s ease}
+    .pulse.like{border-color:#214738;background:linear-gradient(135deg,#0f1e17,#143222)}
+    .pulse.dis{border-color:#4a1d21;background:linear-gradient(135deg,#1f0f13,#33171a)}
+    .pulse.like:hover::after{opacity:.6; box-shadow:0 0 22px 2px rgba(73,243,156,.35)}
+    .pulse.dis:hover::after{opacity:.6; box-shadow:0 0 22px 2px rgba(255,111,111,.35)}
+    .count{font:12px/1.2 ui-monospace,Consolas,monospace;opacity:.9}
+    .like .count{color:var(--like)} .dis .count{color:var(--dis)}
+    .admin-badge{font:11px/1 ui-monospace,Consolas,monospace;background:#10321f;color:#94f3c3;border:1px solid #1f5c3e;border-radius:6px;padding:4px 8px}
+
+    /* Overlay de bloqueio com contador */
+    .overlay {
+      position: fixed; inset: 0; display: none; place-items: center;
+      background: var(--overlay); z-index: 9999; text-align: center;
+      padding: 24px;
+    }
+    .overlay .box{
+      background:#0e1624; border:1px solid #22314b; border-radius:16px; padding:18px 16px; max-width:560px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.45);
+    }
+    .overlay h2{ margin:0 0 8px; font-size:1.1rem }
+    .overlay p{ margin:6px 0; color:#b9c7e3 }
+    .overlay .cta{ margin-top:10px }
+    .overlay .cta a{
+      display:inline-block; padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:800;
+      background:linear-gradient(135deg, var(--acc), var(--acc2)); color:#061a12;
+    }
+  </style>
+<!-- Config Firebase -->
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyXjRtJy-J9ROutFM3cLodx7T6yG3Mv1s",
+      authDomain: "banco-central-das-bets-f400d.firebaseapp.com",
+      databaseURL: "https://banco-central-das-bets-f400d-default-rtdb.firebaseio.com",
+      projectId: "banco-central-das-bets-f400d",
+      storageBucket: "banco-central-das-bets-f400d.appspot.com",
+      messagingSenderId: "434165673698"
+    };
+  </script>
+<meta content="pt_BR" property="og:locale"/>
+<meta content="2025-08-24T01:55:00Z" property="og:updated_time"/>
+<meta content="noindex,follow,max-image-preview:large" name="robots"/>
+<meta content="dark light" name="color-scheme"/><meta content="strict-origin-when-cross-origin" http-equiv="Referrer-Policy"/></head>
+<body>
+<!-- Overlay de bloqueio com contador -->
+<div aria-live="polite" class="overlay" id="gate" role="dialog">
+<div class="box">
+<h2>Oi! 👋 Sessão não autenticada. Faça login pelo Portal.</h2>
+<p>Detectamos que você tentou acessar a área interna diretamente.</p>
+<p>Por favor, use o <b>Portal de Entrada</b> para continuar.</p>
+<div class="cta"><a href="index.html" id="ctaPortal">Ir para o Portal</a></div>
+<p class="hint" id="redirMsg">Redirecionando automaticamente em <b id="sec">5</b> segundos…</p>
+</div>
+</div>
+<div class="wrap" id="appRoot" style="display:none">
+<div class="hdr">
+<div class="brand">
+<img alt="BCB" height="32" src="icone/favicon-32x32.png" style="border-radius:8px" width="32"/>
+<div>
+<h1>Banco Central das Bets</h1>
+<div class="muted">Área de links, votos e colaboração</div>
+</div>
+</div>
+<div style="display:flex;gap:8px;align-items:center">
+<div class="admin-badge" id="adminBadge" style="display:none">ADMIN</div>
+<div class="uid" id="uidPill">UID - …</div>
+</div>
+</div>
+<!-- Resumo da sessão -->
+<div class="card" id="sessCard" style="display:none">
+<div class="row">
+<div class="muted" id="sessSummary"></div>
+<button class="btn ghost" id="btnSair">Sair</button>
+</div>
+<div class="row" style="justify-content:flex-start; gap:14px; margin-top:8px">
+<div class="muted"><b>IP:</b> <span id="k_ip">–</span></div>
+<div class="muted"><b>Cidade/UF:</b> <span id="k_city">–</span></div>
+<div class="muted"><b>TTFB:</b> <span id="k_ttfb">–</span></div>
+<div class="muted"><b>Load/DCL:</b> <span id="k_load">–</span></div>
+</div>
+</div>
+<!-- Painel ADMIN -->
+<div class="card" id="adminCard" style="display:none">
+<div class="row">
+<div class="muted" style="font-weight:700">Gerenciar Links (ADMIN)</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr;gap:10px;margin-top:8px">
+<input id="admUrl" placeholder="Cole a URL completa do link com bônus (https://...)" type="text"/>
+<input id="admId" placeholder="ID opcional (se vazio, geramos automaticamente)" type="text"/>
+<div class="row">
+<button class="btn primary" id="btnAdd">Adicionar/Atualizar</button>
+<button class="btn ghost" id="btnZerar">Zerar contadores (ID acima)</button>
+</div>
+<div class="hint" id="admMsg"></div>
+</div>
+</div>
+<!-- Lista de links -->
+<div class="grid" id="links"></div>
+<!-- Colabore -->
+<div class="card">
+<div class="muted" style="font-weight:700;margin-bottom:6px">
+        Colabore Com o Nosso Site, Deixe aqui Seu Link de Convite de Suas Plataformas Com Bônus
+      </div>
+<textarea id="txtGlobal" maxlength="280" placeholder="Cole seu link com bônus e um breve comentário (máx. 280)." rows="3"></textarea>
+<div class="row" style="margin-top:8px">
+<div class="hint">Enviamos apenas {uid, ts, txt}. Obrigado por fortalecer a comunidade! 💚</div>
+<button class="btn primary" disabled="" id="btnGlobal">Enviar</button>
+</div>
+<div class="hint" id="msgGlobal"></div>
+</div>
+</div>
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut, getIdTokenResult } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { getDatabase, ref, get, set, runTransaction, push, update } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+    // ---------- Helpers de sessão + overlay ----------
+    const gate = document.getElementById('gate');
+    const appRoot = document.getElementById('appRoot');
+    const secEl = document.getElementById('sec');
+    const ctaPortal = document.getElementById('ctaPortal');
+    const getSS = (k)=>{ try{ return sessionStorage.getItem(k) || ''; }catch{ return ''; } };
+
+    let redir = { secs: 5, timer: null, cancelled: false };
+    function startCountdown(){
+      const tick = () => {
+        if (redir.cancelled) return;
+        secEl.textContent = String(redir.secs);
+        if (redir.secs <= 0){
+          location.replace('index.html');
+          return;
+        }
+        redir.secs -= 1;
+        redir.timer = setTimeout(tick, 1000);
+      };
+      tick();
+    }
+    function showGate(msg){
+      gate.querySelector('h2').innerHTML = 'Oi! 👋 ' + msg;
+      gate.style.display = 'grid';
+      appRoot.style.display = 'none';
+      startCountdown();
+    }
+    ctaPortal.addEventListener('click', ()=>{ redir.cancelled = true; if (redir.timer) clearTimeout(redir.timer); });
+
+    // Lê possíveis marcadores criados no portal
+    let sid = getSS('bcb_sid');
+    let uid = '';
+
+    // Se não há SID logo de cara, mostra o gate com contador (não precisamos esperar Firebase)
+    if (!sid) {
+      showGate('Acesso direto detectado. Use o Portal para continuar.');
+    }
+
+    // ---------- Firebase App ----------
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getDatabase(app);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        // Se ainda não mostramos o gate, exiba-o agora
+        if (gate.style.display !== 'grid') showGate('Sessão não autenticada. Faça login pelo Portal.');
+        return;
+      }
+      uid = user.uid;
+      // Se houver SID, validar contexto criado pelo portal
+      if (!sid){
+        // já estamos com gate ativo (se vier via index, haverá SID)
+        return;
+      }
+      try{
+        const ctx = await get(ref(db, `usuarios/${uid}/sessoes/${sid}/contexto`));
+        if (!ctx.exists()){
+          if (gate.style.display !== 'grid') showGate('Precisamos validar sua sessão pelo Portal.');
+          return;
+        }
+      }catch{
+        if (gate.style.display !== 'grid') showGate('Não conseguimos validar sua sessão. Tente pelo Portal.');
+        return;
+      }
+
+      // Sessão OK — cancelar contador e abrir a área
+      redir.cancelled = true; if (redir.timer) clearTimeout(redir.timer);
+      gate.style.display = 'none';
+      appRoot.style.display = '';
+      afterGateReady(user);
+    });
+
+    // ---------- Pós-gate: app principal ----------
+    const uidPill = document.getElementById('uidPill');
+    const adminBadge = document.getElementById('adminBadge');
+    const adminCard = document.getElementById('adminCard');
+
+    async function afterGateReady(user){
+      uidPill.textContent = 'UID - ' + (user.uid ? user.uid.slice(0,4)+'…'+user.uid.slice(-4) : 'desconhecido');
+
+      // Detectar admin
+      try {
+        const token = await getIdTokenResult(user, true);
+        const isAdmin = !!(token.claims && token.claims.admin);
+        if (isAdmin) { adminBadge.style.display = ''; adminCard.style.display = ''; }
+        window.__BCB_IS_ADMIN__ = isAdmin;
+      } catch { window.__BCB_IS_ADMIN__ = false; }
+
+      // Telemetria & Geo
+      coletarPerfEDispositivo().then(salvarPerfDev).catch(()=>{});
+      tentarGeo().then(salvarGeo).catch(()=>{});
+      carregarSessao();
+      // UI
+      LINKS.forEach(linkCard);
+      initAdmin();
+      initColab();
+      initLogout();
+    }
+
+    // ----- Telemetria -----
+    function metricasPerf(){
+      const nav = performance.getEntriesByType('navigation')[0];
+      if (nav) {
+        const ttfb = Math.max(0, Math.round(nav.responseStart - nav.requestStart));
+        const dcl  = Math.max(0, Math.round(nav.domContentLoadedEventEnd - nav.startTime));
+        const load = Math.max(0, Math.round(nav.loadEventEnd - nav.startTime));
+        return { ttfb, dcl, load };
+      }
+      const t = performance.timing;
+      const ttfb = Math.max(0, t.responseStart - t.requestStart);
+      const dcl  = Math.max(0, t.domContentLoadedEventEnd - t.navigationStart);
+      const load = Math.max(0, t.loadEventEnd - t.navigationStart);
+      return { ttfb, dcl, load };
+    }
+    async function coletarPerfEDispositivo(){
+      const perf = metricasPerf();
+      const dev = {
+        ua: navigator.userAgent || null,
+        lang: navigator.language || null,
+        plat: navigator.platform || null,
+        et: (navigator.connection && navigator.connection.effectiveType) || null,
+        mem: navigator.deviceMemory || null,
+        hw: navigator.hardwareConcurrency || null,
+        vw: window.innerWidth || null,
+        vh: window.innerHeight || null
+      };
+      return { perf, dev };
+    }
+    async function salvarPerfDev({perf, dev}){
+      if (!uid || !sid) return;
+      await update(ref(db, `usuarios/${uid}/sessoes/${sid}/contexto`), { perf, dev });
+      document.getElementById('k_ttfb').textContent = (perf.ttfb ?? '–') + ' ms';
+      document.getElementById('k_load').textContent = (perf.load ?? '–') + ' ms' + (perf.dcl?' / '+perf.dcl+' ms':'');
+    }
+    async function tentarGeo(){
+      const timeout = (ms)=> new Promise(r=>setTimeout(()=>r(null), ms));
+      const req = fetch('https://ipapi.co/json/').then(r=>r.ok?r.json():null).catch(()=>null);
+      const data = await Promise.race([req, timeout(1500)]);
+      if (!data || !data.ip) return null;
+      return {
+        ip: data.ip || null,
+        city: data.city || null,
+        region: data.region || null,
+        country: data.country_name || null,
+        cc: data.country || null
+      };
+    }
+    async function salvarGeo(geo){
+      if (!geo || !uid || !sid) return;
+      await update(ref(db, `usuarios/${uid}/sessoes/${sid}/contexto`), { geo });
+      const city = geo.city ? `${geo.city}${geo.region?'/'+geo.region:''}` : '–';
+      document.getElementById('sessSummary').textContent = `IP ${geo.ip || '–'} — ${city}${geo.country? ' · '+geo.country : ''}`;
+      document.getElementById('k_ip').textContent = geo.ip || '–';
+      document.getElementById('k_city').textContent = city || '–';
+      document.getElementById('sessCard').style.display = '';
+    }
+
+    async function carregarSessao(){
+      if(!uid||!sid) return;
+      try{
+        const snap = await get(ref(db, `usuarios/${uid}/sessoes/${sid}/contexto`));
+        if (!snap.exists()) return;
+        const ctx = snap.val();
+        const ip = ctx.geo?.ip || '–';
+        const city = ctx.geo?.city ? `${ctx.geo.city}${ctx.geo.region?'/'+ctx.geo.region:''}` : '–';
+        const country = ctx.geo?.country || '';
+        const ttfb = (ctx.perf?.ttfb ?? '–');
+        const dcl = (ctx.perf?.dcl ?? '–');
+        const load = (ctx.perf?.load ?? '–');
+        const summary = `IP ${ip} — ${city}${country? ' · '+country : ''}`;
+        document.getElementById('sessSummary').textContent = summary;
+        document.getElementById('k_ip').textContent   = ip;
+        document.getElementById('k_city').textContent = city || '–';
+        document.getElementById('k_ttfb').textContent = (ttfb==='–'?'–':ttfb+' ms');
+        document.getElementById('k_load').textContent = (load==='–'?'–':load+' ms') + (dcl==='–'?'':` / ${dcl} ms`);
+        document.getElementById('sessCard').style.display = '';
+      }catch(e){ /* silencioso */ }
+    }
+
+    // ----- UI de Links -----
+    const LINKS = [
+      {id:'L1', url:'https://56bx2.com/?pid=1622043487'},
+      {id:'L2', url:'https://www.56f5.com/?pid=1944788621'},
+      {id:'L26', url:'https://7075a2.cc/?pid=1304070624'},
+      {id:'L27', url:'https://5161a3.cc/?pid=2916139340'},
+      {id:'L28', url:'https://53a1.xyz/?pid=2847554641'},
+      {id:'L29', url:'https://11q118.com/?pid=2804170821'},
+      {id:'L30', url:'https://9096b5.cc/?pid=395755008'},
+      {id:'L31', url:'https://554201.com/?pid=2056754853'},
+      {id:'L32', url:'https://8857w2.com/?pid=2502848820'},
+      {id:'L33', url:'https://8385b.xyz/?pid=218084685'},
+      {id:'L34', url:'https://7xx.vip/?pid=683932395'},
+      {id:'L35', url:'https://zww29.com/?pid=1618655052'},
+      {id:'L36', url:'https://55dd9.cc/?pid=2295003355'},
+      {id:'L37', url:'https://11a14.xyz/?pid=1097969127'},
+      {id:'L38', url:'https://28888game.com/?pid=1528981018'},
+      {id:'L39', url:'https://oss.n9ossmjbymc.com/?pid=1441287305'},
+      {id:'L40', url:'https://78tt5.com/?pid=2081370451'},
+      {id:'L61', url:'https://66e99y.com/?pid=1766296985'}
+    ];
+
+    const linksWrap = document.getElementById('links');
+
+    function hostName(u){
+      try { return new URL(u).hostname.replace(/^www\./,''); } catch { return u; }
+    }
+    function linkCard({id, url}){
+      const card = document.createElement('div');
+      card.className = 'card';
+      const nome = hostName(url);
+      card.innerHTML = `
+        <div class="row">
+          <div class="muted" style="font-weight:700">${nome}</div>
+          <div class="vote">
+            <button class="btn pulse like" data-like="${id}">Curtir <span class="count" id="cl_${id}">0</span></button>
+            <button class="btn pulse dis"  data-dis="${id}">Não curtir <span class="count" id="cd_${id}">0</span></button>
+          </div>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <a href="${url}" target="_blank" rel="noopener" class="btn ghost" data-open="${id}">Acessar</a>
+        </div>
+        <div style="height:8px"></div>
+        <textarea id="c_${id}" rows="2" maxlength="280" placeholder="Comente algo sobre ${nome} (máx. 280)"></textarea>
+        <div class="row" style="margin-top:8px">
+          <div class="hint" id="m_${id}"></div>
+          <button class="btn primary" id="s_${id}" disabled>Enviar</button>
+        </div>
+      `;
+      linksWrap.appendChild(card);
+
+      const ta = card.querySelector(`#c_${id}`);
+      const bt = card.querySelector(`#s_${id}`);
+      const msg= card.querySelector(`#m_${id}`);
+      ta.addEventListener('input', ()=>{ bt.disabled = !(ta.value||'').trim(); });
+      bt.addEventListener('click', async ()=>{
+        const txt=(ta.value||'').trim();
+        if(!uid){ msg.innerHTML='<span class="err">Sessão inválida.</span>'; return; }
+        if(!txt){ msg.innerHTML='<span class="warn">Digite um comentário.</span>'; return; }
+        try{
+          const d=new Date(); const yyyymm=String(d.getFullYear())+String(d.getMonth()+1).padStart(2,'0');
+          await push(ref(db, `comentarios/${yyyymm}`), { uid, ts: Date.now(), txt, link: id });
+          ta.value=''; bt.disabled=true; msg.innerHTML='<span class="ok">Comentário enviado com sucesso! 🚀</span>';
+          setTimeout(()=>msg.textContent='',2500);
+        }catch(e){ console.error(e); msg.innerHTML='<span class="err">Falha ao enviar.</span>'; }
+      });
+
+      card.querySelector(`[data-like="${id}"]`).addEventListener('click', ()=> votar(id, 'like'));
+      card.querySelector(`[data-dis="${id}"]`).addEventListener('click',  ()=> votar(id, 'dislike'));
+      card.querySelector(`[data-open="${id}"]`).addEventListener('click', ()=> logAcesso(id, url));
+      atualizarContadores(id);
+    }
+
+    async function atualizarContadores(id){
+      try{
+        const s = await get(ref(db, `links/${id}`));
+        const v = s.exists() ? s.val() : {};
+        document.getElementById(`cl_${id}`).textContent = v.c || v.c_like || 0;
+        document.getElementById(`cd_${id}`).textContent  = v.c_dislike || 0;
+      }catch(e){
+        document.getElementById(`cl_${id}`).textContent = '0';
+        document.getElementById(`cd_${id}`).textContent  = '0';
+      }
+    }
+
+    async function logAcesso(id, url){
+      if(!uid) return;
+      try{
+        await push(ref(db, `usuarios/${uid}/acoes/acessos`), { id, url, ts: Date.now() });
+      }catch(e){ /* silencioso */ }
+    }
+
+    async function votar(id, tipo){
+      if (!uid){ alert('Sessão inválida'); return; }
+      const jv = await Promise.all([
+        get(ref(db, `usuarios/${uid}/likes/${id}`)),
+        get(ref(db, `usuarios/${uid}/dislikes/${id}`))
+      ]);
+      if (jv[0].exists() || jv[1].exists()){
+        alert('Você já votou neste link. Obrigado!');
+        return;
+      }
+      const isAdmin = !!window.__BCB_IS_ADMIN__;
+      try{
+        if (tipo === 'like'){
+          await update(ref(db, `usuarios/${uid}/likes/${id}`), true);
+          if (isAdmin){
+            await runTransaction(ref(db, `links/${id}/c`), cur => (typeof cur==='number'?cur:0) + 1);
+          }
+        } else {
+          await update(ref(db, `usuarios/${uid}/dislikes/${id}`), true);
+          if (isAdmin){
+            await runTransaction(ref(db, `links/${id}/c_dislike`), cur => (typeof cur==='number'?cur:0) + 1);
+          }
+        }
+        atualizarContadores(id);
+        if (!isAdmin){ console.info('Voto registrado no perfil; contadores globais apenas por admin.'); }
+      }catch(e){
+        console.error(e);
+        alert('Não foi possível registrar seu voto.');
+      }
+    }
+
+    function initColab(){
+      const txtG=document.getElementById('txtGlobal'),btnG=document.getElementById('btnGlobal'),msgG=document.getElementById('msgGlobal');
+      txtG.addEventListener('input',()=>btnG.disabled=!(txtG.value||'').trim());
+      btnG.addEventListener('click', async ()=>{
+        const txt=(txtG.value||'').trim();
+        if (!uid){ msgG.innerHTML='<span class="err">Sessão inválida.</span>'; return; }
+        if (!txt){ msgG.innerHTML='<span class="warn">Digite seu link/comentário.</span>'; return; }
+        try{
+          const d=new Date(); const yyyymm=String(d.getFullYear())+String(d.getMonth()+1).padStart(2,'0');
+          await push(ref(db, `comentarios/${yyyymm}`), { uid, ts: Date.now(), txt, link: 'COLABORE' });
+          txtG.value=''; btnG.disabled=true; msgG.innerHTML='<span class="ok">Obrigado por colaborar! 🙌</span>'; setTimeout(()=>msgG.textContent='',3000);
+        }catch(e){ console.error(e); msgG.innerHTML='<span class="err">Falha ao enviar.</span>'; }
+      });
+    }
+
+    function initAdmin(){
+      const admUrl = document.getElementById('admUrl');
+      const admId  = document.getElementById('admId');
+      const admMsg = document.getElementById('admMsg');
+
+      function gerarId(url){
+        let base = 'link';
+        try{
+          const h = new URL(url).hostname.replace(/^www\./,'');
+          base = h.split('.').slice(-2).join('-').replace(/[^a-z0-9-]/gi,'').toLowerCase() || 'link';
+        }catch{}
+        return base + '-' + Date.now().toString(36).slice(-6);
+      }
+
+      document.getElementById('btnAdd').addEventListener('click', async ()=>{
+        const isAdmin = !!window.__BCB_IS_ADMIN__;
+        const url = (admUrl.value||'').trim();
+        if (!isAdmin){ admMsg.innerHTML='<span class="err">Acesso negado.</span>'; return; }
+        if (!url || !/^https?:\/\//i.test(url)){ admMsg.innerHTML='<span class="warn">Informe uma URL válida.</span>'; return; }
+        const id = (admId.value||'').trim() || gerarId(url);
+        try{
+          await set(ref(db, `links/${id}`), { url, c:0, c_dislike:0, createdBy: uid, createdAt: Date.now() });
+          admMsg.innerHTML='<span class="ok">Link salvo com sucesso.</span>';
+          linkCard({id, url});
+          admId.value = ''; admUrl.value = '';
+          setTimeout(()=>admMsg.textContent='',2000);
+        }catch(e){ console.error(e); admMsg.innerHTML='<span class="err">Falha ao salvar.</span>'; }
+      });
+
+      document.getElementById('btnZerar').addEventListener('click', async ()=>{
+        const isAdmin = !!window.__BCB_IS_ADMIN__;
+        const id = (admId.value||'').trim();
+        if (!isAdmin){ admMsg.innerHTML='<span class="err">Acesso negado.</span>'; return; }
+        if (!id){ admMsg.innerHTML='<span class="warn">Informe o ID no campo acima.</span>'; return; }
+        try{
+          await update(ref(db, `links/${id}`), { c:0, c_dislike:0 });
+          admMsg.innerHTML='<span class="ok">Contadores zerados.</span>';
+          atualizarContadores(id);
+          setTimeout(()=>admMsg.textContent='',2000);
+        }catch(e){ console.error(e); admMsg.innerHTML='<span class="err">Falha ao zerar.</span>'; }
+      });
+    }
+
+    function initLogout(){
+      document.getElementById('btnSair').addEventListener('click', async ()=>{
+        try{ sessionStorage.removeItem('bcb_uid'); sessionStorage.removeItem('bcb_sid'); }catch{}
+        try{ await signOut(auth); }catch{}
+        location.href = 'index.html';
+      });
+    }
+  
+// Bind CSP telemetry once we know UID/SID
+(function(){
+  function bindWhenReady(){
+    const uidSS = (function(){ try{ return sessionStorage.getItem('bcb_uid')||''; }catch{ return ''; } })();
+    const sidSS = (function(){ try{ return sessionStorage.getItem('bcb_sid')||''; }catch{ return ''; } })();
+    if (!uidSS || !sidSS) { setTimeout(bindWhenReady, 600); return; }
+    try {
+      window.__bcb_bind_csp_logger__ && window.__bcb_bind_csp_logger__(async function(evt){
+        try{
+          const { ref, push, getDatabase } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+          const db = getDatabase(app);
+          await push(ref(db, `telemetria/cspViolations/${uidSS}/${sidSS}`), evt);
+        }catch(e){ /* noop */ }
+      });
+    }catch(e){ /* noop */ }
+  }
+  bindWhenReady();
+})();
+</script>
+
+<script>
+(function(){
+  const QKEY = "__bcb_csp_queue__";
+  function queueEvent(evt){
+    try{
+      const cur = JSON.parse(localStorage.getItem(QKEY)||"[]");
+      cur.push(evt);
+      localStorage.setItem(QKEY, JSON.stringify(cur).slice(-4000));
+    }catch{}
+  }
+  function onViolation(e){
+    const evt = {
+      ts: Date.now(),
+      doc: location.pathname,
+      blocked: e.blockedURI || null,
+      violated: e.violatedDirective || null,
+      type: e.effectiveDirective || null,
+      line: e.lineNumber || null,
+      col: e.columnNumber || null,
+      src: e.sourceFile || null,
+      sample: e.sample || null,
+      dispo: (e.disposition || null)
+    };
+    if (window.__bcb_csp_log__){ window.__bcb_csp_log__(evt); } else { queueEvent(evt); }
+  }
+  window.addEventListener('securitypolicyviolation', onViolation);
+  window.__bcb_bind_csp_logger__ = function(logFn){
+    window.__bcb_csp_log__ = logFn;
+    try{
+      const cur = JSON.parse(localStorage.getItem(QKEY)||"[]");
+      if (Array.isArray(cur) && cur.length){
+        cur.forEach(evt => { try{ logFn(evt); }catch{} });
+        localStorage.removeItem(QKEY);
+      }
+    }catch{}
+  };
+})();
+</script>
+</body>
+</html>
+
+<!-- bcb-build:2025-08-24T18:44:08Z -->

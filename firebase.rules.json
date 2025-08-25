@@ -1,0 +1,34 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "usuarios": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+
+    "sac": {
+      "tickets": {
+        "$ticketId": {
+          ".read": "auth != null && (auth.token.admin === true || data.child('uid').val() === auth.uid)",
+          ".write": "auth != null && (newData.child('uid').val() === auth.uid || auth.token.admin === true)"
+        }
+      }
+    },
+
+    "comentarios": {
+      "$commentId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+
+    "links": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.token.admin === true"
+    }
+  }
+}

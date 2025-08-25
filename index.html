@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<title>Banco Central das Bets — Entrar</title>
+<meta content="Portal de entrada — Banco Central das Bets" name="description"/>
+<!-- Canonical -->
+<link href="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/" rel="canonical"/>
+<!-- Open Graph (preview WhatsApp, Facebook, Telegram) -->
+<meta content="Banco Central das Bets" property="og:title"/>
+<meta content="Central de links, bônus e apostas — entre já!" property="og:description"/>
+<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/icone/android-chrome-1200x630-v5.jpg" property="og:image"/>
+<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/icone/android-chrome-1200x630-v5.jpg" property="og:image:secure_url"/>
+<meta content="image/jpeg" property="og:image:type"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/" property="og:url"/>
+<meta content="website" property="og:type"/>
+<meta content="Banco Central das Bets" property="og:site_name"/>
+<!-- Twitter Card -->
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Banco Central das Bets" name="twitter:title"/>
+<meta content="Central de links, bônus e apostas — entre já!" name="twitter:description"/>
+<meta content="https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/icone/android-chrome-1200x630-v5.jpg" name="twitter:image"/>
+<meta content="Logotipo do Banco Central das Bets" name="twitter:image:alt"/>
+<!-- FAVICONS (arquivos na pasta icone/) -->
+<link href="icone/favicon.ico" rel="icon"/>
+<link href="icone/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="icone/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="icone/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="icone/site.webmanifest" rel="manifest"/>
+<meta content="#ffffff" name="theme-color"/>
+<!-- /FAVICONS -->
+<style>
+    :root { --bg:#0b0f14; --fg:#e7eef7; --muted:#7f8da3; --acc:#54f0a5; --err:#ff8080; }
+    * { box-sizing:border-box; }
+    html,body { height:100%; }
+    body { margin:0; font:16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--fg); display:flex; align-items:center; justify-content:center }
+    .wrap { max-width:480px; margin:0 auto; padding:24px 16px; }
+    h1 { font-size:1.5rem; margin:8px 0 16px; text-align:center }
+    .card { background:#0e141b; border:1px solid #1a2029; border-radius:16px; padding:16px; box-shadow:0 6px 20px rgba(0,0,0,.25); }
+    label { display:block; font-size:.9rem; color:var(--muted); margin:8px 0 4px; }
+    input { width:100%; padding:12px; border-radius:12px; border:1px solid #1e2632; background:#0a1016; color:#e7eef7; }
+    button { width:100%; padding:12px; border:0; border-radius:12px; background:var(--acc); color:#02140b; font-weight:700; margin-top:12px; cursor:pointer; }
+    button[disabled]{ opacity:.6; cursor:not-allowed }
+    .hint { font-size:.82rem; color:var(--muted); margin-top:8px; text-align:center }
+    .brand { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:16px }
+    .brand img { width:42px; height:42px; }
+    .msg { font-size:.9rem; text-align:center; margin-top:8px }
+    .msg.err { color: var(--err); }
+    .msg.ok  { color: #9af5c7; }
+  </style>
+<meta content="pt_BR" property="og:locale"/>
+<meta content="2025-08-24T01:04:55Z" property="og:updated_time"/>
+<meta content="index,follow,max-image-preview:large" name="robots"/>
+<meta content="dark light" name="color-scheme"/><meta content="strict-origin-when-cross-origin" http-equiv="Referrer-Policy"/></head>
+<body>
+<div class="wrap">
+<div class="brand">
+<img alt="BCB" height="32" src="icone/favicon-32x32.png" width="32"/>
+<h1>Banco Central das Bets</h1>
+</div>
+<div class="card">
+<form id="loginForm">
+<label for="nome">Nome</label>
+<input id="nome" placeholder="Seu nome (Ex.: Enio)" required="" type="text"/>
+<label for="telefone">Telefone (WhatsApp)</label>
+<input id="telefone" placeholder="31-91234-5678" required="" type="tel"/>
+<div id="captcha" style="margin-top:12px"></div>
+<button disabled="" id="btnEntrar" type="submit">Entrar</button>
+<p class="hint">O botão será habilitado após validar Nome, Telefone e o desafio de segurança.</p>
+<div aria-live="polite" class="msg" id="msg"></div>
+</form>
+</div>
+</div>
+<!-- Config Firebase -->
+<script>
+    /* Projeto: banco-central-das-bets-f400d */
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyXjRtJy-J9ROutFM3cLodx7T6yG3Mv1s",
+      authDomain: "banco-central-das-bets-f400d.firebaseapp.com",
+      databaseURL: "https://banco-central-das-bets-f400d-default-rtdb.firebaseio.com",
+      projectId: "banco-central-das-bets-f400d",
+      storageBucket: "banco-central-das-bets-f400d.appspot.com",
+      messagingSenderId: "434165673698"
+    };
+  </script>
+<!-- GeeTest captcha -->
+<script src="https://static.geetest.com/v4/gt4.js"></script>
+<!-- App (Firebase + fluxo de login) -->
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { getDatabase, ref, update } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getDatabase(app);
+
+    const $ = sel => document.querySelector(sel);
+    const nome = $('#nome');
+    const tel  = $('#telefone');
+    const btn  = $('#btnEntrar');
+    const form = $('#loginForm');
+    const msg  = $('#msg');
+
+    let captchaOK = false;
+
+    function validNome(v){ return (v||'').trim().length >= 2; }
+    function validTel(v){ return /^(\d{2,3}[-\s]?)?\d{4,5}[-\s]?\d{4}$/.test((v||'').trim()); }
+    function refreshBtn(){
+      btn.disabled = !(validNome(nome.value) && validTel(tel.value) && captchaOK);
+    }
+    nome.addEventListener('input', refreshBtn);
+    tel .addEventListener('input', refreshBtn);
+
+    const captchaId = "4cd3729ca1308bca8d8dbadd103ef596";
+    window.initGeetest4({
+      captchaId,
+      product: 'float',
+      language: 'por'
+    }, c => {
+      c.appendTo("#captcha");
+      c.onSuccess(() => { captchaOK = true; refreshBtn(); });
+      c.onError(() => {
+        captchaOK = false; refreshBtn();
+        msg.textContent = "Falha ao validar o desafio. Tente novamente.";
+        msg.className = "msg err";
+      });
+      c.onClose(() => {
+        if (!c.getValidate()) { captchaOK = false; refreshBtn(); }
+      });
+    });
+
+    function genSid(){
+      const r = Math.random().toString(36).slice(2,8);
+      return `${Date.now().toString(36)}-${r}`;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = ""; msg.className = "msg";
+
+      if (!validNome(nome.value)){ msg.textContent="Digite um nome válido."; msg.className="msg err"; return; }
+      if (!validTel(tel.value)){ msg.textContent="Digite um telefone válido (ex.: 31-91234-5678)."; msg.className="msg err"; return; }
+      if (!captchaOK){ msg.textContent="Resolva o desafio de segurança."; msg.className="msg err"; return; }
+
+      btn.disabled = true;
+
+      try{
+        const cred = await signInAnonymously(auth);
+        const uid = cred.user.uid;
+        const sid = genSid();
+
+        // cria nó de contexto da sessão (base para telemetria/geo)
+        const baseRef = ref(db, `usuarios/${uid}`);
+        await update(baseRef, {
+          nome: (nome.value||'').trim(),
+          telefone: (tel.value||'').trim(),
+          ultimoAcesso: Date.now(),
+          [`sessoes/${sid}/contexto`]: { createdAt: Date.now() }
+        });
+
+        try {
+          sessionStorage.setItem('bcb_uid', uid);
+          sessionStorage.setItem('bcb_sid', sid);
+        } catch {}
+
+        msg.textContent = "Tudo certo! Redirecionando…";
+        msg.className = "msg ok";
+        location.href = 'site.html';
+      }catch(err){
+        console.error(err);
+        btn.disabled = false;
+        msg.textContent = "Não foi possível entrar. Verifique sua conexão e tente novamente.";
+        msg.className = "msg err";
+      }
+    });
+  
+// CSP telemetry binder after sign-in succeeds
+try {
+  window.__bcb_bind_csp_logger__ && window.__bcb_bind_csp_logger__(async function(evt){
+    try{
+      const { getDatabase, ref, push } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js');
+      const db = getDatabase(app);
+      const uid = (auth && auth.currentUser && auth.currentUser.uid) || (sessionStorage.getItem('bcb_uid')||null);
+      const sid = (sessionStorage.getItem('bcb_sid')||null);
+      if (!uid || !sid) return;
+      const base = `telemetria/cspViolations/${uid}/${sid}`;
+      await push(ref(db, base), evt);
+    }catch(e){ /* noop */ }
+  });
+}catch(e){ /* noop */ }
+</script>
+
+<script>
+(function(){
+  const QKEY = "__bcb_csp_queue__";
+  function queueEvent(evt){
+    try{
+      const cur = JSON.parse(localStorage.getItem(QKEY)||"[]");
+      cur.push(evt);
+      localStorage.setItem(QKEY, JSON.stringify(cur).slice(-4000));
+    }catch{}
+  }
+  function onViolation(e){
+    const evt = {
+      ts: Date.now(),
+      doc: location.pathname,
+      blocked: e.blockedURI || null,
+      violated: e.violatedDirective || null,
+      type: e.effectiveDirective || null,
+      line: e.lineNumber || null,
+      col: e.columnNumber || null,
+      src: e.sourceFile || null,
+      sample: e.sample || null,
+      dispo: (e.disposition || null)
+    };
+    if (window.__bcb_csp_log__){ window.__bcb_csp_log__(evt); } else { queueEvent(evt); }
+  }
+  window.addEventListener('securitypolicyviolation', onViolation);
+  window.__bcb_bind_csp_logger__ = function(logFn){
+    window.__bcb_csp_log__ = logFn;
+    try{
+      const cur = JSON.parse(localStorage.getItem(QKEY)||"[]");
+      if (Array.isArray(cur) && cur.length){
+        cur.forEach(evt => { try{ logFn(evt); }catch{} });
+        localStorage.removeItem(QKEY);
+      }
+    }catch{}
+  };
+})();
+</script>
+
+<script>
+(function(){ 
+  const tel = document.getElementById('telefone');
+  if(!tel) return;
+  function digits(s){ return (s||'').replace(/\D+/g,''); }
+  function fmt(v){
+    const d = digits(v);
+    if (d.length >= 11){ return d.replace(/^(\d{2})(\d{5})(\d{4}).*$/, "$1-$2-$3"); }
+    if (d.length >= 10){ return d.replace(/^(\d{2})(\d{4})(\d{4}).*$/, "$1-$2-$3"); }
+    if (d.length >= 7){ return d.replace(/^(\d{2})(\d{0,5})(\d{0,4}).*$/, "$1-$2-$3"); }
+    if (d.length >= 3){ return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2"); }
+    return d;
+  }
+  tel.setAttribute('inputmode','tel');
+  tel.setAttribute('autocomplete','tel');
+  tel.setAttribute('pattern','^(\\d{2,3}[-\\s]?)?\\d{4,5}[-\\s]?\\d{4}$');
+  tel.addEventListener('input', (e)=>{
+    const pos = e.target.selectionStart;
+    const before = e.target.value;
+    const after = fmt(before);
+    e.target.value = after;
+    try {
+      const delta = after.length - before.length;
+      e.target.setSelectionRange(Math.max(0, pos + delta), Math.max(0, pos + delta));
+    } catch {}
+  });
+})();
+</script>
+</body>
+</html>
+
+<!-- bcb-build:2025-08-24T18:44:08Z -->

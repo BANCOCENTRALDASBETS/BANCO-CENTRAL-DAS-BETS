@@ -1,0 +1,15 @@
+{
+  "name": "bcb-rbac-admin-v2",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Scripts de RBAC para definir custom claims (admin) no Firebase",
+  "scripts": {
+    "set-admin": "node set-claim-admin.js",
+    "list": "node list-users.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.5.0",
+    "yargs": "^17.7.2"
+  }
+}

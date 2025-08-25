@@ -1,0 +1,419 @@
+{
+  "__healthcheck": "ok",
+  "sac": {
+    "tickets": {
+      "-OYFDQAbhO4KMWF-Un0u": {
+        "createdAt": 1755840105370,
+        "createdBy": "GUiTmLpFvsgTiTNNaKNYvoX4gwF3",
+        "descricao": "Validação de leitura/escrita como admin",
+        "id": "-OYFDQAbhO4KMWF-Un0u",
+        "status": "fechado",
+        "titulo": "Teste RBAC"
+      },
+      "-OYFFfoQdIQF1fcoBjjB": {
+        "createdAt": 1755840697831,
+        "createdBy": "GUiTmLpFvsgTiTNNaKNYvoX4gwF3",
+        "descricao": "Criar esse projeto me animou, mas não imaginei que seria tão dificil. Mas não vou desistir.",
+        "id": "-OYFFfoQdIQF1fcoBjjB",
+        "status": "em_andamento",
+        "titulo": "Sofrencia"
+      },
+      "-OYFIV1GNujVWiO6-lG6": {
+        "createdAt": 1755841436010,
+        "createdBy": "GUiTmLpFvsgTiTNNaKNYvoX4gwF3",
+        "descricao": "num to guentando vou dormir",
+        "id": "-OYFIV1GNujVWiO6-lG6",
+        "status": "aberto",
+        "titulo": "teste guerra"
+      },
+      "-OYFJSHibHSKqr5Mlh2F": {
+        "createdAt": 1755668885344,
+        "createdBy": "seed-script",
+        "descricao": "Ticket criado pelo seed para testar o painel.",
+        "id": "-OYFJSHibHSKqr5Mlh2F",
+        "status": "fechado",
+        "titulo": "Onboarding — validação inicial"
+      },
+      "-OYFJSKD8N8w8eOW-_1I": {
+        "createdAt": 1755409685344,
+        "createdBy": "seed-script",
+        "descricao": "Exemplo de ticket já fechado.",
+        "id": "-OYFJSKD8N8w8eOW-_1I",
+        "status": "fechado",
+        "titulo": "Suporte — exemplo fechado"
+      },
+      "-OYHIhqhsTfHa-sBpkrD": {
+        "createdAt": 1755875047823,
+        "createdBy": "GUiTmLpFvsgTiTNNaKNYvoX4gwF3",
+        "descricao": "ergrerggegeergre",
+        "id": "-OYHIhqhsTfHa-sBpkrD",
+        "status": "aberto",
+        "titulo": "dhererrrthr"
+      }
+    }
+  },
+  "usuarios": {
+    "demo-uid-1": {
+      "perfil": {
+        "nome": "Usuário Demo 1",
+        "telefone": "+55 11 90000-0001"
+      }
+    },
+    "demo-uid-2": {
+      "perfil": {
+        "nome": "Usuário Demo 2",
+        "telefone": "+55 21 90000-0002"
+      }
+    },
+    "h2eEhSFEBdXQzByskoQzZGrO3mS2": {
+      "perfil": {
+        "dispositivo": {
+          "1755829232092_3kwggs": {
+            "adblock": {
+              "adblockProvavel": false
+            },
+            "appVersion": "2025.08.21-2",
+            "desempenho": {
+              "domContentLoaded": 361,
+              "loadEventEnd": 756,
+              "transferSize": 5897,
+              "ttfb": 171,
+              "type": "navigate"
+            },
+            "dispositivo": {
+              "modelo": "",
+              "tipo": "desktop"
+            },
+            "hardware": {
+              "cpuThreads": 4,
+              "memGB": 8
+            },
+            "idioma": "pt-BR",
+            "ipGeo": {
+              "asn": "AS265424",
+              "cepAprox": "30000",
+              "cidade": "Belo Horizonte",
+              "fonte": "geoip:ipapi.co",
+              "latitudeAprox": -19.9029,
+              "longitudeAprox": -43.9572,
+              "org": "Horizontes Telecom LTDA",
+              "pais": "Brazil",
+              "precisao": "aproximada-por-ip",
+              "regiao": "Minas Gerais",
+              "timezone": "America/Sao_Paulo"
+            },
+            "ipPublico": "2804:33e8:a4e:3300:e8c7:b82b:73c9:ad46",
+            "navegador": {
+              "nome": "Chrome",
+              "versao": "139.0.0.0"
+            },
+            "offsetGMT": -180,
+            "rede": {
+              "downlink": 10,
+              "effectiveType": "4g",
+              "rtt": 100,
+              "saveData": false
+            },
+            "referrer": "https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/site.html",
+            "so": {
+              "nome": "Windows",
+              "versao": "10.0"
+            },
+            "tela": {
+              "altura": 768,
+              "colorDepth": 24,
+              "largura": 1366,
+              "orientacao": "landscape-primary",
+              "pixelRatio": 1
+            },
+            "timestampInicio": "2025-08-22T02:20:32.095Z",
+            "timezone": "America/Sao_Paulo",
+            "utm": {
+              "campaign": "",
+              "content": "",
+              "medium": "",
+              "source": "",
+              "term": ""
+            },
+            "viewport": {
+              "altura": 641,
+              "largura": 1366
+            }
+          },
+          "1755829235336_wn4hla": {
+            "adblock": {
+              "adblockProvavel": false
+            },
+            "appVersion": "2025.08.21-2",
+            "desempenho": {
+              "domContentLoaded": 218,
+              "loadEventEnd": 220,
+              "ttfb": 2,
+              "type": "navigate"
+            },
+            "dispositivo": {
+              "modelo": "",
+              "tipo": "desktop"
+            },
+            "hardware": {
+              "cpuThreads": 4,
+              "memGB": 8
+            },
+            "idioma": "pt-BR",
+            "ipGeo": {
+              "asn": "AS265424",
+              "cepAprox": "30000",
+              "cidade": "Belo Horizonte",
+              "fonte": "geoip:ipapi.co",
+              "latitudeAprox": -19.9029,
+              "longitudeAprox": -43.9572,
+              "org": "Horizontes Telecom LTDA",
+              "pais": "Brazil",
+              "precisao": "aproximada-por-ip",
+              "regiao": "Minas Gerais",
+              "timezone": "America/Sao_Paulo"
+            },
+            "ipPublico": "2804:33e8:a4e:3300:e8c7:b82b:73c9:ad46",
+            "navegador": {
+              "nome": "Chrome",
+              "versao": "139.0.0.0"
+            },
+            "offsetGMT": -180,
+            "rede": {
+              "downlink": 10,
+              "effectiveType": "4g",
+              "rtt": 100,
+              "saveData": false
+            },
+            "referrer": "",
+            "so": {
+              "nome": "Windows",
+              "versao": "10.0"
+            },
+            "tela": {
+              "altura": 768,
+              "colorDepth": 24,
+              "largura": 1366,
+              "orientacao": "landscape-primary",
+              "pixelRatio": 1
+            },
+            "timestampInicio": "2025-08-22T02:20:35.389Z",
+            "timezone": "America/Sao_Paulo",
+            "utm": {
+              "campaign": "",
+              "content": "",
+              "medium": "",
+              "source": "",
+              "term": ""
+            },
+            "viewport": {
+              "altura": 641,
+              "largura": 1366
+            }
+          }
+        },
+        "ultimoAcesso": {
+          "geo": {
+            "cidade": "Belo Horizonte",
+            "pais": "Brazil",
+            "regiao": "Minas Gerais",
+            "timezone": "America/Sao_Paulo"
+          },
+          "ip": "2804:33e8:a4e:3300:e8c7:b82b:73c9:ad46",
+          "ipMascarado": "2804:33e8:a4e:3300:e8c7:b82b:73c9:ad46",
+          "ts": "2025-08-22T02:20:35.989Z"
+        }
+      }
+    },
+    "qihmCLG3ojhEzvbowj8QrOg4LRq2": {
+      "acoes": {
+        "-OYEZbxF1G0sSDT9GRxw": {
+          "dataHora": "21/08/2025 23:19:07",
+          "link": "https://56bx2.com/?pid=1622043487",
+          "tipo": "acesso_link"
+        }
+      },
+      "comentarios": {
+        "https_56bx2_com_pid_1622043487": {
+          "-OYEZd2E_kmYZpTTOafs": {
+            "comentario": "12345",
+            "dataHora": "21/08/2025 23:19:11",
+            "link": "https://56bx2.com/?pid=1622043487"
+          },
+          "-OYEZdeMsIojEPgWDA-p": {
+            "comentario": "12345",
+            "dataHora": "21/08/2025 23:19:14",
+            "link": "https://56bx2.com/?pid=1622043487"
+          },
+          "-OYEZdi5IDP9Zsn99zvi": {
+            "comentario": "12345",
+            "dataHora": "21/08/2025 23:19:14",
+            "link": "https://56bx2.com/?pid=1622043487"
+          }
+        }
+      },
+      "perfil": {
+        "dataCadastro": "2025-08-22T02:19:02.747Z",
+        "dispositivo": {
+          "1755829098451_uszo80": {
+            "adblock": {
+              "adblockProvavel": false
+            },
+            "appVersion": "2025.08.21-2",
+            "desempenho": {
+              "domContentLoaded": 1212,
+              "loadEventEnd": 1941,
+              "transferSize": 5897,
+              "ttfb": 194,
+              "type": "navigate"
+            },
+            "dispositivo": {
+              "modelo": "",
+              "tipo": "desktop"
+            },
+            "hardware": {
+              "cpuThreads": 4,
+              "memGB": 8
+            },
+            "idioma": "pt-BR",
+            "ipGeo": {
+              "asn": "AS265424",
+              "cepAprox": "30000",
+              "cidade": "Belo Horizonte",
+              "fonte": "geoip:ipapi.co",
+              "latitudeAprox": -19.9029,
+              "longitudeAprox": -43.9572,
+              "org": "Horizontes Telecom LTDA",
+              "pais": "Brazil",
+              "precisao": "aproximada-por-ip",
+              "regiao": "Minas Gerais",
+              "timezone": "America/Sao_Paulo"
+            },
+            "ipPublico": "2804:33e8:a4e:3300:e8c7:b82b:73c9:ad46",
+            "navegador": {
+              "nome": "Chrome",
+              "versao": "139.0.0.0"
+            },
+            "offsetGMT": -180,
+            "rede": {
+              "downlink": 10,
+              "effectiveType": "4g",
+              "rtt": 100,
+              "saveData": false
+            },
+            "referrer": "",
+            "so": {
+              "nome": "Windows",
+              "versao": "10.0"
+            },
+            "tela": {
+              "altura": 768,
+              "colorDepth": 24,
+              "largura": 1366,
+              "orientacao": "landscape-primary",
+              "pixelRatio": 1
+            },
+            "timestampInicio": "2025-08-22T02:18:18.492Z",
+            "timezone": "America/Sao_Paulo",
+            "utm": {
+              "campaign": "",
+              "content": "",
+              "medium": "",
+              "source": "",
+              "term": ""
+            },
+            "viewport": {
+              "altura": 480,
+              "largura": 1354
+            }
+          },
+          "1755829144180_jclrud": {
+            "adblock": {
+              "adblockProvavel": false
+            },
+            "appVersion": "2025.08.21-2",
+            "desempenho": {
+              "domContentLoaded": 243,
+              "loadEventEnd": 244,
+              "transferSize": 5625,
+              "ttfb": 155,
+              "type": "navigate"
+            },
+            "dispositivo": {
+              "modelo": "",
+              "tipo": "desktop"
+            },
+            "hardware": {
+              "cpuThreads": 4,
+              "memGB": 8
+            },
+            "idioma": "pt-BR",
+            "ipGeo": {
+              "asn": "AS265424",
+              "cepAprox": "30000",
+              "cidade": "Belo Horizonte",
+              "fonte": "geoip:ipapi.co",
+              "latitudeAprox": -19.9029,
+              "longitudeAprox": -43.9572,
+              "org": "Horizontes Telecom LTDA",
+              "pais": "Brazil",
+              "precisao": "aproximada-por-ip",
+              "regiao": "Minas Gerais",
+              "timezone": "America/Sao_Paulo"
+            },
+            "ipPublico": "2804:33e8:a4e:3300:e8c7:b82b:73c9:ad46",
+            "navegador": {
+              "nome": "Chrome",
+              "versao": "139.0.0.0"
+            },
+            "offsetGMT": -180,
+            "rede": {
+              "downlink": 10,
+              "effectiveType": "4g",
+              "rtt": 100,
+              "saveData": false
+            },
+            "referrer": "https://bancocentraldasbets.github.io/BANCO-CENTRAL-DAS-BETS/",
+            "so": {
+              "nome": "Windows",
+              "versao": "10.0"
+            },
+            "tela": {
+              "altura": 768,
+              "colorDepth": 24,
+              "largura": 1366,
+              "orientacao": "landscape-primary",
+              "pixelRatio": 1
+            },
+            "timestampInicio": "2025-08-22T02:19:04.182Z",
+            "timezone": "America/Sao_Paulo",
+            "utm": {
+              "campaign": "",
+              "content": "",
+              "medium": "",
+              "source": "",
+              "term": ""
+            },
+            "viewport": {
+              "altura": 480,
+              "largura": 1354
+            }
+          }
+        },
+        "nome": "enio",
+        "telefone": "22-22222-2222",
+        "ultimoAcesso": {
+          "geo": {
+            "cidade": "Belo Horizonte",
+            "pais": "Brazil",
+            "regiao": "Minas Gerais",
+            "timezone": "America/Sao_Paulo"
+          },
+          "ip": "2804:33e8:a4e:3300:e8c7:b82b:73c9:ad46",
+          "ipMascarado": "2804:33e8:a4e:3300:e8c7:b82b:73c9:ad46",
+          "ts": "2025-08-22T02:19:04.780Z"
+        }
+      }
+    }
+  }
+}
