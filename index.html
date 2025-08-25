@@ -58,9 +58,9 @@
     .overlay[aria-hidden="false"]{ display:flex; animation: fadeIn .22s ease }
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     .modal{
-      width:min(400px,92vw);               /* menor ainda */
+      width:min(400px,92vw);
       background:linear-gradient(180deg,#0c0e2b,#0b0c25);
-      border:1px solid #2f336e; border-radius:16px; padding:14px; /* menos padding */
+      border:1px solid #2f336e; border-radius:16px; padding:14px;
       color:#fff; box-shadow:0 20px 60px rgba(0,0,0,.6);
       transform: scale(.98); animation: pop .18s ease forwards;
     }
@@ -70,12 +70,11 @@
     .subtitle{ margin:0 0 10px; font-size:.9rem; color:#b9c0ff; text-align:left }
     .subtitle a{ color:#f4f945; font-weight:800; text-decoration:none }
 
-    .field{ margin:6px 0 }                 /* mais próximo */
+    .field{ margin:6px 0 }
     .control{
-      position:relative;
-      display:flex; align-items:center; gap:10px;
+      position:relative; display:flex; align-items:center; gap:10px;
       background:#0f1522; border:1px solid var(--line);
-      border-radius:10px; padding:8px 10px; /* mais compacto */
+      border-radius:10px; padding:8px 10px;
       transition:border-color .15s ease, box-shadow .15s ease, background .15s ease, transform .15s ease;
     }
     .control:focus-within{ border-color:#3b8cff; box-shadow:0 0 0 3px rgba(59,140,255,.15) }
@@ -89,7 +88,6 @@
 
     .input{ flex:1 1 auto; background:transparent; border:0; outline:none; color:#e7eef7; font-size:1rem }
     .input::placeholder{ color:#7f8aa4 }
-
     .eye{
       position:absolute; right:8px; top:50%; transform:translateY(-50%);
       width:22px; height:22px; border:0; background:transparent; cursor:pointer; opacity:.9;
@@ -174,10 +172,8 @@
         <div id="helpRegPass2" class="help"></div>
       </div>
 
-      <!-- Captcha centralizado (GeeTest ou fallback) -->
-      <div class="captcha-box">
-        <div id="regCaptcha"></div>
-      </div>
+      <!-- Captcha (GeeTest ou fallback) -->
+      <div class="captcha-box"><div id="regCaptcha"></div></div>
       <div id="regCaptchaFallback" class="captcha-box hidden">
         <div class="fallback-box">
           <label><input type="checkbox" id="regCbHuman"> Não sou um robô</label>
@@ -222,9 +218,7 @@
         </div>
       </div>
 
-      <div class="captcha-box">
-        <div id="loginCaptcha"></div>
-      </div>
+      <div class="captcha-box"><div id="loginCaptcha"></div></div>
       <div id="loginCaptchaFallback" class="captcha-box hidden">
         <div class="fallback-box">
           <label><input type="checkbox" id="loginCbHuman"> Não sou um robô</label>
@@ -241,7 +235,7 @@
     </div>
   </div>
 
-  <!-- Modal: Verificação de Idade -->
+  <!-- Verificação de Idade -->
   <div id="ageOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
     <div id="ageVerify" class="modal" style="text-align:center">
       <h2 id="ageTitle" class="title" style="text-align:center;margin-bottom:10px">VOCÊ TEM MAIS DE 18 ANOS?</h2>
@@ -264,9 +258,11 @@
   <script>
     (function(){
       /* Persistência de Idade */
-      const KEY = "bcb_age_verified_v1";
+      const AGE_KEY = "bcb_age_verified_v1";
+      const PHONE_KEY = "bcb_last_phone_v1";   // <- novo: persistência de telefone
+
       const qs = new URLSearchParams(location.search);
-      if (qs.get("resetAge") === "1"){ try{ localStorage.removeItem(KEY);}catch{} }
+      if (qs.get("resetAge") === "1"){ try{ localStorage.removeItem(AGE_KEY);}catch{} }
 
       const ageOverlay = document.getElementById('ageOverlay');
       const ageVerify  = document.getElementById('ageVerify');
@@ -276,7 +272,7 @@
       const ageExit= document.getElementById('ageExit');
 
       let ageSaved = null;
-      try{ ageSaved = (localStorage.getItem(KEY)||"").trim(); }catch{}
+      try{ ageSaved = (localStorage.getItem(AGE_KEY)||"").trim(); }catch{}
 
       function showAgeVerify(){ ageOverlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
       function showUnderage(){  ageOverlay.setAttribute('aria-hidden','false'); ageVerify.classList.add('hidden'); ageUnder.classList.remove('hidden'); document.body.style.overflow='hidden'; }
@@ -288,8 +284,8 @@
       }
 
       let pendingAction = null;
-      ageYes.addEventListener('click', ()=>{ try{ localStorage.setItem(KEY,'yes'); }catch{} ageOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if (pendingAction === 'login') openLogin(); if (pendingAction === 'reg') openReg(); pendingAction=null; });
-      ageNo.addEventListener('click',  ()=>{ try{ localStorage.setItem(KEY,'no'); }catch{} showUnderage(); });
+      ageYes.addEventListener('click', ()=>{ try{ localStorage.setItem(AGE_KEY,'yes'); }catch{} ageOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if (pendingAction === 'login') openLogin(); if (pendingAction === 'reg') openReg(); pendingAction=null; });
+      ageNo.addEventListener('click',  ()=>{ try{ localStorage.setItem(AGE_KEY,'no'); }catch{} showUnderage(); });
       ageExit.addEventListener('click', ()=>{ if (history.length>1) history.back(); else if (document.referrer) location.href=document.referrer; else location.href='https://www.google.com'; });
 
       /* Abertura dos modais */
@@ -313,12 +309,16 @@
         loginOverlay.setAttribute('aria-hidden','false');
         document.body.style.overflow='hidden';
         mountLoginCaptcha();
+        // autofill do telefone salvo
+        const t = getSavedPhone(); if (t) { loginTel.value = fmtTelStrict(t); refreshLogin(); }
         setTimeout(()=>document.getElementById('loginTel').focus(), 0);
       }
       function openReg(){
         regOverlay.setAttribute('aria-hidden','false');
         document.body.style.overflow='hidden';
         mountRegCaptcha();
+        // autofill do telefone salvo
+        const t = getSavedPhone(); if (t) { regTel.value = fmtTelStrict(t); refreshReg(); }
         setTimeout(()=>document.getElementById('regTel').focus(), 0);
       }
       function closeLogin(){ loginOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow='' }
@@ -335,12 +335,22 @@
       function digits(s){ return (s||'').replace(/\D+/g,''); }
       const VALID_DDD = new Set([11,12,13,14,15,16,17,18,19,21,22,24,27,28,31,32,33,34,35,37,38,41,42,43,44,45,46,47,48,49,51,53,54,55,61,62,63,64,65,66,67,68,69,71,73,74,75,77,79,81,82,83,84,85,86,87,88,89,91,92,93,94,95,96,97,98,99]);
 
+      // Normaliza os dígitos do telefone garantindo o '9' após o DDD
+      function normalizeMobileDigits(raw){
+        let d = digits(raw);
+        if (d.length > 2 && d[2] !== '9'){ // injeta o 9 na terceira posição
+          d = d.slice(0,2) + '9' + d.slice(2);
+        }
+        return d.slice(0,11); // DDD(2) + 9 + 8 = 11
+      }
+      // Formata como XX-9XXXX-XXXX com auto-hífens
       function fmtTelStrict(v){
-        const d = digits(v).slice(0,11);
+        const d = normalizeMobileDigits(v);
         if (d.length <= 2) return d;
         if (d.length <= 7) return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2");
         return d.replace(/^(\d{2})(\d{5})(\d{0,4}).*$/, "$1-$2-$3");
       }
+      // Valida padrão e DDD
       function validTelStrict(v){
         const m = /^(\d{2})-9\d{4}-\d{4}$/.exec((v||'').trim());
         if (!m) return false;
@@ -384,10 +394,13 @@
 
       function setShake(el){ el.classList.add('shake'); el.addEventListener('animationend', ()=> el.classList.remove('shake'), {once:true}); }
 
-      // Máscara + validação
+      // Máscara + validação + persistência
       regTel.addEventListener('input', e=>{
-        const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelStrict(before);
-        e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{}
+        const pos=e.target.selectionStart, before=e.target.value;
+        const after=fmtTelStrict(before);
+        e.target.value=after;
+        try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{}
+        savePhone(after);
         refreshReg();
       });
       regPass.addEventListener('input', refreshReg);
@@ -482,8 +495,11 @@
       let loginCaptchaOK=false, loginFallbackOK=false;
 
       loginTel.addEventListener('input', e=>{
-        const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelStrict(before);
-        e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{}
+        const pos=e.target.selectionStart, before=e.target.value;
+        const after=fmtTelStrict(before);
+        e.target.value=after;
+        try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{}
+        savePhone(after);
         refreshLogin();
       });
       loginPass.addEventListener('input', refreshLogin);
@@ -542,6 +558,17 @@
         loginMsg.className = "help ok";
       });
       document.getElementById('btnLoginClose').addEventListener('click', ()=>{ loginOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
+
+      /* Persistência de telefone (helpers) */
+      function savePhone(formatted){
+        try{ localStorage.setItem(PHONE_KEY, formatted || ""); }catch{}
+      }
+      function getSavedPhone(){
+        try{
+          const v = localStorage.getItem(PHONE_KEY) || "";
+          return v;
+        }catch{ return ""; }
+      }
 
       /* Expor */
       window.mountLoginCaptcha = mountLoginCaptcha;
