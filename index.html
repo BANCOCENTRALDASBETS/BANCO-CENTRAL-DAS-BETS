@@ -18,181 +18,186 @@
     html,body{ height:100% }
     body{
       margin:0; color:var(--fg);
-      font:16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       background:
         radial-gradient(900px 600px at 10% -10%, rgba(122,230,255,.12), transparent 60%),
         radial-gradient(900px 600px at 100% 0, rgba(25,224,122,.10), transparent 50%),
         linear-gradient(180deg, var(--bg), var(--bg2));
       display:flex; align-items:center; justify-content:center; padding:20px;
     }
-    .wrap{ width:min(560px, 96vw); }
-    .card{
+
+    /* ====== Card inicial com botões ====== */
+    .wrap{ width:min(640px, 96vw); }
+    .hero{
       background: var(--card);
       border:1px solid var(--line);
-      border-radius: 18px;
-      box-shadow: 0 18px 40px rgba(0,0,0,.45);
-      overflow:hidden;
+      border-radius:18px;
+      box-shadow:0 18px 40px rgba(0,0,0,.45);
+      padding:22px 20px;
+      text-align:center;
     }
-    .card-head{
-      padding:16px 18px 10px;
-      background: linear-gradient(180deg, rgba(255,227,106,.12), transparent);
-      border-bottom:1px solid var(--line);
+    .brand{
+      display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px;
+      filter: drop-shadow(0 0 12px rgba(122,230,255,.2));
     }
-    .title{
-      margin:0;
-      font-weight:900;
-      font-size:1.45rem;
-      letter-spacing:.2px;
-      text-align:left;
+    .logo{ width:44px; height:44px; border-radius:50%; background:radial-gradient(circle at 40% 35%, #ffd76a, #ffbf36 60%, #a86c00); border:2px solid #ffe6a8; }
+    h1{ margin:0; font-size:1.3rem }
+    .hero .row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:12px }
+    .btn{
+      flex:1 1 220px; padding:14px 18px; border-radius:14px; border:0; cursor:pointer;
+      font-weight:900; text-transform:uppercase; letter-spacing:.3px;
+      box-shadow:0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35);
+      transition:transform .08s ease, box-shadow .15s ease, filter .15s ease;
     }
-    .subtitle{ margin:.25rem 0 0; color:var(--muted); font-size:.95rem; text-align:left }
+    .btn:active{ transform:translateY(2px); box-shadow:0 8px 0 rgba(0,0,0,.28), 0 14px 24px rgba(0,0,0,.32) }
+    .btn-green{ background:linear-gradient(180deg,var(--neon-green),var(--neon-green-2)); color:#032a17 }
+    .btn-blue{  background:linear-gradient(180deg,#67d8ff,var(--neon-blue)); color:#062233 }
+    .hint{ color:var(--muted); font-size:.9rem; margin-top:8px }
+
+    /* ====== Overlay/Modal ====== */
+    .overlay{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.72); z-index:9999; padding:12px }
+    .overlay[aria-hidden="false"]{ display:flex }
+    .modal{
+      width:min(520px,96vw);
+      background:linear-gradient(180deg,#0c0e2b,#0b0c25);
+      border:1px solid #2f336e; border-radius:20px; padding:20px;
+      color:#fff; box-shadow:0 20px 60px rgba(0,0,0,.6);
+    }
+    .title{ margin:0 0 4px; font-size:clamp(20px,3.5vw,26px); font-weight:900; text-align:left }
+    .subtitle{ margin:0 0 16px; font-size:.95rem; color:#b9c0ff; text-align:left }
     .subtitle a{ color:#f4f945; font-weight:800; text-decoration:none }
-    .content{ padding:18px }
+
     .field{ margin:12px 0 }
     .control{
       display:flex; align-items:center; gap:10px;
       background:#0f1522; border:1px solid var(--line);
       border-radius:12px; padding:10px 12px;
-      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+      transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
     }
-    .control:focus-within{ border-color:#3b8cff; box-shadow:0 0 0 3px rgba(59,140,255,.15); }
-    .control.invalid{ border-color: var(--neon-red); background:#2a0f16; box-shadow:0 0 0 3px rgba(255,68,90,.15); }
-
-    .icon{
-      width:18px; height:18px; flex:0 0 18px;
-      opacity:.9;
-      background-repeat:no-repeat; background-position:center; background-size:18px 18px;
-      filter: drop-shadow(0 0 2px rgba(0,0,0,.4));
-    }
-    .icon-phone{ background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="%23a7b4cf" viewBox="0 0 16 16"><path d="M3.654 1.328A.678.678 0 0 1 4.287 1h1.78c.27 0 .513.164.6.412l.86 2.487a.678.678 0 0 1-.167.705L6.29 5.969a11.058 11.058 0 0 0 3.74 3.74l1.365-1.07a.678.678 0 0 1 .705-.167l2.487.86a.678.678 0 0 1 .412.6v1.78a.678.678 0 0 1-.328.58l-1.2.8a2.678 2.678 0 0 1-2.79.053 17.478 17.478 0 0 1-7.63-7.63 2.678 2.678 0 0 1 .052-2.79l.8-1.2z"/></svg>'); }
-    .icon-key{ background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="%23a7b4cf" viewBox="0 0 16 16"><path d="M3 8a5 5 0 1 1 9.584 1.647l2.262 2.262a1 1 0 0 1 .154 1.274l-.085.11-1.414 1.414a1 1 0 0 1-.707.293H11v-2H9v-2H6.647A5 5 0 0 1 3 8zm5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>'); }
-
-    .input{
-      flex:1 1 auto; background:transparent; border:0; outline:none; color:var(--fg);
-      font-size:1rem; letter-spacing:.2px;
-    }
+    .control:focus-within{ border-color:#3b8cff; box-shadow:0 0 0 3px rgba(59,140,255,.15) }
+    .control.invalid{ border-color:var(--neon-red); background:#2a0f16; box-shadow:0 0 0 3px rgba(255,68,90,.15) }
+    .icon{ width:18px; height:18px; flex:0 0 18px; opacity:.9; background-repeat:no-repeat; background-position:center; background-size:18px 18px; filter:drop-shadow(0 0 2px rgba(0,0,0,.4)) }
+    .icon-phone{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="%23a7b4cf" viewBox="0 0 16 16"><path d="M3.654 1.328A.678.678 0 0 1 4.287 1h1.78c.27 0 .513.164.6.412l.86 2.487a.678.678 0 0 1-.167.705L6.29 5.969a11.058 11.058 0 0 0 3.74 3.74l1.365-1.07a.678.678 0 0 1 .705-.167l2.487.86a.678.678 0 0 1 .412.6v1.78a.678.678 0 0 1-.328.58l-1.2.8a2.678 2.678 0 0 1-2.79.053 17.478 17.478 0 0 1-7.63-7.63 2.678 2.678 0 0 1 .052-2.79l.8-1.2z"/></svg>') }
+    .icon-key{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="%23a7b4cf" viewBox="0 0 16 16"><path d="M3 8a5 5 0 1 1 9.584 1.647l2.262 2.262a1 1 0 0 1 .154 1.274l-.085.11-1.414 1.414a1 1 0 0 1-.707.293H11v-2H9v-2H6.647A5 5 0 0 1 3 8zm5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>') }
+    .input{ flex:1 1 auto; background:transparent; border:0; outline:none; color:#e7eef7; font-size:1rem }
     .input::placeholder{ color:#7f8aa4 }
+
     .help{ font-size:.86rem; margin-top:6px; min-height:1.2em }
     .help.err{ color:#ff8b8b }
-    .help.warn{ color:#ffd089 }
     .help.ok{ color:#87efb3 }
 
-    .actions{ display:flex; gap:10px; margin-top:18px }
-    .btn{
-      flex:1; padding:12px 16px; border-radius:14px; border:0; cursor:pointer;
-      font-weight:900; text-transform:uppercase; letter-spacing:.3px;
-      box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35);
-      transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
-    }
-    .btn:disabled{ opacity:.5; cursor:not-allowed; filter:grayscale(.1); }
-    .btn:active{ transform: translateY(2px); box-shadow: 0 8px 0 rgba(0,0,0,.28), 0 14px 24px rgba(0,0,0,.32); }
-    .btn-green{ background: linear-gradient(180deg, var(--neon-green), var(--neon-green-2)); color:#032a17; }
-    .btn-blue{  background: linear-gradient(180deg, #67d8ff, var(--neon-blue)); color:#062233; }
-    .btn-red{   background: linear-gradient(180deg, var(--neon-red), var(--neon-red-2)); color:#fff; }
-
-    /* Overlays de idade */
-    .overlay{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.72); z-index:9999; padding:12px; }
-    .overlay[aria-hidden="false"]{ display:flex; }
-    .modal{ width:min(520px, 96vw); background: linear-gradient(180deg, #0c0e2b, #0b0c25); border:1px solid #2f336e; border-radius:20px; padding:20px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.6); color:#fff; }
-    .title-modal{ margin:0 0 12px; font-size:clamp(18px, 3.5vw, 24px); font-weight:900; }
-    .row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap }
-    .btn-sm{ padding:12px 16px; border-radius:14px; border:0; cursor:pointer; font-weight:800; text-transform:uppercase; letter-spacing:.3px; flex:1 1 180px; }
-
-    .hidden{ display:none !important; }
+    .actions{ display:flex; gap:10px; margin-top:14px }
+    .btn-sm{ padding:12px 16px; border-radius:14px; border:0; cursor:pointer; font-weight:900; text-transform:uppercase; letter-spacing:.3px; flex:1 1 180px;
+      box-shadow:0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35) }
+    .btn-sm:disabled{ opacity:.5; cursor:not-allowed; filter:grayscale(.1) }
+    .sm-green{ background:linear-gradient(180deg,var(--neon-green),var(--neon-green-2)); color:#032a17 }
+    .sm-blue{  background:linear-gradient(180deg,#67d8ff,var(--neon-blue)); color:#062233 }
+    .sm-red{   background:linear-gradient(180deg,var(--neon-red),var(--neon-red-2)); color:#fff }
+    .hidden{ display:none !important }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <!-- Card de Cadastro -->
-    <div class="card" id="cadCard">
-      <div class="card-head">
-        <h2 class="title">Crie uma conta</h2>
-        <div class="subtitle">já tem uma conta? <a href="#" id="linkEntrar">Entrar</a></div>
+    <div class="hero">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>Banco Central das Bets — Portal</h1>
       </div>
-      <div class="content">
-        <!-- Telefone (placeholder-only) -->
-        <div class="field">
-          <div class="control" id="ctlRegTel">
-            <span class="icon icon-phone" aria-hidden="true"></span>
-            <input id="regTel" class="input" type="tel" placeholder="Telefone" inputmode="tel" autocomplete="tel" />
-          </div>
-          <div id="helpRegTel" class="help"></div>
-        </div>
-
-        <!-- Senha -->
-        <div class="field">
-          <div class="control" id="ctlRegPass">
-            <span class="icon icon-key" aria-hidden="true"></span>
-            <input id="regPass" class="input" type="password" placeholder="Senha" autocomplete="new-password" />
-          </div>
-          <div id="helpRegPass" class="help"></div>
-        </div>
-
-        <!-- Confirmar Senha -->
-        <div class="field">
-          <div class="control" id="ctlRegPass2">
-            <span class="icon icon-key" aria-hidden="true"></span>
-            <input id="regPass2" class="input" type="password" placeholder="Confirmar senha" autocomplete="new-password" />
-          </div>
-          <div id="helpRegPass2" class="help"></div>
-        </div>
-
-        <!-- Captcha (GeeTest) -->
-        <div id="regCaptcha"></div>
-
-        <div class="actions">
-          <button id="btnRegistrar" class="btn btn-blue" disabled>Registrar</button>
-        </div>
-
-        <div id="regMsg" class="help"></div>
+      <div class="row">
+        <button id="btnOpenLogin" class="btn btn-green">Entrar</button>
+        <button id="btnOpenReg"   class="btn btn-blue">Cadastro</button>
       </div>
-    </div>
-
-    <!-- Card de Entrar -->
-    <div class="card hidden" id="loginCard">
-      <div class="card-head">
-        <h2 class="title">Entrar</h2>
-        <div class="subtitle">ainda não tem conta? <a href="#" id="linkCriar">Criar</a></div>
-      </div>
-      <div class="content">
-        <div class="field">
-          <div class="control" id="ctlLoginTel">
-            <span class="icon icon-phone" aria-hidden="true"></span>
-            <input id="loginTel" class="input" type="tel" placeholder="Telefone" inputmode="tel" autocomplete="tel" />
-          </div>
-          <div id="helpLoginTel" class="help"></div>
-        </div>
-
-        <div class="field">
-          <div class="control" id="ctlLoginPass">
-            <span class="icon icon-key" aria-hidden="true"></span>
-            <input id="loginPass" class="input" type="password" placeholder="Senha" autocomplete="current-password" />
-          </div>
-          <div id="helpLoginPass" class="help"></div>
-        </div>
-
-        <div id="loginCaptcha"></div>
-
-        <div class="actions">
-          <button id="btnDoLogin" class="btn btn-green" disabled>Entrar</button>
-        </div>
-      </div>
+      <div class="hint">Escolha Entrar para acessar sua conta ou Cadastro para criar uma nova.</div>
     </div>
   </div>
 
-  <!-- Verificação de Idade (persistente) -->
+  <!-- ===== Modal: Cadastro ===== -->
+  <div id="regOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h2 class="title">Crie uma conta</h2>
+      <p class="subtitle">já tem uma conta? <a href="#" id="regGoLogin">Entrar</a></p>
+
+      <div class="field">
+        <div class="control" id="ctlRegTel">
+          <span class="icon icon-phone" aria-hidden="true"></span>
+          <input id="regTel" class="input" type="tel" placeholder="Telefone" inputmode="tel" autocomplete="tel" />
+        </div>
+        <div id="helpRegTel" class="help"></div>
+      </div>
+
+      <div class="field">
+        <div class="control" id="ctlRegPass">
+          <span class="icon icon-key" aria-hidden="true"></span>
+          <input id="regPass" class="input" type="password" placeholder="Senha" autocomplete="new-password" />
+        </div>
+        <div id="helpRegPass" class="help"></div>
+      </div>
+
+      <div class="field">
+        <div class="control" id="ctlRegPass2">
+          <span class="icon icon-key" aria-hidden="true"></span>
+          <input id="regPass2" class="input" type="password" placeholder="Confirmar senha" autocomplete="new-password" />
+        </div>
+        <div id="helpRegPass2" class="help"></div>
+      </div>
+
+      <div id="regCaptcha"></div>
+
+      <div class="actions">
+        <button id="btnRegistrar" class="btn-sm sm-blue" disabled>Registrar</button>
+        <button id="btnRegClose" class="btn-sm sm-red">Fechar</button>
+      </div>
+
+      <div id="regMsg" class="help"></div>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Login (mesmo estilo, placeholders) ===== -->
+  <div id="loginOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h2 class="title">Entrar</h2>
+      <p class="subtitle">ainda não tem conta? <a href="#" id="loginGoReg">Criar</a></p>
+
+      <div class="field">
+        <div class="control" id="ctlLoginTel">
+          <span class="icon icon-phone" aria-hidden="true"></span>
+          <input id="loginTel" class="input" type="tel" placeholder="Telefone" inputmode="tel" autocomplete="tel" />
+        </div>
+        <div id="helpLoginTel" class="help"></div>
+      </div>
+
+      <div class="field">
+        <div class="control" id="ctlLoginPass">
+          <span class="icon icon-key" aria-hidden="true"></span>
+          <input id="loginPass" class="input" type="password" placeholder="Senha" autocomplete="current-password" />
+        </div>
+        <div id="helpLoginPass" class="help"></div>
+      </div>
+
+      <div id="loginCaptcha"></div>
+
+      <div class="actions">
+        <button id="btnDoLogin" class="btn-sm sm-green" disabled>Entrar</button>
+        <button id="btnLoginClose" class="btn-sm sm-red">Fechar</button>
+      </div>
+
+      <div id="loginMsg" class="help"></div>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Verificação de Idade (persistente) ===== -->
   <div id="ageOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
-    <div id="ageVerify" class="modal">
-      <h2 id="ageTitle" class="title-modal">VOCÊ TEM MAIS DE 18 ANOS?</h2>
-      <div class="row">
-        <button id="ageYes" class="btn-sm btn-green">SIM</button>
-        <button id="ageNo"  class="btn-sm btn-red">NÃO</button>
+    <div id="ageVerify" class="modal" style="text-align:center">
+      <h2 id="ageTitle" class="title" style="text-align:center;margin-bottom:10px">VOCÊ TEM MAIS DE 18 ANOS?</h2>
+      <div class="actions" style="margin-top:0">
+        <button id="ageYes" class="btn-sm sm-green">SIM</button>
+        <button id="ageNo"  class="btn-sm sm-red">NÃO</button>
       </div>
     </div>
-    <div id="ageUnder" class="modal hidden" aria-live="assertive">
-      <h2 class="title-modal">DESCULPE — USO EXCLUSIVO PARA MAIORES DE 18 ANOS</h2>
-      <div class="row">
-        <button id="ageExit" class="btn-sm btn-red">SAIR</button>
+    <div id="ageUnder" class="modal hidden" aria-live="assertive" style="text-align:center">
+      <h2 class="title" style="text-align:center;margin-bottom:10px">DESCULPE — USO EXCLUSIVO PARA MAIORES DE 18 ANOS</h2>
+      <div class="actions" style="margin-top:0">
+        <button id="ageExit" class="btn-sm sm-red">SAIR</button>
       </div>
     </div>
   </div>
@@ -202,10 +207,11 @@
 
   <script>
     (function(){
-      /* ========= Persistência de idade ========= */
+      /* ======= Persistência de Idade + fila de ação ======= */
       const KEY = "bcb_age_verified_v1";
       const qs = new URLSearchParams(location.search);
       if (qs.get("resetAge") === "1"){ try{ localStorage.removeItem(KEY);}catch{} }
+
       const ageOverlay = document.getElementById('ageOverlay');
       const ageVerify  = document.getElementById('ageVerify');
       const ageUnder   = document.getElementById('ageUnder');
@@ -213,50 +219,87 @@
       const ageNo  = document.getElementById('ageNo');
       const ageExit= document.getElementById('ageExit');
 
-      let saved = null;
-      try { saved = (localStorage.getItem(KEY)||"").trim(); } catch {}
-      function openAgeVerify(){ ageOverlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
-      function openUnderage(){ ageOverlay.setAttribute('aria-hidden','false'); ageVerify.classList.add('hidden'); ageUnder.classList.remove('hidden'); document.body.style.overflow='hidden'; }
+      let ageSaved = null;
+      try{ ageSaved = (localStorage.getItem(KEY)||"").trim(); }catch{}
 
-      if (saved === 'no') openUnderage();
-      else if (saved !== 'yes'){ const first = () => { openAgeVerify(); document.removeEventListener('click', first); }; document.addEventListener('click', first); }
-      ageYes.addEventListener('click', ()=>{ try{ localStorage.setItem(KEY, 'yes'); }catch{} ageOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
-      ageNo.addEventListener('click',  ()=>{ try{ localStorage.setItem(KEY, 'no'); }catch{} openUnderage(); });
+      function showAgeVerify(){ ageOverlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+      function showUnderage(){  ageOverlay.setAttribute('aria-hidden','false'); ageVerify.classList.add('hidden'); ageUnder.classList.remove('hidden'); document.body.style.overflow='hidden'; }
+
+      if (ageSaved === 'no'){ showUnderage(); }
+      else if (ageSaved !== 'yes'){
+        const first = () => { showAgeVerify(); document.removeEventListener('click', first); };
+        document.addEventListener('click', first);
+      }
+
+      ageYes.addEventListener('click', ()=>{ try{ localStorage.setItem(KEY,'yes'); }catch{} ageOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if (pendingAction === 'login') openLogin(); if (pendingAction === 'reg') openReg(); pendingAction=null; });
+      ageNo.addEventListener('click',  ()=>{ try{ localStorage.setItem(KEY,'no'); }catch{} showUnderage(); });
       ageExit.addEventListener('click', ()=>{ if (history.length>1) history.back(); else if (document.referrer) location.href=document.referrer; else location.href='https://www.google.com'; });
 
-      /* ========= Troca entre Cadastro/Entrar ========= */
-      const cadCard = document.getElementById('cadCard');
-      const loginCard = document.getElementById('loginCard');
-      document.getElementById('linkEntrar').addEventListener('click', (e)=>{ e.preventDefault(); cadCard.classList.add('hidden'); loginCard.classList.remove('hidden'); mountLoginCaptcha(); });
-      document.getElementById('linkCriar').addEventListener('click', (e)=>{ e.preventDefault(); loginCard.classList.add('hidden'); cadCard.classList.remove('hidden'); mountRegCaptcha(); });
+      /* ======= Abertura dos modais por botões ======= */
+      const btnOpenLogin = document.getElementById('btnOpenLogin');
+      const btnOpenReg   = document.getElementById('btnOpenReg');
+      const loginOverlay = document.getElementById('loginOverlay');
+      const regOverlay   = document.getElementById('regOverlay');
+      const btnLoginClose= document.getElementById('btnLoginClose');
+      const btnRegClose  = document.getElementById('btnRegClose');
+      const loginGoReg   = document.getElementById('loginGoReg');
+      const regGoLogin   = document.getElementById('regGoLogin');
 
-      /* ========= Helpers de telefone ========= */
+      let pendingAction = null; // 'login' | 'reg' | null
+
+      function ensureAge(action){
+        if (ageSaved === 'yes') return true;
+        pendingAction = action;
+        showAgeVerify();
+        return false;
+      }
+
+      function openLogin(){
+        loginOverlay.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';
+        mountLoginCaptcha();
+      }
+      function openReg(){
+        regOverlay.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';
+        mountRegCaptcha();
+      }
+      function closeLogin(){ loginOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow='' }
+      function closeReg(){   regOverlay.setAttribute('aria-hidden','true');   document.body.style.overflow='' }
+
+      btnOpenLogin.addEventListener('click', ()=>{ if (ensureAge('login')) openLogin(); });
+      btnOpenReg  .addEventListener('click', ()=>{ if (ensureAge('reg'))   openReg();   });
+      btnLoginClose.addEventListener('click', closeLogin);
+      btnRegClose  .addEventListener('click', closeReg);
+      loginGoReg.addEventListener('click', (e)=>{ e.preventDefault(); closeLogin(); openReg(); });
+      regGoLogin.addEventListener('click', (e)=>{ e.preventDefault(); closeReg();   openLogin(); });
+
+      /* ======= Máscaras e validações ======= */
       function digits(s){ return (s||'').replace(/\D+/g,''); }
 
-      // Máscara geral (login): XX-9XXXX-XXXX ou XX-XXXX-XXXX (auto)
-      function fmtTelGeneral(v){
-        const d = digits(v).slice(0,11);
-        if (d.length >= 11){ return d.replace(/^(\d{2})(\d{5})(\d{4}).*$/, "$1-$2-$3"); }
-        if (d.length >= 10){ return d.replace(/^(\d{2})(\d{4})(\d{4}).*$/, "$1-$2-$3"); }
-        if (d.length >= 7){ return d.replace(/^(\d{2})(\d{0,5})(\d{0,4}).*$/, "$1-$2-$3"); }
-        if (d.length >= 3){ return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2"); }
-        return d;
-      }
-      function validTelGeneral(v){ return /^(\d{2})-(\d{5}|\d{4})-\d{4}$/.test((v||'').trim()); }
-
-      // Máscara específica do CADASTRO: força o padrão XX-9XXXX-XXXX
+      // Cadastro: força XX-9XXXX-XXXX
       function fmtTelCad(v){
         const d = digits(v).slice(0,11);
-        if (d.length <= 2) return d;                           // D
-        if (d.length <= 7) return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2"); // XX-9XXXX
-        if (d.length <= 11) return d.replace(/^(\d{2})(\d{5})(\d{0,4}).*$/, "$1-$2-$3"); // completo
-        return d;
+        if (d.length <= 2) return d;
+        if (d.length <= 7) return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2");
+        return d.replace(/^(\d{2})(\d{5})(\d{0,4}).*$/, "$1-$2-$3");
       }
       function validTelCad(v){ return /^(\d{2})-9\d{4}-\d{4}$/.test((v||'').trim()); }
 
+      // Login: aceita XX-9XXXX-XXXX ou XX-XXXX-XXXX
+      function fmtTelLogin(v){
+        const d = digits(v).slice(0,11);
+        if (d.length >= 11) return d.replace(/^(\d{2})(\d{5})(\d{4}).*$/, "$1-$2-$3");
+        if (d.length >= 10) return d.replace(/^(\d{2})(\d{4})(\d{4}).*$/, "$1-$2-$3");
+        if (d.length >= 7)  return d.replace(/^(\d{2})(\d{0,5})(\d{0,4}).*$/, "$1-$2-$3");
+        if (d.length >= 3)  return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2");
+        return d;
+      }
+      function validTelLogin(v){ return /^(\d{2})-(\d{5}|\d{4})-\d{4}$/.test((v||'').trim()); }
+
       function validPass(v){ return (v||'').length >= 6; }
 
-      /* ========= Cadastro ========= */
+      /* ======= Cadastro: refs ======= */
       const regTel = document.getElementById('regTel');
       const regPass = document.getElementById('regPass');
       const regPass2 = document.getElementById('regPass2');
@@ -268,64 +311,40 @@
       const helpRegPass2 = document.getElementById('helpRegPass2');
       const btnRegistrar = document.getElementById('btnRegistrar');
       const regMsg = document.getElementById('regMsg');
+
       let regCaptchaOK = false;
 
       function refreshReg(){
-        // Telefone (formato obrigatório XX-9XXXX-XXXX)
+        // telefone
         if (regTel.value && !validTelCad(regTel.value)){
           ctlRegTel.classList.add('invalid');
-          helpRegTel.textContent = "Use o formato 31-9XXXX-XXXX.";
-          helpRegTel.className="help err";
-        } else {
-          ctlRegTel.classList.remove('invalid');
-          helpRegTel.textContent = "";
-          helpRegTel.className="help";
-        }
+          helpRegTel.textContent = "Use o formato 31-9XXXX-XXXX."; helpRegTel.className="help err";
+        } else { ctlRegTel.classList.remove('invalid'); helpRegTel.textContent=""; helpRegTel.className="help"; }
 
-        // Senha mínima
+        // senha mínima
         if (regPass.dataset.touched==="1" && !validPass(regPass.value)){
           ctlRegPass.classList.add('invalid');
-          helpRegPass.textContent = "Sua senha precisa ter no mínimo 6 caracteres.";
-          helpRegPass.className="help err";
-        } else if (validPass(regPass.value)) {
-          ctlRegPass.classList.remove('invalid');
-          helpRegPass.textContent = "";
-          helpRegPass.className="help";
-        }
+          helpRegPass.textContent = "Sua senha precisa ter no mínimo 6 caracteres."; helpRegPass.className="help err";
+        } else if (validPass(regPass.value)){ ctlRegPass.classList.remove('invalid'); helpRegPass.textContent=""; helpRegPass.className="help"; }
 
-        // Confirmar senhas iguais
+        // confirmação igual
         if (regPass2.dataset.touched==="1" && regPass2.value && regPass.value !== regPass2.value){
           ctlRegPass2.classList.add('invalid');
-          helpRegPass2.textContent = "As senhas não conferem.";
-          helpRegPass2.className="help err";
+          helpRegPass2.textContent = "As senhas não conferem."; helpRegPass2.className="help err";
         } else if (regPass.value && regPass2.value && regPass.value === regPass2.value){
-          ctlRegPass2.classList.remove('invalid');
-          helpRegPass2.textContent = "";
-          helpRegPass2.className="help";
-        } else if (!regPass2.value){
-          ctlRegPass2.classList.remove('invalid');
-          helpRegPass2.textContent="";
-          helpRegPass2.className="help";
-        }
+          ctlRegPass2.classList.remove('invalid'); helpRegPass2.textContent=""; helpRegPass2.className="help";
+        } else { ctlRegPass2.classList.remove('invalid'); helpRegPass2.textContent=""; helpRegPass2.className="help"; }
 
-        const ok = validTelCad(regTel.value) && validPass(regPass.value) && regPass.value === regPass2.value && regCaptchaOK;
-        btnRegistrar.disabled = !ok;
+        btnRegistrar.disabled = !(validTelCad(regTel.value) && validPass(regPass.value) && regPass.value===regPass2.value && regCaptchaOK);
       }
 
-      // Bind de máscara CADASTRO
-      regTel.addEventListener('input', (e)=>{
-        const pos = e.target.selectionStart; const before = e.target.value;
-        const after = fmtTelCad(before); e.target.value = after;
-        try{ const d = after.length - before.length; e.target.setSelectionRange(Math.max(0,pos+d), Math.max(0,pos+d)); }catch{}
-        refreshReg();
-      });
+      regTel.addEventListener('input', e=>{ const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelCad(before); e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{} refreshReg(); });
       regPass.addEventListener('input', refreshReg);
       regPass2.addEventListener('input', refreshReg);
       regPass.addEventListener('blur', ()=>{ regPass.dataset.touched="1"; refreshReg(); });
       regPass2.addEventListener('focus', ()=>{ regPass.dataset.touched="1"; refreshReg(); });
       regPass2.addEventListener('blur', ()=>{ regPass2.dataset.touched="1"; refreshReg(); });
 
-      // GeeTest para Cadastro
       function mountRegCaptcha(){
         const el = document.getElementById('regCaptcha');
         el.innerHTML = "";
@@ -342,15 +361,16 @@
           c.onClose(()=>{ if (!c.getValidate()){ regCaptchaOK=false; refreshReg(); } });
         });
       }
-      mountRegCaptcha();
 
-      btnRegistrar.addEventListener('click', ()=>{
+      document.getElementById('btnRegistrar').addEventListener('click', ()=>{
         if (btnRegistrar.disabled) return;
         regMsg.textContent = "Cadastro validado! Pronto para enviar ao backend.";
         regMsg.className = "help ok";
       });
 
-      /* ========= Login ========= */
+      document.getElementById('btnRegClose').addEventListener('click', ()=>{ regOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
+
+      /* ======= Login ======= */
       const loginTel = document.getElementById('loginTel');
       const loginPass = document.getElementById('loginPass');
       const ctlLoginTel = document.getElementById('ctlLoginTel');
@@ -358,26 +378,22 @@
       const helpLoginTel = document.getElementById('helpLoginTel');
       const helpLoginPass = document.getElementById('helpLoginPass');
       const btnDoLogin = document.getElementById('btnDoLogin');
+      const loginMsg = document.getElementById('loginMsg');
       let loginCaptchaOK = false;
 
       function refreshLogin(){
-        if (loginTel.value && !validTelGeneral(loginTel.value)){
-          ctlLoginTel.classList.add('invalid'); helpLoginTel.textContent = "Use o formato 31-9XXXX-XXXX ou 31-XXXX-XXXX."; helpLoginTel.className="help err";
-        } else { ctlLoginTel.classList.remove('invalid'); helpLoginTel.textContent = ""; helpLoginTel.className="help"; }
+        if (loginTel.value && !validTelLogin(loginTel.value)){
+          ctlLoginTel.classList.add('invalid'); helpLoginTel.textContent="Use o formato 31-9XXXX-XXXX ou 31-XXXX-XXXX."; helpLoginTel.className="help err";
+        } else { ctlLoginTel.classList.remove('invalid'); helpLoginTel.textContent=""; helpLoginTel.className="help"; }
 
         if (loginPass.value && !validPass(loginPass.value)){
-          ctlLoginPass.classList.add('invalid'); helpLoginPass.textContent = "Sua senha precisa ter pelo menos 6 caracteres."; helpLoginPass.className="help err";
-        } else { ctlLoginPass.classList.remove('invalid'); helpLoginPass.textContent = ""; helpLoginPass.className="help"; }
+          ctlLoginPass.classList.add('invalid'); helpLoginPass.textContent="Sua senha precisa ter pelo menos 6 caracteres."; helpLoginPass.className="help err";
+        } else { ctlLoginPass.classList.remove('invalid'); helpLoginPass.textContent=""; helpLoginPass.className="help"; }
 
-        btnDoLogin.disabled = !(validTelGeneral(loginTel.value) && validPass(loginPass.value) && loginCaptchaOK);
+        btnDoLogin.disabled = !(validTelLogin(loginTel.value) && validPass(loginPass.value) && loginCaptchaOK);
       }
-      // Máscara geral no Login
-      loginTel.addEventListener('input', (e)=>{
-        const pos = e.target.selectionStart; const before = e.target.value;
-        const after = fmtTelGeneral(before); e.target.value = after;
-        try{ const d = after.length - before.length; e.target.setSelectionRange(Math.max(0,pos+d), Math.max(0,pos+d)); }catch{}
-        refreshLogin();
-      });
+
+      loginTel.addEventListener('input', e=>{ const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelLogin(before); e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{} refreshLogin(); });
       loginPass.addEventListener('input', refreshLogin);
 
       function mountLoginCaptcha(){
@@ -392,11 +408,22 @@
         }, c => {
           c.appendTo('#loginCaptcha');
           c.onSuccess(()=>{ loginCaptchaOK = true; refreshLogin(); });
-          c.onError(()=>{ loginCaptchaOK = false; refreshLogin(); helpLoginPass.textContent="Falha ao validar o desafio."; helpLoginPass.className="help err"; });
+          c.onError(()=>{ loginCaptchaOK = false; refreshLogin(); loginMsg.textContent="Falha ao validar o desafio."; loginMsg.className="help err"; });
           c.onClose(()=>{ if (!c.getValidate()){ loginCaptchaOK=false; refreshLogin(); } });
         });
       }
-      window.mountLoginCaptcha = mountLoginCaptcha; // chamado ao abrir o card de login
+
+      document.getElementById('btnDoLogin').addEventListener('click', ()=>{
+        if (btnDoLogin.disabled) return;
+        loginMsg.textContent = "Login validado! Pronto para autenticar no backend.";
+        loginMsg.className = "help ok";
+      });
+
+      document.getElementById('btnLoginClose').addEventListener('click', ()=>{ loginOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
+
+      /* ====== Expor para callbacks ====== */
+      window.mountLoginCaptcha = mountLoginCaptcha;
+      window.mountRegCaptcha   = mountRegCaptcha;
 
     })();
   </script>
