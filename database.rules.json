@@ -4,74 +4,31 @@
     ".write": false,
 
     "usuarios": {
-      ".read": "auth != null && auth.token.admin === true",
       "$uid": {
-        ".read": "auth != null && (auth.uid === $uid || auth.token.admin === true)",
-        ".write": "auth != null && (auth.uid === $uid || auth.token.admin === true)",
-
-        "perfil": {
-          ".validate": "newData.hasChildren(['nome'])",
-          "nome": { ".validate": "newData.isString() && newData.val().length <= 80" },
-          "telefone": { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 40)" }
-        },
-
-        "dispositivo": {
-          "$sid": {
-            ".read": "auth != null && (auth.uid === $uid || auth.token.admin === true)",
-            ".write": "auth != null && (auth.uid === $uid || auth.token.admin === true)",
-            "eventos": {
-              "$eid": {
-                ".validate": "newData.hasChildren(['ts','ev']) && newData.child('ts').isNumber() && newData.child('ev').isString() && (!newData.child('txt').exists() || (newData.child('txt').isString() && newData.child('txt').val().length <= 500))"
-              }
-            }
-          }
-        },
-
-        "likes": {
-          "$lid": { ".validate": "newData.val() === true" }
-        }
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && newData.child('uid').val() === auth.uid"
       }
     },
 
     "sac": {
       "tickets": {
-        ".read": "auth != null && auth.token.admin === true",
         "$ticketId": {
-          ".write": "auth != null && auth.token.admin === true",
-          "titulo": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 140" },
-          "descricao": { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 2000)" },
-          "status": { ".validate": "newData.isString() && (newData.val() === 'aberto' || newData.val() === 'em_andamento' || newData.val() === 'fechado')" },
-          "createdAt": { ".validate": "newData.isNumber()" },
-          "createdBy": { ".validate": "!newData.exists() || newData.isString()" }
-        }
-      }
-    },
-
-    "links": {
-      "$lid": {
-        ".read": true,
-        "c": {
-          ".read": true,
-          ".write": "auth != null",
-          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000"
+          ".read": "auth != null && (auth.token.admin === true || data.child('uid').val() === auth.uid)",
+          ".write": "auth != null && (newData.child('uid').val() === auth.uid || auth.token.admin === true)"
         }
       }
     },
 
     "comentarios": {
-      "$yyyymm": {
-        ".read": true,
-        ".indexOn": ["ts"],
-        "$cid": {
-          ".write": "auth != null && newData.child('uid').val() === auth.uid && newData.child('ts').isNumber() && newData.child('txt').isString() && newData.child('txt').val().length <= 280",
-          ".validate": "newData.hasChildren(['uid','ts','txt'])"
-        }
+      "$commentId": {
+        ".read": "auth != null",
+        ".write": "auth != null && (newData.child('uid').val() === auth.uid || auth.token.admin === true)"
       }
     },
 
-    "admin_demo": {
-      ".read": true,
-      ".write": false
+    "links": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.token.admin === true"
     }
   }
 }
