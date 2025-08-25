@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Banco Central das Bets — Portal</title>
-  <meta name="description" content="Portal de entrada do Banco Central das Bets — Entrar e Cadastro com validações, captcha e UX premium." />
+  <meta name="description" content="Portal de entrada do Banco Central das Bets — Entrar e Cadastro com validações, captcha, UX premium e acessibilidade." />
   <style>
     :root{
       --bg:#0b0f14; --bg2:#0e1420; --fg:#e7eef7; --muted:#9aa6be;
@@ -26,7 +26,6 @@
       display:flex; align-items:center; justify-content:center; padding:20px;
     }
 
-    /* Card inicial */
     .wrap{ width:min(680px, 96vw); }
     .hero{
       background: var(--card);
@@ -103,7 +102,7 @@
     .icon-key{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="%23a7b4cf" viewBox="0 0 16 16"><path d="M3 8a5 5 0 1 1 9.584 1.647l2.262 2.262a1 1 0 0 1 .154 1.274l-.085.11-1.414 1.414a1 1 0 0 1-.707.293H11v-2H9v-2H6.647A5 5 0 0 1 3 8zm5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>') }
 
     .input{ flex:1 1 auto; background:transparent; border:0; outline:none; color:#e7eef7; font-size:1rem }
-    .input::placeholder{ color:transparent } /* com label flutuante não usamos placeholder visível */
+    .input::placeholder{ color:transparent }
     .eye{
       position:absolute; right:8px; top:50%; transform:translateY(-50%);
       width:22px; height:22px; border:0; background:transparent; cursor:pointer; opacity:.9;
@@ -112,7 +111,7 @@
     }
     .eye svg{ width:18px; height:18px; }
 
-    /* Label flutuante premium */
+    /* Label flutuante */
     .flabel{
       position:absolute; left:34px; top:12px; font-size:.9rem; color:#7f8aa4;
       pointer-events:none; transition: all .15s ease; background:transparent;
@@ -142,7 +141,6 @@
     .sm-red{   background:linear-gradient(180deg,var(--neon-red),var(--neon-red-2)); color:#fff }
     .hidden{ display:none !important }
 
-    /* Captcha centralizado */
     .captcha-box{ display:flex; justify-content:center; align-items:center; margin-top:6px }
     .fallback-box{ background:#0f1522; border:1px dashed #3b4a6a; border-radius:10px; padding:10px 12px; text-align:center; color:#c8d2ec; font-size:.9rem; }
 
@@ -187,8 +185,8 @@
 
   <!-- Modal: Cadastro -->
   <div id="regOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal">
-      <h2 class="title">Crie uma conta</h2>
+    <div class="modal" role="document" aria-labelledby="regTitle">
+      <h2 id="regTitle" class="title">Crie uma conta</h2>
       <p class="subtitle">já tem uma conta? <a href="#" id="regGoLogin">Entrar</a></p>
 
       <div class="field">
@@ -227,7 +225,6 @@
         <div id="helpRegPass2" class="help"></div>
       </div>
 
-      <!-- Captcha (GeeTest ou fallback) -->
       <div class="captcha-box"><div id="regCaptcha"></div></div>
       <div id="regCaptchaFallback" class="captcha-box hidden">
         <div class="fallback-box">
@@ -247,8 +244,8 @@
 
   <!-- Modal: Login -->
   <div id="loginOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal">
-      <h2 class="title">Entrar</h2>
+    <div class="modal" role="document" aria-labelledby="loginTitle">
+      <h2 id="loginTitle" class="title">Entrar</h2>
       <p class="subtitle">ainda não tem conta? <a href="#" id="loginGoReg">Criar</a></p>
 
       <div class="field">
@@ -318,6 +315,7 @@
       const AGE_KEY   = "bcb_age_verified_v1";
       const PHONE_KEY = "bcb_last_phone_v1";
       const ANALYTICS_KEY = "bcb_analytics_optin_v1";
+      const LAST_MODAL_KEY = "bcb_last_modal_v1"; // 'login' | 'register'
 
       /* Opt-in analytics */
       const optAnalytics = document.getElementById('optAnalytics');
@@ -332,6 +330,10 @@
       function isAnalyticsOn(){ return optAnalytics.checked; }
       function track(event, payload){
         if(!isAnalyticsOn()) return;
+        // GA4
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event, ...payload });
+        // Console fallback
         console.log("[BCB Analytics]", event, payload||{});
       }
 
@@ -346,7 +348,7 @@
         setTimeout(()=>{ t.remove(); }, ms);
       }
 
-      /* Idade */
+      /* Verificação de idade */
       const qs = new URLSearchParams(location.search);
       if (qs.get("resetAge") === "1"){ try{ localStorage.removeItem(AGE_KEY);}catch{} }
 
@@ -374,7 +376,7 @@
       ageNo.addEventListener('click',  ()=>{ try{ localStorage.setItem(AGE_KEY,'no'); }catch{} showUnderage(); });
       ageExit.addEventListener('click', ()=>{ if (history.length>1) history.back(); else if (document.referrer) location.href=document.referrer; else location.href='https://www.google.com'; });
 
-      /* Abertura dos modais */
+      /* Modais */
       const btnOpenLogin = document.getElementById('btnOpenLogin');
       const btnOpenReg   = document.getElementById('btnOpenReg');
       const loginOverlay = document.getElementById('loginOverlay');
@@ -391,6 +393,36 @@
         return false;
       }
 
+      function setLastModal(kind){
+        try{ localStorage.setItem(LAST_MODAL_KEY, kind); }catch{}
+      }
+      function getLastModal(){
+        try{ return localStorage.getItem(LAST_MODAL_KEY) || ""; }catch{ return ""; }
+      }
+
+      /* Focus trap + ESC + overlay click */
+      function getFocusable(container){
+        return [...container.querySelectorAll('a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+          .filter(el => !el.hasAttribute('disabled') && !el.classList.contains('hidden') && el.offsetParent !== null);
+      }
+      function trapFocus(overlay, onClose){
+        function keyHandler(e){
+          if (e.key === 'Escape'){ e.preventDefault(); onClose(); }
+          if (e.key === 'Tab'){
+            const focusables = getFocusable(overlay);
+            if (!focusables.length) return;
+            const first = focusables[0], last = focusables[focusables.length-1];
+            if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+          }
+        }
+        overlay.addEventListener('keydown', keyHandler);
+        const clickHandler = (e)=>{ if (e.target === overlay) onClose(); };
+        overlay.addEventListener('click', clickHandler);
+        return ()=>{ overlay.removeEventListener('keydown', keyHandler); overlay.removeEventListener('click', clickHandler); };
+      }
+      let untrapLogin = null, untrapReg = null;
+
       function openLogin(){
         loginOverlay.setAttribute('aria-hidden','false');
         document.body.style.overflow='hidden';
@@ -398,6 +430,9 @@
         const t = getSavedPhone(); if (t) { loginTel.value = fmtTelStrict(t); fillState(loginTel); refreshLogin(); }
         setTimeout(()=>document.getElementById('loginTel').focus(), 0);
         track('modal_open', {name:'login'});
+        setLastModal('login');
+        if (untrapLogin) untrapLogin();
+        untrapLogin = trapFocus(loginOverlay, closeLogin);
       }
       function openReg(){
         regOverlay.setAttribute('aria-hidden','false');
@@ -406,9 +441,20 @@
         const t = getSavedPhone(); if (t) { regTel.value = fmtTelStrict(t); fillState(regTel); refreshReg(); }
         setTimeout(()=>document.getElementById('regTel').focus(), 0);
         track('modal_open', {name:'register'});
+        setLastModal('register');
+        if (untrapReg) untrapReg();
+        untrapReg = trapFocus(regOverlay, closeReg);
       }
-      function closeLogin(){ loginOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow='' }
-      function closeReg(){   regOverlay.setAttribute('aria-hidden','true');   document.body.style.overflow='' }
+      function closeLogin(){
+        loginOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow='';
+        track('modal_close', {name:'login'});
+        if (untrapLogin){ untrapLogin(); untrapLogin=null; }
+      }
+      function closeReg(){
+        regOverlay.setAttribute('aria-hidden','true');   document.body.style.overflow='';
+        track('modal_close', {name:'register'});
+        if (untrapReg){ untrapReg(); untrapReg=null; }
+      }
 
       btnOpenLogin.addEventListener('click', ()=>{ if (ensureAge('login')) openLogin(); });
       btnOpenReg  .addEventListener('click', ()=>{ if (ensureAge('reg'))   openReg();   });
@@ -416,6 +462,30 @@
       btnRegClose  .addEventListener('click', closeReg);
       loginGoReg.addEventListener('click', (e)=>{ e.preventDefault(); closeLogin(); openReg(); });
       regGoLogin.addEventListener('click', (e)=>{ e.preventDefault(); closeReg();   openLogin(); });
+
+      /* Deep link (?open=login|register|last) */
+      function handleDeepLink(){
+        const open = (qs.get('open')||'').toLowerCase();
+        if (!open) return;
+        if (open === 'login'){ if (ensureAge('login')) openLogin(); }
+        else if (open === 'register'){ if (ensureAge('reg')) openReg(); }
+        else if (open === 'last'){
+          const last = getLastModal();
+          if (last === 'login'){ if (ensureAge('login')) openLogin(); }
+          else if (last === 'register'){ if (ensureAge('reg')) openReg(); }
+        }
+      }
+      // Executar deep link ao carregar (se idade já estiver ok)
+      if (ageSaved === 'yes'){ handleDeepLink(); }
+      else { // se não, guarda e abrirá após confirmação via pendingAction
+        const open = (qs.get('open')||'').toLowerCase();
+        if (open === 'login') pendingAction='login';
+        else if (open === 'register' || open === 'reg') pendingAction='reg';
+        else if (open === 'last'){
+          const last = getLastModal();
+          pendingAction = (last==='login'?'login':'reg');
+        }
+      }
 
       /* Utilidades de input/label */
       function fillState(input){
@@ -472,14 +542,12 @@
       const btnRegistrar = document.getElementById('btnRegistrar');
       const regMsg = document.getElementById('regMsg');
 
-      // Enter navega
       regTel.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); regPass.focus(); }});
       regPass.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); regPass2.focus(); }});
       regPass2.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); if(!btnRegistrar.disabled) btnRegistrar.click(); }});
 
       function setShake(el){ el.classList.add('shake'); el.addEventListener('animationend', ()=> el.classList.remove('shake'), {once:true}); }
 
-      // Máscara + validação + persistência + label state
       regTel.addEventListener('input', e=>{
         const pos=e.target.selectionStart, before=e.target.value;
         const after=fmtTelStrict(before);
@@ -526,7 +594,6 @@
       bindEye('eyeRegPass', regPass);
       bindEye('eyeRegPass2', regPass2);
 
-      /* Fallback simples (checkbox + soma) */
       function mountFallback(targetBoxId, cbId, mathWrapId, setOK){
         const box = document.getElementById(targetBoxId);
         const cb = document.getElementById(cbId);
@@ -539,7 +606,6 @@
         cb.addEventListener('change', upd); ansEl.addEventListener('input', upd);
       }
 
-      /* GeeTest Cadastro com fallback */
       function mountRegCaptcha(){
         const el = document.getElementById('regCaptcha');
         const fb = document.getElementById('regCaptchaFallback');
@@ -562,13 +628,14 @@
       }
 
       document.getElementById('btnRegistrar').addEventListener('click', ()=>{
+        track('modal_submit_click', {name:'register'});
         if (btnRegistrar.disabled) return;
         regMsg.textContent = "Cadastro validado! Pronto para enviar ao backend.";
         regMsg.className = "help ok";
         toast("Cadastro validado!", "ok");
-        track('register_valid', { phone_mask: regTel.value.replace(/\d{4}-\d{4}$/,'xxxxx-xxxx') });
+        track('modal_submit_valid', {name:'register', phone_mask: regTel.value.replace(/\d{4}-\d{4}$/,'xxxxx-xxxx') });
       });
-      document.getElementById('btnRegClose').addEventListener('click', ()=>{ regOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
+      document.getElementById('btnRegClose').addEventListener('click', closeReg);
 
       /* ===== Login ===== */
       const loginTel = document.getElementById('loginTel');
@@ -644,13 +711,14 @@
       }
 
       document.getElementById('btnDoLogin').addEventListener('click', ()=>{
+        track('modal_submit_click', {name:'login'});
         if (btnDoLogin.disabled) return;
         loginMsg.textContent = "Login validado! Pronto para autenticar no backend.";
         loginMsg.className = "help ok";
         toast("Login validado!", "ok");
-        track('login_valid', { phone_mask: loginTel.value.replace(/\d{4}-\d{4}$/,'xxxxx-xxxx') });
+        track('modal_submit_valid', {name:'login', phone_mask: loginTel.value.replace(/\d{4}-\d{4}$/,'xxxxx-xxxx') });
       });
-      document.getElementById('btnLoginClose').addEventListener('click', ()=>{ loginOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
+      document.getElementById('btnLoginClose').addEventListener('click', closeLogin);
 
       /* Persistência de telefone */
       function savePhone(formatted){
@@ -660,9 +728,12 @@
         try{ return localStorage.getItem(PHONE_KEY) || ""; }catch{ return ""; }
       }
 
-      /* Expor (debug) */
-      window.mountLoginCaptcha = mountLoginCaptcha;
-      window.mountRegCaptcha   = mountRegCaptcha;
+      /* GeeTest v4 Fallback builder */
+      function mountLoginCaptcha(){ /* redefinido acima */ }
+      function mountRegCaptcha(){   /* redefinido acima */ }
+
+      /* Deep link imediato se já está verificado */
+      // (já chamado acima)
 
     })();
   </script>
