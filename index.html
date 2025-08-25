@@ -13,6 +13,7 @@
       --neon-blue:#7ae6ff;
       --card:#141823; --line:#2a3347;
       --accent:#ffe36a; --accent-2:#ffbf36;
+      --glow: 0 0 12px rgba(122,230,255,.45), 0 0 28px rgba(25,224,122,.25);
     }
     *{ box-sizing:border-box }
     html,body{ height:100% }
@@ -35,7 +36,9 @@
       box-shadow:0 18px 40px rgba(0,0,0,.45);
       padding:22px 20px;
       text-align:center;
+      transition: transform .25s ease, box-shadow .25s ease;
     }
+    .hero:hover{ transform: translateY(-1px); box-shadow:0 22px 48px rgba(0,0,0,.5) }
     .brand{
       display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px;
       filter: drop-shadow(0 0 12px rgba(122,230,255,.2));
@@ -56,40 +59,62 @@
 
     /* ====== Overlay/Modal ====== */
     .overlay{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.72); z-index:9999; padding:12px }
-    .overlay[aria-hidden="false"]{ display:flex }
+    .overlay[aria-hidden="false"]{ display:flex; animation: fadeIn .22s ease }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     .modal{
       width:min(520px,96vw);
       background:linear-gradient(180deg,#0c0e2b,#0b0c25);
       border:1px solid #2f336e; border-radius:20px; padding:20px;
       color:#fff; box-shadow:0 20px 60px rgba(0,0,0,.6);
+      transform: scale(.98); animation: pop .18s ease forwards;
     }
+    @keyframes pop { to{ transform: scale(1) } }
+
     .title{ margin:0 0 4px; font-size:clamp(20px,3.5vw,26px); font-weight:900; text-align:left }
     .subtitle{ margin:0 0 16px; font-size:.95rem; color:#b9c0ff; text-align:left }
     .subtitle a{ color:#f4f945; font-weight:800; text-decoration:none }
 
     .field{ margin:12px 0 }
     .control{
+      position:relative;
       display:flex; align-items:center; gap:10px;
       background:#0f1522; border:1px solid var(--line);
       border-radius:12px; padding:10px 12px;
-      transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+      transition:border-color .15s ease, box-shadow .15s ease, background .15s ease, transform .15s ease;
     }
     .control:focus-within{ border-color:#3b8cff; box-shadow:0 0 0 3px rgba(59,140,255,.15) }
     .control.invalid{ border-color:var(--neon-red); background:#2a0f16; box-shadow:0 0 0 3px rgba(255,68,90,.15) }
+    .control.shake{ animation: shake .22s linear; }
+    @keyframes shake { 0%{transform:translateX(0)} 25%{transform:translateX(-4px)} 50%{transform:translateX(4px)} 75%{transform:translateX(-3px)} 100%{transform:translateX(0)} }
+
     .icon{ width:18px; height:18px; flex:0 0 18px; opacity:.9; background-repeat:no-repeat; background-position:center; background-size:18px 18px; filter:drop-shadow(0 0 2px rgba(0,0,0,.4)) }
     .icon-phone{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="%23a7b4cf" viewBox="0 0 16 16"><path d="M3.654 1.328A.678.678 0 0 1 4.287 1h1.78c.27 0 .513.164.6.412l.86 2.487a.678.678 0 0 1-.167.705L6.29 5.969a11.058 11.058 0 0 0 3.74 3.74l1.365-1.07a.678.678 0 0 1 .705-.167l2.487.86a.678.678 0 0 1 .412.6v1.78a.678.678 0 0 1-.328.58l-1.2.8a2.678 2.678 0 0 1-2.79.053 17.478 17.478 0 0 1-7.63-7.63 2.678 2.678 0 0 1 .052-2.79l.8-1.2z"/></svg>') }
     .icon-key{ background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="%23a7b4cf" viewBox="0 0 16 16"><path d="M3 8a5 5 0 1 1 9.584 1.647l2.262 2.262a1 1 0 0 1 .154 1.274l-.085.11-1.414 1.414a1 1 0 0 1-.707.293H11v-2H9v-2H6.647A5 5 0 0 1 3 8zm5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>') }
+
     .input{ flex:1 1 auto; background:transparent; border:0; outline:none; color:#e7eef7; font-size:1rem }
     .input::placeholder{ color:#7f8aa4 }
+
+    /* Botão olho (mostrar/ocultar) */
+    .eye{
+      position:absolute; right:10px; top:50%; transform:translateY(-50%);
+      width:24px; height:24px; border:0; background:transparent; cursor:pointer; opacity:.9;
+      display:inline-flex; align-items:center; justify-content:center; padding:0;
+      filter: drop-shadow(0 0 2px rgba(0,0,0,.35));
+    }
+    .eye svg{ width:20px; height:20px; }
 
     .help{ font-size:.86rem; margin-top:6px; min-height:1.2em }
     .help.err{ color:#ff8b8b }
     .help.ok{ color:#87efb3 }
+    .help.meter{ display:flex; align-items:center; gap:8px }
+    .meter-bar{ height:6px; border-radius:999px; background:#23304b; flex:1; overflow:hidden }
+    .meter-fill{ height:100%; width:0%; transition: width .2s ease; background:linear-gradient(90deg, #ff4d4d, #ffd642, #19e07a) }
 
     .actions{ display:flex; gap:10px; margin-top:14px }
     .btn-sm{ padding:12px 16px; border-radius:14px; border:0; cursor:pointer; font-weight:900; text-transform:uppercase; letter-spacing:.3px; flex:1 1 180px;
-      box-shadow:0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35) }
+      box-shadow:0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35); transition: box-shadow .15s ease, filter .15s ease }
     .btn-sm:disabled{ opacity:.5; cursor:not-allowed; filter:grayscale(.1) }
+    .btn-sm.glow{ box-shadow: var(--glow), 0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35) }
     .sm-green{ background:linear-gradient(180deg,var(--neon-green),var(--neon-green-2)); color:#032a17 }
     .sm-blue{  background:linear-gradient(180deg,#67d8ff,var(--neon-blue)); color:#062233 }
     .sm-red{   background:linear-gradient(180deg,var(--neon-red),var(--neon-red-2)); color:#fff }
@@ -129,14 +154,23 @@
         <div class="control" id="ctlRegPass">
           <span class="icon icon-key" aria-hidden="true"></span>
           <input id="regPass" class="input" type="password" placeholder="Senha" autocomplete="new-password" />
+          <button class="eye" id="eyeRegPass" aria-label="Mostrar/ocultar senha">
+            <svg viewBox="0 0 24 24" fill="#a7b4cf"><path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg>
+          </button>
         </div>
-        <div id="helpRegPass" class="help"></div>
+        <div id="helpRegPass" class="help meter">
+          <span id="txtRegStrength">Força:</span>
+          <div class="meter-bar"><div id="barRegStrength" class="meter-fill"></div></div>
+        </div>
       </div>
 
       <div class="field">
         <div class="control" id="ctlRegPass2">
           <span class="icon icon-key" aria-hidden="true"></span>
           <input id="regPass2" class="input" type="password" placeholder="Confirmar senha" autocomplete="new-password" />
+          <button class="eye" id="eyeRegPass2" aria-label="Mostrar/ocultar confirmação">
+            <svg viewBox="0 0 24 24" fill="#a7b4cf"><path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg>
+          </button>
         </div>
         <div id="helpRegPass2" class="help"></div>
       </div>
@@ -152,7 +186,7 @@
     </div>
   </div>
 
-  <!-- ===== Modal: Login (agora com “9” obrigatório) ===== -->
+  <!-- ===== Modal: Login (com 9 obrigatório e olho) ===== -->
   <div id="loginOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal">
       <h2 class="title">Entrar</h2>
@@ -170,8 +204,14 @@
         <div class="control" id="ctlLoginPass">
           <span class="icon icon-key" aria-hidden="true"></span>
           <input id="loginPass" class="input" type="password" placeholder="Senha" autocomplete="current-password" />
+          <button class="eye" id="eyeLoginPass" aria-label="Mostrar/ocultar senha">
+            <svg viewBox="0 0 24 24" fill="#a7b4cf"><path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg>
+          </button>
         </div>
-        <div id="helpLoginPass" class="help"></div>
+        <div id="helpLoginPass" class="help meter">
+          <span id="txtLoginStrength">Força:</span>
+          <div class="meter-bar"><div id="barLoginStrength" class="meter-fill"></div></div>
+        </div>
       </div>
 
       <div id="loginCaptcha"></div>
@@ -257,11 +297,15 @@
         loginOverlay.setAttribute('aria-hidden','false');
         document.body.style.overflow='hidden';
         mountLoginCaptcha();
+        // Autofoco login
+        setTimeout(()=>document.getElementById('loginTel').focus(), 0);
       }
       function openReg(){
         regOverlay.setAttribute('aria-hidden','false');
         document.body.style.overflow='hidden';
         mountRegCaptcha();
+        // Autofoco cadastro
+        setTimeout(()=>document.getElementById('regTel').focus(), 0);
       }
       function closeLogin(){ loginOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow='' }
       function closeReg(){   regOverlay.setAttribute('aria-hidden','true');   document.body.style.overflow='' }
@@ -273,18 +317,43 @@
       loginGoReg.addEventListener('click', (e)=>{ e.preventDefault(); closeLogin(); openReg(); });
       regGoLogin.addEventListener('click', (e)=>{ e.preventDefault(); closeReg();   openLogin(); });
 
-      /* ======= Máscaras e validações ======= */
+      /* ======= Máscaras, DDD válido e validações ======= */
       function digits(s){ return (s||'').replace(/\D+/g,''); }
 
-      // CADASTRO e LOGIN agora usam a mesma máscara: força XX-9XXXX-XXXX
+      // Lista de DDDs válidos no Brasil
+      const VALID_DDD = new Set([11,12,13,14,15,16,17,18,19,21,22,24,27,28,31,32,33,34,35,37,38,41,42,43,44,45,46,47,48,49,51,53,54,55,61,62,63,64,65,66,67,68,69,71,73,74,75,77,79,81,82,83,84,85,86,87,88,89,91,92,93,94,95,96,97,98,99]);
+
+      // Máscara estrita: força XX-9XXXX-XXXX
       function fmtTelStrict(v){
         const d = digits(v).slice(0,11);
-        if (d.length <= 2) return d;                                           // D, DD
-        if (d.length <= 7) return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2");  // DD-9XXXX
-        return d.replace(/^(\d{2})(\d{5})(\d{0,4}).*$/, "$1-$2-$3");           // DD-9XXXX-XXXX
+        if (d.length <= 2) return d;
+        if (d.length <= 7) return d.replace(/^(\d{2})(\d{0,5}).*$/, "$1-$2");
+        return d.replace(/^(\d{2})(\d{5})(\d{0,4}).*$/, "$1-$2-$3");
       }
-      function validTelStrict(v){ return /^(\d{2})-9\d{4}-\d{4}$/.test((v||'').trim()); }
+      function validTelStrict(v){
+        const m = /^(\d{2})-9\d{4}-\d{4}$/.exec((v||'').trim());
+        if (!m) return false;
+        const ddd = parseInt(m[1], 10);
+        return VALID_DDD.has(ddd);
+      }
       function validPass(v){ return (v||'').length >= 6; }
+
+      // Força de senha (0..3)
+      function scorePassword(v){
+        let s = 0;
+        if (!v) return 0;
+        if (v.length >= 6) s++;
+        if (/[A-Z]/.test(v) && /[a-z]/.test(v)) s++;
+        if (/\d/.test(v) || /[^A-Za-z0-9]/.test(v)) s++;
+        return Math.min(s,3);
+      }
+      function renderStrength(score, txtEl, barEl){
+        const labels = ["Fraca","Média","Forte"];
+        const widths = ["33%","66%","100%"];
+        if (score === 0){ txtEl.textContent = "Força: Fraca"; barEl.style.width = "20%"; return; }
+        txtEl.textContent = "Força: " + labels[score-1];
+        barEl.style.width = widths[score-1];
+      }
 
       /* ======= Cadastro ======= */
       const regTel = document.getElementById('regTel');
@@ -296,36 +365,60 @@
       const helpRegTel = document.getElementById('helpRegTel');
       const helpRegPass = document.getElementById('helpRegPass');
       const helpRegPass2 = document.getElementById('helpRegPass2');
+      const barRegStrength = document.getElementById('barRegStrength');
+      const txtRegStrength = document.getElementById('txtRegStrength');
       const btnRegistrar = document.getElementById('btnRegistrar');
       const regMsg = document.getElementById('regMsg');
 
       let regCaptchaOK = false;
 
+      function setShake(el){ el.classList.add('shake'); el.addEventListener('animationend', ()=> el.classList.remove('shake'), {once:true}); }
+
       function refreshReg(){
+        // telefone
         if (regTel.value && !validTelStrict(regTel.value)){
-          ctlRegTel.classList.add('invalid'); helpRegTel.textContent="Use o formato 31-9XXXX-XXXX."; helpRegTel.className="help err";
+          ctlRegTel.classList.add('invalid'); helpRegTel.textContent="Use o formato 31-9XXXX-XXXX com DDD válido."; helpRegTel.className="help err";
         } else { ctlRegTel.classList.remove('invalid'); helpRegTel.textContent=""; helpRegTel.className="help"; }
 
+        // senha mínima + força
+        const sc = scorePassword(regPass.value);
+        renderStrength(sc, txtRegStrength, barRegStrength);
         if (regPass.dataset.touched==="1" && !validPass(regPass.value)){
           ctlRegPass.classList.add('invalid'); helpRegPass.textContent="Sua senha precisa ter no mínimo 6 caracteres."; helpRegPass.className="help err";
         } else if (validPass(regPass.value)){ ctlRegPass.classList.remove('invalid'); helpRegPass.textContent=""; helpRegPass.className="help"; }
 
+        // confirmação igual
         if (regPass2.dataset.touched==="1" && regPass2.value && regPass.value !== regPass2.value){
           ctlRegPass2.classList.add('invalid'); helpRegPass2.textContent="As senhas não conferem."; helpRegPass2.className="help err";
         } else if (regPass.value && regPass2.value && regPass.value === regPass2.value){
           ctlRegPass2.classList.remove('invalid'); helpRegPass2.textContent=""; helpRegPass2.className="help";
         } else { ctlRegPass2.classList.remove('invalid'); helpRegPass2.textContent=""; helpRegPass2.className="help"; }
 
-        btnRegistrar.disabled = !(validTelStrict(regTel.value) && validPass(regPass.value) && regPass.value===regPass2.value && regCaptchaOK);
+        const ok = validTelStrict(regTel.value) && validPass(regPass.value) && regPass.value===regPass2.value && regCaptchaOK;
+        btnRegistrar.disabled = !ok;
+        btnRegistrar.classList.toggle('glow', ok);
       }
 
+      // Máscara + navegação com Enter
       regTel.addEventListener('input', e=>{ const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelStrict(before); e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{} refreshReg(); });
+      regTel.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); regPass.focus(); }});
+      regPass.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); regPass2.focus(); }});
+      regPass2.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); if(!btnRegistrar.disabled) btnRegistrar.click(); }});
       regPass.addEventListener('input', refreshReg);
       regPass2.addEventListener('input', refreshReg);
-      regPass.addEventListener('blur', ()=>{ regPass.dataset.touched="1"; refreshReg(); });
+      regPass.addEventListener('blur', ()=>{ regPass.dataset.touched="1"; if(!validPass(regPass.value)) setShake(ctlRegPass); refreshReg(); });
       regPass2.addEventListener('focus', ()=>{ regPass.dataset.touched="1"; refreshReg(); });
-      regPass2.addEventListener('blur', ()=>{ regPass2.dataset.touched="1"; refreshReg(); });
+      regPass2.addEventListener('blur', ()=>{ regPass2.dataset.touched="1"; if(regPass.value!==regPass2.value) setShake(ctlRegPass2); refreshReg(); });
 
+      // Olhos (mostrar/ocultar)
+      function bindEye(btnId, inputEl){
+        const btn = document.getElementById(btnId);
+        btn.addEventListener('click', ()=>{ const show = inputEl.type === 'password'; inputEl.type = show ? 'text' : 'password'; });
+      }
+      bindEye('eyeRegPass', regPass);
+      bindEye('eyeRegPass2', regPass2);
+
+      // GeeTest para Cadastro
       function mountRegCaptcha(){
         const el = document.getElementById('regCaptcha');
         el.innerHTML = "";
@@ -351,31 +444,42 @@
 
       document.getElementById('btnRegClose').addEventListener('click', ()=>{ regOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
 
-      /* ======= Login (com 9 obrigatório) ======= */
+      /* ======= Login (estrito + olho + força) ======= */
       const loginTel = document.getElementById('loginTel');
       const loginPass = document.getElementById('loginPass');
       const ctlLoginTel = document.getElementById('ctlLoginTel');
       const ctlLoginPass = document.getElementById('ctlLoginPass');
       const helpLoginTel = document.getElementById('helpLoginTel');
       const helpLoginPass = document.getElementById('helpLoginPass');
+      const barLoginStrength = document.getElementById('barLoginStrength');
+      const txtLoginStrength = document.getElementById('txtLoginStrength');
       const btnDoLogin = document.getElementById('btnDoLogin');
       const loginMsg = document.getElementById('loginMsg');
+      const eyeLoginPass = document.getElementById('eyeLoginPass');
       let loginCaptchaOK = false;
 
       function refreshLogin(){
         if (loginTel.value && !validTelStrict(loginTel.value)){
-          ctlLoginTel.classList.add('invalid'); helpLoginTel.textContent="Use o formato 31-9XXXX-XXXX."; helpLoginTel.className="help err";
+          ctlLoginTel.classList.add('invalid'); helpLoginTel.textContent="Use o formato 31-9XXXX-XXXX com DDD válido."; helpLoginTel.className="help err";
         } else { ctlLoginTel.classList.remove('invalid'); helpLoginTel.textContent=""; helpLoginTel.className="help"; }
+
+        const s = scorePassword(loginPass.value);
+        renderStrength(s, txtLoginStrength, barLoginStrength);
 
         if (loginPass.value && !validPass(loginPass.value)){
           ctlLoginPass.classList.add('invalid'); helpLoginPass.textContent="Sua senha precisa ter pelo menos 6 caracteres."; helpLoginPass.className="help err";
         } else { ctlLoginPass.classList.remove('invalid'); helpLoginPass.textContent=""; helpLoginPass.className="help"; }
 
-        btnDoLogin.disabled = !(validTelStrict(loginTel.value) && validPass(loginPass.value) && loginCaptchaOK);
+        const ok = validTelStrict(loginTel.value) && validPass(loginPass.value) && loginCaptchaOK;
+        btnDoLogin.disabled = !ok;
+        btnDoLogin.classList.toggle('glow', ok);
       }
 
       loginTel.addEventListener('input', e=>{ const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelStrict(before); e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{} refreshLogin(); });
       loginPass.addEventListener('input', refreshLogin);
+      loginPass.addEventListener('blur', ()=>{ if(!validPass(loginPass.value)) setShake(ctlLoginPass); });
+
+      eyeLoginPass.addEventListener('click', ()=>{ const show = loginPass.type==='password'; loginPass.type = show ? 'text' : 'password'; });
 
       function mountLoginCaptcha(){
         const el = document.getElementById('loginCaptcha');
