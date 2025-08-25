@@ -12,7 +12,6 @@
       --neon-red:#ff445a; --neon-red-2:#ff1744;
       --neon-blue:#7ae6ff;
       --card:#141823; --line:#2a3347;
-      --accent:#ffe36a; --accent-2:#ffbf36;
       --glow: 0 0 12px rgba(122,230,255,.45), 0 0 28px rgba(25,224,122,.25);
     }
     *{ box-sizing:border-box }
@@ -27,7 +26,7 @@
       display:flex; align-items:center; justify-content:center; padding:20px;
     }
 
-    /* ====== Card inicial com botões ====== */
+    /* Card inicial */
     .wrap{ width:min(640px, 96vw); }
     .hero{
       background: var(--card);
@@ -39,10 +38,7 @@
       transition: transform .25s ease, box-shadow .25s ease;
     }
     .hero:hover{ transform: translateY(-1px); box-shadow:0 22px 48px rgba(0,0,0,.5) }
-    .brand{
-      display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px;
-      filter: drop-shadow(0 0 12px rgba(122,230,255,.2));
-    }
+    .brand{ display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px; filter: drop-shadow(0 0 12px rgba(122,230,255,.2)); }
     .logo{ width:44px; height:44px; border-radius:50%; background:radial-gradient(circle at 40% 35%, #ffd76a, #ffbf36 60%, #a86c00); border:2px solid #ffe6a8; }
     h1{ margin:0; font-size:1.3rem }
     .hero .row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:12px }
@@ -57,29 +53,29 @@
     .btn-blue{  background:linear-gradient(180deg,#67d8ff,var(--neon-blue)); color:#062233 }
     .hint{ color:var(--muted); font-size:.9rem; margin-top:8px }
 
-    /* ====== Overlay/Modal ====== */
+    /* Overlay/Modal */
     .overlay{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.72); z-index:9999; padding:12px }
     .overlay[aria-hidden="false"]{ display:flex; animation: fadeIn .22s ease }
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     .modal{
-      width:min(460px,94vw);                 /* menor */
+      width:min(400px,92vw);               /* menor ainda */
       background:linear-gradient(180deg,#0c0e2b,#0b0c25);
-      border:1px solid #2f336e; border-radius:18px; padding:16px; /* menos padding */
+      border:1px solid #2f336e; border-radius:16px; padding:14px; /* menos padding */
       color:#fff; box-shadow:0 20px 60px rgba(0,0,0,.6);
       transform: scale(.98); animation: pop .18s ease forwards;
     }
     @keyframes pop { to{ transform: scale(1) } }
 
-    .title{ margin:0 0 4px; font-size:clamp(19px,3.4vw,24px); font-weight:900; text-align:left }
-    .subtitle{ margin:0 0 14px; font-size:.92rem; color:#b9c0ff; text-align:left }
+    .title{ margin:0 0 4px; font-size:clamp(18px,3.3vw,22px); font-weight:900; text-align:left }
+    .subtitle{ margin:0 0 10px; font-size:.9rem; color:#b9c0ff; text-align:left }
     .subtitle a{ color:#f4f945; font-weight:800; text-decoration:none }
 
-    .field{ margin:10px 0 }
+    .field{ margin:6px 0 }                 /* mais próximo */
     .control{
       position:relative;
       display:flex; align-items:center; gap:10px;
       background:#0f1522; border:1px solid var(--line);
-      border-radius:12px; padding:9px 11px;
+      border-radius:10px; padding:8px 10px; /* mais compacto */
       transition:border-color .15s ease, box-shadow .15s ease, background .15s ease, transform .15s ease;
     }
     .control:focus-within{ border-color:#3b8cff; box-shadow:0 0 0 3px rgba(59,140,255,.15) }
@@ -94,24 +90,23 @@
     .input{ flex:1 1 auto; background:transparent; border:0; outline:none; color:#e7eef7; font-size:1rem }
     .input::placeholder{ color:#7f8aa4 }
 
-    /* Botão olho (mostrar/ocultar) */
     .eye{
-      position:absolute; right:10px; top:50%; transform:translateY(-50%);
-      width:24px; height:24px; border:0; background:transparent; cursor:pointer; opacity:.9;
+      position:absolute; right:8px; top:50%; transform:translateY(-50%);
+      width:22px; height:22px; border:0; background:transparent; cursor:pointer; opacity:.9;
       display:inline-flex; align-items:center; justify-content:center; padding:0;
       filter: drop-shadow(0 0 2px rgba(0,0,0,.35));
     }
-    .eye svg{ width:20px; height:20px; }
+    .eye svg{ width:18px; height:18px; }
 
-    .help{ font-size:.82rem; margin-top:6px; min-height:1.2em }
+    .help{ font-size:.78rem; margin-top:4px; min-height:1.1em }
     .help.err{ color:#ff8b8b }
     .help.ok{ color:#87efb3 }
-    .help.meter{ display:flex; align-items:center; gap:8px }
+    .help.meter{ display:flex; align-items:center; gap:6px }
     .meter-bar{ height:6px; border-radius:999px; background:#23304b; flex:1; overflow:hidden }
     .meter-fill{ height:100%; width:0%; transition: width .2s ease; background:linear-gradient(90deg, #ff4d4d, #ffd642, #19e07a) }
 
-    .actions{ display:flex; gap:10px; margin-top:12px }
-    .btn-sm{ padding:11px 14px; border-radius:14px; border:0; cursor:pointer; font-weight:900; text-transform:uppercase; letter-spacing:.3px; flex:1 1 160px;
+    .actions{ display:flex; gap:8px; margin-top:10px }
+    .btn-sm{ padding:10px 12px; border-radius:12px; border:0; cursor:pointer; font-weight:900; text-transform:uppercase; letter-spacing:.3px; flex:1 1 150px;
       box-shadow:0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35); transition: box-shadow .15s ease, filter .15s ease }
     .btn-sm:disabled{ opacity:.5; cursor:not-allowed; filter:grayscale(.1) }
     .btn-sm.glow{ box-shadow: var(--glow), 0 10px 0 rgba(0,0,0,.28), 0 20px 40px rgba(0,0,0,.35) }
@@ -120,16 +115,9 @@
     .sm-red{   background:linear-gradient(180deg,var(--neon-red),var(--neon-red-2)); color:#fff }
     .hidden{ display:none !important }
 
-    /* Centralização de captcha (geeTest ou fallback) */
+    /* Captcha centralizado */
     .captcha-box{ display:flex; justify-content:center; align-items:center; margin-top:6px }
-    .fallback-box{
-      background:#0f1522; border:1px dashed #3b4a6a; border-radius:10px; padding:10px 12px; text-align:center; color:#c8d2ec; font-size:.9rem;
-    }
-
-    /* Termos de uso */
-    .terms{ display:flex; align-items:flex-start; gap:8px; font-size:.86rem; color:#cdd6f6; margin-top:8px }
-    .terms input{ transform: translateY(2px) }
-    .terms a{ color:#f4f945; text-decoration:none; font-weight:700 }
+    .fallback-box{ background:#0f1522; border:1px dashed #3b4a6a; border-radius:10px; padding:10px 12px; text-align:center; color:#c8d2ec; font-size:.9rem; }
   </style>
 </head>
 <body>
@@ -147,7 +135,7 @@
     </div>
   </div>
 
-  <!-- ===== Modal: Cadastro ===== -->
+  <!-- Modal: Cadastro -->
   <div id="regOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal">
       <h2 class="title">Crie uma conta</h2>
@@ -186,12 +174,6 @@
         <div id="helpRegPass2" class="help"></div>
       </div>
 
-      <!-- Termos de uso -->
-      <label class="terms">
-        <input type="checkbox" id="agreeTerms">
-        <span>Declaro que li e aceito os <a href="#" id="openTerms">Termos de Uso</a> e a <a href="#" id="openPrivacy">Política de Privacidade</a>.</span>
-      </label>
-
       <!-- Captcha centralizado (GeeTest ou fallback) -->
       <div class="captcha-box">
         <div id="regCaptcha"></div>
@@ -212,7 +194,7 @@
     </div>
   </div>
 
-  <!-- ===== Modal: Login ===== -->
+  <!-- Modal: Login -->
   <div id="loginOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal">
       <h2 class="title">Entrar</h2>
@@ -240,7 +222,6 @@
         </div>
       </div>
 
-      <!-- Captcha centralizado -->
       <div class="captcha-box">
         <div id="loginCaptcha"></div>
       </div>
@@ -260,7 +241,7 @@
     </div>
   </div>
 
-  <!-- ===== Modal: Verificação de Idade ===== -->
+  <!-- Modal: Verificação de Idade -->
   <div id="ageOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
     <div id="ageVerify" class="modal" style="text-align:center">
       <h2 id="ageTitle" class="title" style="text-align:center;margin-bottom:10px">VOCÊ TEM MAIS DE 18 ANOS?</h2>
@@ -282,7 +263,7 @@
 
   <script>
     (function(){
-      /* ===== Persistência de Idade + fila de ação ===== */
+      /* Persistência de Idade */
       const KEY = "bcb_age_verified_v1";
       const qs = new URLSearchParams(location.search);
       if (qs.get("resetAge") === "1"){ try{ localStorage.removeItem(KEY);}catch{} }
@@ -306,12 +287,12 @@
         document.addEventListener('click', first);
       }
 
-      let pendingAction = null; // 'login' | 'reg' | null
+      let pendingAction = null;
       ageYes.addEventListener('click', ()=>{ try{ localStorage.setItem(KEY,'yes'); }catch{} ageOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if (pendingAction === 'login') openLogin(); if (pendingAction === 'reg') openReg(); pendingAction=null; });
       ageNo.addEventListener('click',  ()=>{ try{ localStorage.setItem(KEY,'no'); }catch{} showUnderage(); });
       ageExit.addEventListener('click', ()=>{ if (history.length>1) history.back(); else if (document.referrer) location.href=document.referrer; else location.href='https://www.google.com'; });
 
-      /* ===== Abertura dos modais ===== */
+      /* Abertura dos modais */
       const btnOpenLogin = document.getElementById('btnOpenLogin');
       const btnOpenReg   = document.getElementById('btnOpenReg');
       const loginOverlay = document.getElementById('loginOverlay');
@@ -332,13 +313,13 @@
         loginOverlay.setAttribute('aria-hidden','false');
         document.body.style.overflow='hidden';
         mountLoginCaptcha();
-        setTimeout(()=>document.getElementById('loginTel').focus(), 0); // autofocus
+        setTimeout(()=>document.getElementById('loginTel').focus(), 0);
       }
       function openReg(){
         regOverlay.setAttribute('aria-hidden','false');
         document.body.style.overflow='hidden';
         mountRegCaptcha();
-        setTimeout(()=>document.getElementById('regTel').focus(), 0); // autofocus
+        setTimeout(()=>document.getElementById('regTel').focus(), 0);
       }
       function closeLogin(){ loginOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow='' }
       function closeReg(){   regOverlay.setAttribute('aria-hidden','true');   document.body.style.overflow='' }
@@ -350,7 +331,7 @@
       loginGoReg.addEventListener('click', (e)=>{ e.preventDefault(); closeLogin(); openReg(); });
       regGoLogin.addEventListener('click', (e)=>{ e.preventDefault(); closeReg();   openLogin(); });
 
-      /* ===== Máscaras, DDD válido e validações ===== */
+      /* Máscaras, DDD e validações */
       function digits(s){ return (s||'').replace(/\D+/g,''); }
       const VALID_DDD = new Set([11,12,13,14,15,16,17,18,19,21,22,24,27,28,31,32,33,34,35,37,38,41,42,43,44,45,46,47,48,49,51,53,54,55,61,62,63,64,65,66,67,68,69,71,73,74,75,77,79,81,82,83,84,85,86,87,88,89,91,92,93,94,95,96,97,98,99]);
 
@@ -368,24 +349,20 @@
       }
       function validPass(v){ return (v||'').length >= 6; }
 
-      // Força de senha (0..3)
       function scorePassword(v){
-        let s = 0;
-        if (!v) return 0;
+        let s = 0; if (!v) return 0;
         if (v.length >= 6) s++;
         if (/[A-Z]/.test(v) && /[a-z]/.test(v)) s++;
         if (/\d/.test(v) || /[^A-Za-z0-9]/.test(v)) s++;
         return Math.min(s,3);
       }
       function renderStrength(score, txtEl, barEl){
-        const labels = ["Fraca","Média","Forte"];
-        const widths = ["33%","66%","100%"];
+        const labels = ["Fraca","Média","Forte"], widths = ["33%","66%","100%"];
         if (score === 0){ txtEl.textContent = "Força: Fraca"; barEl.style.width = "20%"; return; }
-        txtEl.textContent = "Força: " + labels[score-1];
-        barEl.style.width = widths[score-1];
+        txtEl.textContent = "Força: " + labels[score-1]; barEl.style.width = widths[score-1];
       }
 
-      /* ===== Cadastro ===== */
+      /* Cadastro */
       const regTel = document.getElementById('regTel');
       const regPass = document.getElementById('regPass');
       const regPass2 = document.getElementById('regPass2');
@@ -399,9 +376,8 @@
       const txtRegStrength = document.getElementById('txtRegStrength');
       const btnRegistrar = document.getElementById('btnRegistrar');
       const regMsg = document.getElementById('regMsg');
-      const agreeTerms = document.getElementById('agreeTerms');
 
-      // Navegação com Enter
+      // Enter navega
       regTel.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); regPass.focus(); }});
       regPass.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); regPass2.focus(); }});
       regPass2.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); if(!btnRegistrar.disabled) btnRegistrar.click(); }});
@@ -410,21 +386,16 @@
 
       // Máscara + validação
       regTel.addEventListener('input', e=>{
-        const pos=e.target.selectionStart, before=e.target.value;
-        const after=fmtTelStrict(before);
-        e.target.value=after;
-        try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{}
+        const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelStrict(before);
+        e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{}
         refreshReg();
       });
       regPass.addEventListener('input', refreshReg);
       regPass2.addEventListener('input', refreshReg);
-      agreeTerms.addEventListener('change', refreshReg);
-
       regPass.addEventListener('blur', ()=>{ if(!validPass(regPass.value)) setShake(ctlRegPass); refreshReg(); });
       regPass2.addEventListener('blur', ()=>{ if(regPass.value!==regPass2.value) setShake(ctlRegPass2); refreshReg(); });
 
-      let regCaptchaOK = false;
-      let regFallbackOK = false;
+      let regCaptchaOK = false, regFallbackOK = false;
 
       function refreshReg(){
         if (regTel.value && !validTelStrict(regTel.value)){
@@ -442,42 +413,37 @@
         } else { ctlRegPass2.classList.remove('invalid'); helpRegPass2.textContent=""; helpRegPass2.className="help"; }
 
         const humanOK = regCaptchaOK || regFallbackOK;
-        const ok = validTelStrict(regTel.value) && validPass(regPass.value) && regPass.value===regPass2.value && agreeTerms.checked && humanOK;
+        const ok = validTelStrict(regTel.value) && validPass(regPass.value) && regPass.value===regPass2.value && humanOK;
         btnRegistrar.disabled = !ok;
         btnRegistrar.classList.toggle('glow', ok);
       }
 
-      // Mostrar/ocultar senhas
       function bindEye(btnId, inputEl){
         document.getElementById(btnId).addEventListener('click', ()=>{
-          const show = inputEl.type === 'password';
-          inputEl.type = show ? 'text' : 'password';
+          inputEl.type = (inputEl.type==='password' ? 'text' : 'password');
         });
       }
       bindEye('eyeRegPass', regPass);
       bindEye('eyeRegPass2', regPass2);
 
-      // Fallback simples (checkbox + soma)
+      /* Fallback simples (checkbox + soma) */
       function mountFallback(targetBoxId, cbId, mathWrapId, setOK){
         const box = document.getElementById(targetBoxId);
         const cb = document.getElementById(cbId);
         const wrap = document.getElementById(mathWrapId);
         box.classList.remove('hidden');
-        // desafio simples de soma
-        const a = Math.floor(Math.random()*4)+3; // 3..6
-        const b = Math.floor(Math.random()*4)+3;
+        const a = Math.floor(Math.random()*4)+3, b = Math.floor(Math.random()*4)+3;
         wrap.innerHTML = `<label>Resolva: <strong>${a} + ${b}</strong> = <input type="number" id="${mathWrapId}-ans" style="width:70px;border-radius:6px;border:1px solid #3b4a6a;background:#0a111f;color:#e7eef7;padding:4px 6px;margin-left:6px"></label>`;
         const ansEl = document.getElementById(`${mathWrapId}-ans`);
-        function upd(){ setOK(cb.checked && Number(ansEl.value) === (a+b)); refreshReg(); refreshLogin(); }
-        cb.addEventListener('change', upd);
-        ansEl.addEventListener('input', upd);
+        function upd(){ setOK(cb.checked && Number(ansEl.value)===(a+b)); refreshReg(); refreshLogin(); }
+        cb.addEventListener('change', upd); ansEl.addEventListener('input', upd);
       }
 
-      // GeeTest Cadastro com fallback
+      /* GeeTest Cadastro com fallback */
       function mountRegCaptcha(){
         const el = document.getElementById('regCaptcha');
         const fb = document.getElementById('regCaptchaFallback');
-        el.innerHTML = ""; fb.classList.add('hidden'); regCaptchaOK=false; regFallbackOK=false; refreshReg();
+        el.innerHTML=""; fb.classList.add('hidden'); regCaptchaOK=false; regFallbackOK=false; refreshReg();
 
         if (!window.initGeetest4){
           mountFallback('regCaptchaFallback','regCbHuman','regMathWrap', v=>{regFallbackOK=v;});
@@ -502,7 +468,7 @@
       });
       document.getElementById('btnRegClose').addEventListener('click', ()=>{ regOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
 
-      /* ===== Login ===== */
+      /* Login */
       const loginTel = document.getElementById('loginTel');
       const loginPass = document.getElementById('loginPass');
       const ctlLoginTel = document.getElementById('ctlLoginTel');
@@ -513,9 +479,8 @@
       const txtLoginStrength = document.getElementById('txtLoginStrength');
       const btnDoLogin = document.getElementById('btnDoLogin');
       const loginMsg = document.getElementById('loginMsg');
-      let loginCaptchaOK = false, loginFallbackOK=false;
+      let loginCaptchaOK=false, loginFallbackOK=false;
 
-      // máscara + força + glow
       loginTel.addEventListener('input', e=>{
         const pos=e.target.selectionStart, before=e.target.value; const after=fmtTelStrict(before);
         e.target.value=after; try{ const d=after.length-before.length; e.target.setSelectionRange(Math.max(0,pos+d),Math.max(0,pos+d)); }catch{}
@@ -543,13 +508,12 @@
 
       document.getElementById('eyeLoginPass').addEventListener('click', ()=>{ loginPass.type = (loginPass.type==='password'?'text':'password'); });
 
-      // Fallback Login
       function mountLoginFallback(){
         const box = document.getElementById('loginCaptchaFallback');
         box.classList.remove('hidden');
         const cb = document.getElementById('loginCbHuman');
         const wrap = document.getElementById('loginMathWrap');
-        const a = Math.floor(Math.random()*4)+3, b=Math.floor(Math.random()*4)+3;
+        const a = Math.floor(Math.random()*4)+3, b = Math.floor(Math.random()*4)+3;
         wrap.innerHTML = `<label>Resolva: <strong>${a} + ${b}</strong> = <input type="number" id="loginMathAns" style="width:70px;border-radius:6px;border:1px solid #3b4a6a;background:#0a111f;color:#e7eef7;padding:4px 6px;margin-left:6px"></label>`;
         const ans = document.getElementById('loginMathAns');
         function upd(){ loginFallbackOK = cb.checked && Number(ans.value) === (a+b); refreshLogin(); }
@@ -579,13 +543,9 @@
       });
       document.getElementById('btnLoginClose').addEventListener('click', ()=>{ loginOverlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; });
 
-      /* Expor para callbacks */
+      /* Expor */
       window.mountLoginCaptcha = mountLoginCaptcha;
       window.mountRegCaptcha   = mountRegCaptcha;
-
-      /* Termos/Privacidade (placeholder) */
-      document.getElementById('openTerms').addEventListener('click', e=>{ e.preventDefault(); alert("Termos de Uso: conteúdo ilustrativo. Substitua por sua página de termos."); });
-      document.getElementById('openPrivacy').addEventListener('click', e=>{ e.preventDefault(); alert("Política de Privacidade: conteúdo ilustrativo. Substitua por sua página de privacidade."); });
 
     })();
   </script>
